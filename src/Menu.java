@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -16,6 +17,30 @@ public class Menu extends JFrame {
     private JLabel icono;
     private JMenuItem o1, o2, o3, o4;
 
+    //atributos tabla
+    private JTable tablaAlum;
+    private JScrollPane scrollAlum;
+    private JScrollPane scrollProfe;
+    private JTable tablaProfe;
+    private JScrollPane scrollCur;
+    private JTable tablaCur;
+    private JButton agregarAlum;
+    private JButton mostrarAlum;
+    private JButton buscarAlum;
+    private JButton eliminarAlum;
+    private JButton agregarProfe;
+    private JButton mostrarProfe;
+    private JButton buscarProfe;
+    private JButton eliminarProfe;
+    private JButton agregarCur;
+    private JButton mostrarCur;
+    private JButton buscarCur;
+    private JButton eliminaCur;
+    private DefaultTableModel modeloTablaAlum;
+    private DefaultTableModel modeloTablaProfe;
+    private DefaultTableModel modeloTablaCur;
+
+//-------------------------------------------------------------------------------------------------------------
     public Menu() {
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelPrincipal);
@@ -117,14 +142,79 @@ public class Menu extends JFrame {
         menu.add(o1);
 
 //-------------------------------------------------------------------------------------------------------------
+        // ---- ICONO ----
         //agregamos una imagen
         icono.setIcon(new ImageIcon("src/imagenes/logoThiar.png"));
 
 
+//-------------------------------------------------------------------------------------------------------------
+        // ---- TABLAS ----
+        // ---- TABLA ALUMNOS ----
+        //creamos un modelo de tabla para los alumnos
+        modeloTablaAlum = new DefaultTableModel();
+
+        //le añadimos las columnas
+        modeloTablaAlum.addColumn("Nombre");
+        modeloTablaAlum.addColumn("DNI");
+        modeloTablaAlum.addColumn("Telefono");
+        modeloTablaAlum.addColumn("Edad");
+        modeloTablaAlum.addColumn("Curso");
+
+        //a nuestra tabla de alumnos le asignamos el modelo
+        tablaAlum.setModel(modeloTablaAlum);
+
+        //hacemos la tabla visible (no afecta en nada)
+        tablaAlum.setVisible(true);
+
+        //al scroll le asignamos la tabla
+        scrollAlum.add(tablaAlum);
+        //hacemos que se visualicen los titulos de las tablas
+        scrollAlum.setViewportView(tablaAlum);
+
+        // BOTONES
+
+//-------------------------------------------------------------------------------------------------------------
+        // ---- TABLA PROFESORES ----
+        //creamos un modelo de tabla para los alumnos
+        modeloTablaProfe= new DefaultTableModel();
+
+        //le añadimos las columnas
+        modeloTablaProfe.addColumn("Nombre");
+        modeloTablaProfe.addColumn("DNI");
+        modeloTablaProfe.addColumn("Telefono");
+        modeloTablaProfe.addColumn("Edad");
+
+        //a nuestra tabla de alumnos le asignamos el modelo
+        tablaProfe.setModel(modeloTablaProfe);
+
+        //hacemos la tabla visible (no afecta en nada)
+        tablaProfe.setVisible(true);
+
+        //al scroll le asignamos la tabla
+        scrollProfe.add(tablaProfe);
+        //hacemos que se visualicen los titulos de las tablas
+        scrollProfe.setViewportView(tablaProfe);
+
+//-------------------------------------------------------------------------------------------------------------
+        // ---- TABLA CURSOS ----
+        //creamos un modelo de tabla para los alumnos
+        modeloTablaCur= new DefaultTableModel();
+
+        //le añadimos las columnas
+        modeloTablaCur.addColumn("Codigo");
+        modeloTablaCur.addColumn("Nombre");
+
+        //a nuestra tabla de alumnos le asignamos el modelo
+        tablaCur.setModel(modeloTablaCur);
+
+        //hacemos la tabla visible (no afecta en nada)
+        tablaCur.setVisible(true);
+
+        //al scroll le asignamos la tabla
+        scrollCur.add(tablaCur);
+        //hacemos que se visualicen los titulos de las tablas
+        scrollCur.setViewportView(tablaCur);
     }
-
-
-
 
 
 
