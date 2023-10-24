@@ -41,6 +41,9 @@ public class Menu extends JFrame {
     private JCheckBox alfabeticamenteCheckBox;
     private JCheckBox aprobadosCheckBox;
     private JCheckBox suspensosCheckBox;
+    private JCheckBox alfebeticamenteCheckBox;
+    private JCheckBox tutoresCheckBox;
+    private JCheckBox alfabeticamenteCheckBox1;
     private DefaultTableModel modeloTablaAlum;
     private DefaultTableModel modeloTablaProfe;
     private DefaultTableModel modeloTablaCur;

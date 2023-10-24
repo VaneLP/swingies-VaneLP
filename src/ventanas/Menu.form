@@ -177,14 +177,33 @@
                       <text value="Mostrar"/>
                     </properties>
                   </component>
-                  <grid id="d15df" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="d15df" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="a8207" class="javax.swing.JCheckBox" binding="alfebeticamenteCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                            <preferred-size width="114" height="21"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <text value="Alfebeticamente"/>
+                        </properties>
+                      </component>
+                      <component id="f86ea" class="javax.swing.JCheckBox" binding="tutoresCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Tutores"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                   <component id="cb231" class="javax.swing.JButton" binding="buscarProfe">
                     <constraints>
@@ -257,7 +276,16 @@
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="f5f66" class="javax.swing.JCheckBox" binding="alfabeticamenteCheckBox1" default-binding="true">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Alfabeticamente"/>
+                        </properties>
+                      </component>
+                    </children>
                   </grid>
                   <component id="7353" class="javax.swing.JButton" binding="buscarCur">
                     <constraints>
