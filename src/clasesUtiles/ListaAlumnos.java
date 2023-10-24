@@ -1,10 +1,14 @@
+package clasesUtiles;
+
+import clasesPrincipales.Alumno;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-// Clase ListaAlumnos implementa la ILista para obtener sus metodos
+// Clase clasesUtiles.ListaAlumnos implementa la clasesUtiles.ILista para obtener sus metodos
 public class ListaAlumnos implements ILista<Alumno> {
-	// atributos de la clase ListaAlumnos
+	// atributos de la clase clasesUtiles.ListaAlumnos
 	private List<Alumno> listaAlumnos = new ArrayList<Alumno>();
 	private List<Double> listNota = new ArrayList<Double>();
 
@@ -18,7 +22,7 @@ public class ListaAlumnos implements ILista<Alumno> {
 
 	// ---- METODOS ----
 	/**
-	 * Metodo agregar de la interfaz ILista
+	 * Metodo agregar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @param a le pasamos un alumno
 	 * 
@@ -30,7 +34,7 @@ public class ListaAlumnos implements ILista<Alumno> {
 	}
 
 	/**
-	 * Metodo buscar de la interfaz ILista
+	 * Metodo buscar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @param dni,le pasamos una cadena de texto, que haria referencia al DNI
 	 * 
@@ -47,12 +51,12 @@ public class ListaAlumnos implements ILista<Alumno> {
 		}
 
 		// si no lo encuentra nos devuelve el alumno nulo
-		System.out.println("Alumno no encontrado");
+		System.out.println("clases.Alumno no encontrado");
 		return null;
 	}
 
 	/**
-	 * Metodo eliminar de la interfaz ILista
+	 * Metodo eliminar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @param DNI, le pasamos una cadena de texto, que haria referencia al DNI
 	 * 
@@ -83,14 +87,14 @@ public class ListaAlumnos implements ILista<Alumno> {
 			// nuestra variable
 			listaAlumnos.remove(indice);
 
-		System.out.print("Alumno eliminado: " + encontrado + "\n");
+		System.out.print("clases.Alumno eliminado: " + encontrado + "\n");
 		// si no se a encontrado el curso devolvemos FALSE
 		return encontrado;
 
 	}
 
 	/**
-	 * Metodo listar de la interfaz ILista
+	 * Metodo listar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @return nos duvuelve todos los alumnos que tenemos en la lista
 	 */
@@ -117,7 +121,7 @@ public class ListaAlumnos implements ILista<Alumno> {
 		
 		/*
 		 * cogemos nuestra lista de alumnos y con el metodo . sort que tienen los
-		 * arrayList hacemos un new Comparator de la clase Alumno
+		 * arrayList hacemos un new Comparator de la clase clases.Alumno
 		 */
 		listaAlumnos.sort(new Comparator<Alumno>() {
 			// sobreescribimos el metodo que tiene el Comparator de compare, al cual le

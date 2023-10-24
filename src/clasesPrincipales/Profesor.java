@@ -1,16 +1,18 @@
+package clasesPrincipales;
+
 import java.util.ArrayList;
 import java.util.List;
 
-//clase Profesor que hereda de Persona
+//clase clases.Profesor que hereda de clases.Persona
 public class Profesor extends Persona {
-    // atributos de la clase Profesor
+    // atributos de la clase clases.Profesor
     private Curso curso;
     private List<String> listaAsignaturas;
 
     /*
-     * constructor al cual le pasamos un super con los atributos de la clase Persona
+     * constructor al cual le pasamos un super con los atributos de la clase clases.Persona
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
-     * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
+     * la clase clases.Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
     public Profesor(String nombre, String DNI, int tlf, int edad, Curso curso) {
         super(nombre, DNI, tlf, edad);
@@ -19,9 +21,9 @@ public class Profesor extends Persona {
     }
 
     /*
-     * constructor al cual le pasamos un super con los atributos de la clase Persona
+     * constructor al cual le pasamos un super con los atributos de la clase clases.Persona
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
-     * la clase Profesor, al cual NO le pasamos el curso porque un profesor no
+     * la clase clases.Profesor, al cual NO le pasamos el curso porque un profesor no
      * necesita ser tutor
      */
     public Profesor(String nombre, String DNI, int tlf, int edad) {

@@ -1,3 +1,5 @@
+package ventanas;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -36,6 +38,9 @@ public class Menu extends JFrame {
     private JButton mostrarCur;
     private JButton buscarCur;
     private JButton eliminaCur;
+    private JCheckBox alfabeticamenteCheckBox;
+    private JCheckBox aprobadosCheckBox;
+    private JCheckBox suspensosCheckBox;
     private DefaultTableModel modeloTablaAlum;
     private DefaultTableModel modeloTablaProfe;
     private DefaultTableModel modeloTablaCur;
@@ -109,7 +114,7 @@ public class Menu extends JFrame {
 //-------------------------------------------------------------------------------------------------------------
         // ---- CURSO ----
         //creamos un nuevo menu y le ponemos un titulo
-        menuC = new JMenu("Curso");
+        menuC = new JMenu("clases.Curso");
         //a nuestro JMenuBar le asignamos nuestro menu
         menuBar.add(menuC);
 
@@ -158,7 +163,7 @@ public class Menu extends JFrame {
         modeloTablaAlum.addColumn("DNI");
         modeloTablaAlum.addColumn("Telefono");
         modeloTablaAlum.addColumn("Edad");
-        modeloTablaAlum.addColumn("Curso");
+        modeloTablaAlum.addColumn("clases.Curso");
 
         //a nuestra tabla de alumnos le asignamos el modelo
         tablaAlum.setModel(modeloTablaAlum);

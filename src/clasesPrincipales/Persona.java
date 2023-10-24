@@ -1,5 +1,7 @@
+package clasesPrincipales;
+
 public class Persona {
-    // atributos de la clase Persona
+    // atributos de la clase clases.Persona
     private String nombre;
     private String DNI;
     private int tlf;

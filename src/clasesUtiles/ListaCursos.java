@@ -1,14 +1,18 @@
+package clasesUtiles;
+
+import clasesPrincipales.Curso;
+
 import java.util.ArrayList;
 import java.util.List;
 
-// Clase ListaCurso implementa la ILista para obtener sus metodos
+// Clase ListaCurso implementa la clasesUtiles.ILista para obtener sus metodos
 public class ListaCursos implements ILista<Curso> {
-	// atributos de la clase ListaCursos
+	// atributos de la clase clasesUtiles.ListaCursos
 	private List<Curso> listaCursos = new ArrayList<Curso>();
 
 	// ---- METODOS ----
 	/**
-	 * Metodo agregar de la interfaz ILista
+	 * Metodo agregar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @param c le pasamos un curso
 	 * 
@@ -20,7 +24,7 @@ public class ListaCursos implements ILista<Curso> {
 	}
 
 	/**
-	 * Metodo buscar de la interfaz ILista
+	 * Metodo buscar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @param le pasamos una cadena de texto, que haria referencia al codigo
 	 * 
@@ -37,12 +41,12 @@ public class ListaCursos implements ILista<Curso> {
 		}
 
 		// si no lo encuentra nos devuelve el curso nulo
-		System.out.println("Curso no encontrado");
+		System.out.println("clases.Curso no encontrado");
 		return null;
 	}
 
 	/**
-	 * Metodo eliminar de la interfaz ILista
+	 * Metodo eliminar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @param codigo le pasamos una cadena de texto, que haria referencia al codigo
 	 * 
@@ -75,7 +79,7 @@ public class ListaCursos implements ILista<Curso> {
 			// nuestra variable
 			listaCursos.remove(indice);
 
-		System.out.print("Curso eliminado: " + encontrado + "\n");
+		System.out.print("clases.Curso eliminado: " + encontrado + "\n");
 
 		// si no se a encontrado el curso devolvemos FALSE
 		return encontrado;
@@ -83,7 +87,7 @@ public class ListaCursos implements ILista<Curso> {
 	}
 
 	/**
-	 * Metodo listar de la interfaz ILista
+	 * Metodo listar de la interfaz clasesUtiles.ILista
 	 * 
 	 * @return nos duvuelve todos los cursos que tenemos en la lista
 	 */

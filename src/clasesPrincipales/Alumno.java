@@ -1,16 +1,18 @@
+package clasesPrincipales;
+
 import java.util.ArrayList;
 import java.util.List;
 
-//clase Alumno que hereda de Persona
+//clase clases.Alumno que hereda de clases.Persona
 public class Alumno extends Persona {
-    // atributos de la clase Alumno
+    // atributos de la clase clases.Alumno
     private Curso curso;
     private List<Double> listaNotas;
 
     /*
-     * constructor al cual le pasamos un super con los atributos de la clase Persona
+     * constructor al cual le pasamos un super con los atributos de la clase clases.Persona
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
-     * la clase Alumno
+     * la clase clases.Alumno
      */
     public Alumno(String nombre, String DNI, int tlf, int edad, Curso curso) {
         super(nombre, DNI, tlf, edad);
