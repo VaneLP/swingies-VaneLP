@@ -3,6 +3,8 @@ package ventanas;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class Menu extends JFrame {
@@ -222,6 +224,118 @@ public class Menu extends JFrame {
         scrollCur.add(tablaCur);
         //hacemos que se visualicen los titulos de las tablas
         scrollCur.setViewportView(tablaCur);
+
+//-------------------------------------------------------------------------------------------------------------
+        // ---- LISTENERS ----
+        // ---- LISTENER BOTON AGREGAR ALUMNO ----
+        agregarAlum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON BUSCAR ALUMNO ----
+        buscarAlum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String dni=JOptionPane.showInputDialog("Introduce el DNI");
+                System.out.println("buscado");
+            }
+        });
+
+        // ---- LISTENER BOTON ELIMINAR ALUMNO ----
+        eliminarAlum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPanel panel = new JPanel();
+                int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?","Eliminar", JOptionPane.YES_NO_OPTION);
+                if(opcion==JOptionPane.YES_OPTION)
+                    System.out.println("eliminado");
+                else
+                    System.out.println("no eliminado");
+
+            }
+        });
+
+        // ---- LISTENER BOTON MOSTRAR ALUMNO ----
+        mostrarAlum.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+//-------------------------------------------------------------------------------------------------------------
+        // ---- LISTENER BOTON AGREGAR PROFESOR ----
+        agregarProfe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON BUSCAR PROFESOR ----
+        buscarProfe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON ELIMINAR PROFESOR ----
+        eliminarProfe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON MOSTRAR PROFESOR ----
+        mostrarProfe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        //-------------------------------------------------------------------------------------------------------------
+        // ---- LISTENER BOTON AGREGAR CURSO ----
+        agregarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON BUSCAR CURSO ----
+        buscarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON ELIMINAR CURSO ----
+        eliminaCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        // ---- LISTENER BOTON MOSTRAR CURSO ----
+        mostrarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+
+
+
+
     }
 
 
