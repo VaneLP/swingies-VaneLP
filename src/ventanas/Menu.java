@@ -119,7 +119,7 @@ public class Menu extends JFrame {
 //-------------------------------------------------------------------------------------------------------------
         // ---- CURSO ----
         //creamos un nuevo menu y le ponemos un titulo
-        menuC = new JMenu("clases.Curso");
+        menuC = new JMenu("Curso");
         //a nuestro JMenuBar le asignamos nuestro menu
         menuBar.add(menuC);
 
@@ -168,7 +168,7 @@ public class Menu extends JFrame {
         modeloTablaAlum.addColumn("DNI");
         modeloTablaAlum.addColumn("Telefono");
         modeloTablaAlum.addColumn("Edad");
-        modeloTablaAlum.addColumn("clases.Curso");
+        modeloTablaAlum.addColumn("Curso");
 
         //a nuestra tabla de alumnos le asignamos el modelo
         tablaAlum.setModel(modeloTablaAlum);
