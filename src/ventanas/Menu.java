@@ -231,7 +231,8 @@ public class Menu extends JFrame {
         agregarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //todo
+                abrirAgregar();
             }
         });
 
@@ -239,6 +240,7 @@ public class Menu extends JFrame {
         buscarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //todo
                 String dni=JOptionPane.showInputDialog("Introduce el DNI");
                 System.out.println("buscado");
             }
@@ -248,6 +250,7 @@ public class Menu extends JFrame {
         eliminarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //todo
                 JPanel panel = new JPanel();
                 int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?","Eliminar", JOptionPane.YES_NO_OPTION);
                 if(opcion==JOptionPane.YES_OPTION)
@@ -337,7 +340,12 @@ public class Menu extends JFrame {
 
 
     }
-
+//-------------------------------------------------------------------------------------------------------------
+    //Metodos
+    public void abrirAgregar(){
+        Agregar a = new Agregar(this,true);
+        a.setVisible(true);
+    }
 
 
 //-------------------------------------------------------------------------------------------------------------
