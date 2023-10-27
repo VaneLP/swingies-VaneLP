@@ -103,7 +103,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="974e6" class="javax.swing.JCheckBox" binding="alfabeticamenteCheckBox" default-binding="true">
+                      <component id="974e6" class="javax.swing.JCheckBox" binding="alfaAlum">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -111,7 +111,7 @@
                           <text value="Alfabeticamente"/>
                         </properties>
                       </component>
-                      <component id="69be" class="javax.swing.JCheckBox" binding="aprobadosCheckBox" default-binding="true">
+                      <component id="69be" class="javax.swing.JCheckBox" binding="aproAlum">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -119,7 +119,7 @@
                           <text value="Aprobados"/>
                         </properties>
                       </component>
-                      <component id="fc7fe" class="javax.swing.JCheckBox" binding="suspensosCheckBox" default-binding="true">
+                      <component id="fc7fe" class="javax.swing.JCheckBox" binding="suspensoAlum">
                         <constraints>
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>

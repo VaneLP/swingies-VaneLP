@@ -39,7 +39,7 @@ public class Agregar extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
                 //todo
-                System.out.println("Agregado Alum");
+                System.out.println("Agregado Alum/Prof");
             }
         });
 

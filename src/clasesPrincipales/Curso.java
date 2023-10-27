@@ -1,7 +1,7 @@
 package clasesPrincipales;
 
 public class Curso {
-    // atributos de la clase clases.Curso
+    // atributos de la clase Curso
     private final int codigo;
     private static int contador = 1;
     private String nombre;
@@ -42,7 +42,7 @@ public class Curso {
      */
     @Override
     public String toString() {
-        return String.format("clases.Curso: %s | codigo: %d", nombre, codigo);
+        return String.format("Curso: %s | codigo: %d", nombre, codigo);
     }
 
 }

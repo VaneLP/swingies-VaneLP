@@ -40,9 +40,9 @@ public class Menu extends JFrame {
     private JButton mostrarCur;
     private JButton buscarCur;
     private JButton eliminaCur;
-    private JCheckBox alfabeticamenteCheckBox;
-    private JCheckBox aprobadosCheckBox;
-    private JCheckBox suspensosCheckBox;
+    private JCheckBox alfaAlum;
+    private JCheckBox aproAlum;
+    private JCheckBox suspensoAlum;
     private JCheckBox alfebeticamenteCheckBox;
     private JCheckBox tutoresCheckBox;
     private JCheckBox alfabeticamenteCheckBox1;
@@ -231,7 +231,6 @@ public class Menu extends JFrame {
         agregarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //todo
                 abrirAgregar();
             }
         });
@@ -240,7 +239,6 @@ public class Menu extends JFrame {
         buscarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //todo
                 String dni=JOptionPane.showInputDialog("Introduce el DNI");
                 System.out.println("buscado");
             }
@@ -250,14 +248,7 @@ public class Menu extends JFrame {
         eliminarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //todo
-                JPanel panel = new JPanel();
-                int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?","Eliminar", JOptionPane.YES_NO_OPTION);
-                if(opcion==JOptionPane.YES_OPTION)
-                    System.out.println("eliminado");
-                else
-                    System.out.println("no eliminado");
-
+                eliminar();
             }
         });
 
@@ -274,7 +265,7 @@ public class Menu extends JFrame {
         agregarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                abrirAgregar();
             }
         });
 
@@ -282,7 +273,8 @@ public class Menu extends JFrame {
         buscarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String dni=JOptionPane.showInputDialog("Introduce el DNI");
+                System.out.println("buscado");
             }
         });
 
@@ -290,7 +282,7 @@ public class Menu extends JFrame {
         eliminarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                eliminar();
             }
         });
 
@@ -302,12 +294,13 @@ public class Menu extends JFrame {
             }
         });
 
-        //-------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
         // ---- LISTENER BOTON AGREGAR CURSO ----
         agregarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String nombreCur=JOptionPane.showInputDialog("Introduce el nombre del curso");
+                System.out.println("añadido");
             }
         });
 
@@ -315,7 +308,8 @@ public class Menu extends JFrame {
         buscarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String dni=JOptionPane.showInputDialog("Introduce el codigo");
+                System.out.println("buscado");
             }
         });
 
@@ -323,7 +317,7 @@ public class Menu extends JFrame {
         eliminaCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                eliminar();
             }
         });
 
@@ -340,12 +334,30 @@ public class Menu extends JFrame {
 
 
     }
+
+
 //-------------------------------------------------------------------------------------------------------------
-    //Metodos
+    // ---- METODOS ----
+    //eliminar
+    private static void eliminar() {
+        //todo
+        JPanel panel = new JPanel();
+        int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?","Eliminar", JOptionPane.YES_NO_OPTION);
+        if(opcion==JOptionPane.YES_OPTION)
+            System.out.println("eliminado");
+        else
+            System.out.println("no eliminado");
+    }
+
+    //abrir ventana modal agregar para profe como para alum
     public void abrirAgregar(){
         Agregar a = new Agregar(this,true);
         a.setVisible(true);
     }
+
+
+
+
 
 
 //-------------------------------------------------------------------------------------------------------------

@@ -5,9 +5,9 @@ import clasesPrincipales.Profesor;
 import java.util.ArrayList;
 import java.util.List;
 
-//Clase clasesUtiles.ListaProfesores implementa la clasesUtiles.ILista para obtener sus metodos
+//Clase ListaProfesores implementa la ILista para obtener sus metodos
 public class ListaProfesores implements ILista<Profesor> {
-	// atributos de la clase clasesUtiles.ListaProfesores
+	// atributos de la clase ListaProfesores
 	private List<Profesor> listaProfesores = new ArrayList<Profesor>();
 
 	// getter lista profesores
@@ -17,7 +17,7 @@ public class ListaProfesores implements ILista<Profesor> {
 
 	// ---- METODOS ----
 	/**
-	 * Metodo agregar de la interfaz clasesUtiles.ILista
+	 * Metodo agregar de la interfaz ILista
 	 * 
 	 * @param p le pasamos un profesor
 	 * 
@@ -29,7 +29,7 @@ public class ListaProfesores implements ILista<Profesor> {
 	}
 
 	/**
-	 * Metodo buscar de la interfaz clasesUtiles.ILista
+	 * Metodo buscar de la interfaz ILista
 	 * 
 	 * @param dni, le pasamos una cadena de texto, que haria referencia al DNI
 	 * 
@@ -45,12 +45,12 @@ public class ListaProfesores implements ILista<Profesor> {
 				return profe;
 		}
 
-		System.out.println("clases.Profesor no encontrado");
+		System.out.println("Profesor no encontrado");
 		return null;
 	}
 
 	/**
-	 * Metodo eliminar de la interfaz clasesUtiles.ILista
+	 * Metodo eliminar de la interfaz ILista
 	 * 
 	 * @param DNI le pasamos una cadena de texto, que haria referencia al DNI
 	 * 
@@ -80,7 +80,7 @@ public class ListaProfesores implements ILista<Profesor> {
 			// nuestra variable
 			listaProfesores.remove(indice);
 
-		System.out.print("clases.Alumno eliminado: " + encontrado + "\n");
+		System.out.print("Alumno eliminado: " + encontrado + "\n");
 
 		// si no se a encontrado el curso devolvemos FALSE
 		return encontrado;
@@ -122,7 +122,7 @@ public class ListaProfesores implements ILista<Profesor> {
 	}
 
 	/**
-	 * Metodo listar de la interfaz clasesUtiles.ILista
+	 * Metodo listar de la interfaz ILista
 	 * 
 	 * @return nos duvuelve todos los profesores que tenemos en la lista
 	 */
