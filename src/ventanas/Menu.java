@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class Menu extends JFrame {
+public class Menu extends JDialog {
     //atributos
     private JTabbedPane tabbedPane1;
     private JPanel panelPrincipal;
@@ -51,21 +51,17 @@ public class Menu extends JFrame {
     private DefaultTableModel modeloTablaCur;
 
 //-------------------------------------------------------------------------------------------------------------
-    public Menu() {
+    public Menu(Login l , boolean b) {
+        super(l,b);
+
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelPrincipal);
-
-        //cerrar cuando pulsamos la X
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //el tamaño de la ventana
         setSize(700, 500);
 
         //para que se centre en medio de la pantalla
         setLocationRelativeTo(null);
-
-        //para hacer visible la ventana
-        setVisible(true);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- MENU ----
@@ -357,18 +353,5 @@ public class Menu extends JFrame {
 
 
 
-
-
-
-//-------------------------------------------------------------------------------------------------------------
-    // ---- MAIN ----
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Menu m = new Menu();
-            }
-        });
-    }
 
 }
