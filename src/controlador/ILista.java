@@ -1,4 +1,4 @@
-package clasesUtiles;
+package controlador;
 
 //Interfaz la cual puede contener <T> porque no sabemos que clase va a contener
 interface ILista<T> {

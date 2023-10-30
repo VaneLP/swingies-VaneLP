@@ -1,6 +1,6 @@
-package clasesUtiles;
+package controlador;
 
-import clasesPrincipales.Curso;
+import modelo.Curso;
 
 import java.util.ArrayList;
 import java.util.List;

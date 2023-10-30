@@ -1,4 +1,4 @@
-package clasesPrincipales;
+package modelo;
 
 public class Curso {
     // atributos de la clase Curso

@@ -1,6 +1,6 @@
-package clasesUtiles;
+package controlador;
 
-import clasesPrincipales.Alumno;
+import modelo.Alumno;
 
 import java.util.ArrayList;
 import java.util.Comparator;

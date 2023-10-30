@@ -1,4 +1,4 @@
-package clasesPrincipales;
+package modelo;
 
 public abstract class Persona {
     // atributos de la clase Persona
