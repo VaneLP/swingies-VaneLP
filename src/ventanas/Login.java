@@ -82,13 +82,14 @@ public class Login extends JFrame {
     // ---- MAIN ----
     public static void main(String[] args) {
         //llamamos al splashScreen para que se ejecute antes que el login
-        //SplashScreen splash = new SplashScreen();
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Login l = new Login();
-            }
-        });
+        SplashScreen splash = new SplashScreen();
+
+//        EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                Login l = new Login();
+//            }
+//        });
 
     }
 
