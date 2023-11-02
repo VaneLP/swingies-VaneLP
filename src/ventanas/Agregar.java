@@ -1,5 +1,10 @@
 package ventanas;
 
+import controlador.ListaAlumnos;
+import controlador.ListaCursos;
+import modelo.Alumno;
+import modelo.Curso;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +19,9 @@ public class Agregar extends JDialog {
     private JTextField textCur;
     private JButton cancelarButton;
     private JButton aceptarButton;
-
-
+    private ListaAlumnos listaAlum = new ListaAlumnos();
+    private ListaCursos listaCur = new ListaCursos();
+    //constructor
     public Agregar(Menu m, boolean b) {
         super(m,b);
 
@@ -39,6 +45,9 @@ public class Agregar extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
                 //todo
+
+                listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), Integer.parseInt(textTlf.getText()),
+                        Integer.parseInt(textEdad.getText()), new Curso(textCur.getText())));
                 System.out.println("Agregado Alum/Prof");
             }
         });

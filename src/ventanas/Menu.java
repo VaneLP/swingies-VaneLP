@@ -1,5 +1,7 @@
 package ventanas;
 
+import controlador.ListaAlumnos;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -49,6 +51,8 @@ public class Menu extends JDialog {
     private DefaultTableModel modeloTablaAlum;
     private DefaultTableModel modeloTablaProfe;
     private DefaultTableModel modeloTablaCur;
+    //Atributos controlador
+    private ListaAlumnos listaAlum = new ListaAlumnos();
 
 //-------------------------------------------------------------------------------------------------------------
     public Menu(Login l , boolean b) {
