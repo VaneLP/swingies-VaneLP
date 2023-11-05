@@ -6,7 +6,7 @@ import java.util.List;
 //clase Profesor que hereda de clases.Persona
 public class Profesor extends Persona {
     // atributos de la clase Profesor
-    private Curso curso;
+    private String curso;
     private List<String> listaAsignaturas;
 
     /*
@@ -14,7 +14,7 @@ public class Profesor extends Persona {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
-    public Profesor(String nombre, String DNI, int tlf, int edad, Curso curso) {
+    public Profesor(String nombre, String DNI, int tlf, int edad, String curso) {
         super(nombre, DNI, tlf, edad);
         this.curso = curso;
         this.listaAsignaturas = new ArrayList<String>();
@@ -33,10 +33,10 @@ public class Profesor extends Persona {
 
     // getters y setters
     // curso
-    public Curso getCurso() {
+    public String getCurso() {
         return curso;
     }
-    public void setCurso(Curso curso) {
+    public void setCurso(String curso) {
         this.curso = curso;
     }
 

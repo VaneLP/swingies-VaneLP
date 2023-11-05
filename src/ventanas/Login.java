@@ -66,8 +66,11 @@ public class Login extends JFrame {
                     abrirMenu();
 
                 }
-                else
-                    login.setBackground(new Color(240,58,71));
+                else {
+                    login.setBackground(new Color(240, 58, 71));
+                    JOptionPane.showMessageDialog(null, "     Ups, algo salió mal" +
+                            "\nPero no te preocupes, no es culpa tuya.");
+                }
             }
         });
     }
@@ -83,14 +86,6 @@ public class Login extends JFrame {
     public static void main(String[] args) {
         //llamamos al splashScreen para que se ejecute antes que el login
         SplashScreen splash = new SplashScreen();
-
-//        EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                Login l = new Login();
-//            }
-//        });
-
     }
 
 }

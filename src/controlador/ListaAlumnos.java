@@ -95,20 +95,16 @@ public class ListaAlumnos implements ILista<Alumno> {
 
 	/**
 	 * Metodo listar de la interfaz ILista
-	 * 
+	 *
 	 * @return nos duvuelve todos los alumnos que tenemos en la lista
 	 */
 	@Override
 	public void listar() {
-		System.out.println("~~~~~~ LISTAR ALUMNO ~~~~~~");
-		
 		// hacemos un foreach para recorrer la lista
 		for (Alumno a : listaAlumnos) {
 			// mostramos el curso
 			System.out.println(a);
 		}
-		
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
 	/**
@@ -117,8 +113,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 	 * Nos devuelve la lista ordenada alfabeticamente
 	 */
 	public void ordenarAlfabeticamente() {
-		System.out.println("~~~~~~ ORDENAR ALFABETICAMENTE ~~~~~~");
-		
 		/*
 		 * cogemos nuestra lista de alumnos y con el metodo . sort que tienen los
 		 * arrayList hacemos un new Comparator de la clase clases.Alumno
@@ -133,14 +127,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 				return a1.getNombre().compareToIgnoreCase(a2.getNombre());
 			}
 		});
-
-		/*
-		 * llamamos al metodo listar que nos recorria la lista, pero al haberlos
-		 * ordenador previamente ahora nos sale ordenados
-		 */
-		listar();
-		
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
 	/**
@@ -184,8 +170,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos aprobados
 	 */
 	public ArrayList<Alumno> listarAprobados() {
-		System.out.println("~~~~~~ LISTAR ALUMNOS APROBADOS ~~~~~~");
-		
 		// creamos una nueva lista
 		ArrayList<Alumno> listaApro = new ArrayList<Alumno>();
 
@@ -215,8 +199,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 			allNotas = 0;
 			cont = 0;
 		}
-
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		
 		// devolvemos la lista
 		return listaApro;
@@ -228,8 +210,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos suspensos
 	 */
 	public ArrayList<Alumno> listarSuspensos() {
-		System.out.println("~~~~~~ LISTAR ALUMNOS SUSPENSOS ~~~~~~");
-		
 		// creamos una nueva lista
 		ArrayList<Alumno> listaSus = new ArrayList<Alumno>();
 
@@ -259,8 +239,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 			allNotas = 0;
 			cont = 0;
 		}
-
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		
 		// devolvemos la lista
 		return listaSus;

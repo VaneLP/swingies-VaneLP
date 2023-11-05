@@ -3,6 +3,7 @@ package controlador;
 import modelo.Profesor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 //Clase ListaProfesores implementa la ILista para obtener sus metodos
@@ -123,38 +124,31 @@ public class ListaProfesores implements ILista<Profesor> {
 
 	/**
 	 * Metodo listar de la interfaz ILista
-	 * 
+	 *
 	 * @return nos duvuelve todos los profesores que tenemos en la lista
 	 */
 	@Override
 	public void listar() {
-		System.out.println("~~~~~~ LISTAR PROFESORES ~~~~~~");
-
 		// hacemos un foreach para recorrer la lista
 		for (Profesor p : listaProfesores) {
 			// mostramos el curso
 			System.out.println(p);
 		}
 
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
 	// listarTutores
 	public ArrayList<Profesor> listarTutores() {
-		System.out.println("~~~~~~ LISTAR PROFESORES TUTORES ~~~~~~");
-
 		// creamos una nueva lista
 		ArrayList<Profesor> listaTut = new ArrayList<Profesor>();
 
 		// recorremos los profesores
 		for (Profesor profesor : listaProfesores) {
 			// si el profesor su curso no es nulo es tutor
-			if (profesor.getCurso() != null)
+			if (!profesor.getCurso().equals("No"))
 				// añadimos a la listaTut el profesor
 				listaTut.add(profesor);
 		}
-
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
 		// devuelve la lista
 		return listaTut;
@@ -180,6 +174,24 @@ public class ListaProfesores implements ILista<Profesor> {
 				}
 			}
 		}
+
+	}
+
+	public void ordenarAlfabeticamente(){
+		/*
+		 * cogemos nuestra lista de profesores y con el metodo . sort que tienen los
+		 * arrayList hacemos un new Comparator de la clase Profesor
+		 */
+		listaProfesores.sort(new Comparator<Profesor>() {
+			// sobreescribimos el metodo que tiene el Comparator de compare, al cual le
+			// pasamos 2 profes
+			@Override
+			public int compare(Profesor p1, Profesor p2) {
+				// nos devuelve ya la comparion entre los nombre de los dos profes ordenandolos
+				// asi
+				return p1.getNombre().compareTo(p2.getNombre());
+			}
+		});
 
 	}
 

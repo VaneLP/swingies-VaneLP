@@ -9,21 +9,27 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Agregar extends JDialog {
+public class AgregarAlumno extends JDialog {
     //atributos
     private JTextField textNombre;
     private JTextField textDni;
     private JTextField textTlf;
     private JTextField textEdad;
     private JPanel panelAgregar;
-    private JTextField textCur;
     private JButton cancelarButton;
     private JButton aceptarButton;
-    private ListaAlumnos listaAlum = new ListaAlumnos();
-    private ListaCursos listaCur = new ListaCursos();
+    private JComboBox<String>  cursoElegir;
+
+    //atributos controlador
+    private ListaAlumnos listaAlum;
+    private ListaCursos listaCurso;
+
+//-------------------------------------------------------------------------------------------------------------
     //constructor
-    public Agregar(Menu m, boolean b) {
+    public AgregarAlumno(Menu m, boolean b, ListaAlumnos listaAlum,ListaCursos listaCurso) {
         super(m,b);
+        this.listaAlum=listaAlum;
+        this.listaCurso =listaCurso;
 
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelAgregar);
@@ -37,6 +43,8 @@ public class Agregar extends JDialog {
         //para que se centre en medio de la pantalla
         setLocationRelativeTo(null);
 
+        rellenar();
+
 //-------------------------------------------------------------------------------------------------------------
         // ---- LISTENERS ----
         // ---- LISTENER BOTON ACEPTAR ----
@@ -45,10 +53,15 @@ public class Agregar extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
                 //todo
+                if(cursoElegir.getSelectedItem() != null){
+                    listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), Integer.parseInt(textTlf.getText()),
+                            Integer.parseInt(textEdad.getText()), (String) cursoElegir.getSelectedItem()));
+                    dispose();
+                }
+                else {
+                    System.out.println("ERROR");
+                }
 
-                listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), Integer.parseInt(textTlf.getText()),
-                        Integer.parseInt(textEdad.getText()), new Curso(textCur.getText())));
-                System.out.println("Agregado Alum/Prof");
             }
         });
 
@@ -62,6 +75,13 @@ public class Agregar extends JDialog {
         });
     }
 
+//-------------------------------------------------------------------------------------------------------------
+    // ---- METODOS ----
+    private void rellenar() {
+        for (Curso c : listaCurso.getListaCursos()) {
+            cursoElegir.addItem(c.getNombre());
+        }
+    }
 
 
 }

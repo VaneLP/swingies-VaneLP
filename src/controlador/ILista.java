@@ -29,8 +29,10 @@ interface ILista<T> {
 
 	/**
 	 * Metodo listar
-	 * 
+	 * <p>
 	 * No devuelve nada
+	 *
+	 * @return
 	 */
 	void listar();
 }
