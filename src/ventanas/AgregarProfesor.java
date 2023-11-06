@@ -1,9 +1,9 @@
 package ventanas;
 
-import controlador.ListaAlumnos;
 import controlador.ListaCursos;
 import controlador.ListaProfesores;
 import modelo.Curso;
+import modelo.ExcepcionCurnoInvalido;
 import modelo.Profesor;
 
 import javax.swing.*;
@@ -28,7 +28,7 @@ public class AgregarProfesor extends JDialog {
     //constructor
     public AgregarProfesor(Menu m, boolean b, ListaProfesores listaProfe, ListaCursos listaCur) {
         super(m, b);
-        this.listaProfe=listaProfe;
+        this.listaProfe = listaProfe;
         this.listaCur = listaCur;
 
         //para que se muestre en la ventana nuestro panel
@@ -53,19 +53,38 @@ public class AgregarProfesor extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
                 //todo
-                if (cursoElegir.getSelectedItem() != null) {
-                    if (cursoElegir.getSelectedItem().equals("No")) {
-                        listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), Integer.parseInt(textTlf.getText()),
-                                Integer.parseInt(textEdad.getText()), "No"));
-                    } else {
-                        listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), Integer.parseInt(textTlf.getText()),
-                                Integer.parseInt(textEdad.getText()), (String) cursoElegir.getSelectedItem()));
-                    }
-                    dispose();
-                } else {
-                    System.out.println("ERROR");
-                }
 
+                if (cursoElegir.getSelectedItem().equals("No")) {
+
+                    try {
+                        if (!textNombre.getText().isBlank() && !textDni.getText().isBlank() && !textTlf.getText().isBlank() && !textEdad.getText().isBlank()) {
+                            listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), textTlf.getText(),
+                                    textEdad.getText(), "No"));
+
+                            dispose();
+                        } else
+                            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
+                    } catch (ExcepcionCurnoInvalido ex) {
+                        System.out.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+                    }
+                } else {
+                    try {
+                        if (!textNombre.getText().isBlank() && !textDni.getText().isBlank() && !textTlf.getText().isBlank() && !textEdad.getText().isBlank()) {
+                            listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), textTlf.getText(),
+                                    textEdad.getText(), (String) cursoElegir.getSelectedItem()));
+
+                            dispose();
+                        } else
+                            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
+                    } catch (ExcepcionCurnoInvalido ex) {
+                        System.out.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+                    }
+
+                }
             }
         });
 
@@ -79,7 +98,7 @@ public class AgregarProfesor extends JDialog {
         });
     }
 
-    //-------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     private void rellenar() {
         cursoElegir.addItem("No");

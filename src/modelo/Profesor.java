@@ -14,10 +14,14 @@ public class Profesor extends Persona {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
-    public Profesor(String nombre, String DNI, int tlf, int edad, String curso) {
+    public Profesor(String nombre, String DNI, String tlf, String edad, String curso) throws ExcepcionCurnoInvalido {
         super(nombre, DNI, tlf, edad);
-        this.curso = curso;
-        this.listaAsignaturas = new ArrayList<String>();
+
+        if (curso != null) {
+            this.curso = curso;
+            this.listaAsignaturas = new ArrayList<String>();
+        } else
+            throw new ExcepcionCurnoInvalido("ERROR: El curso puede que sea nulo");
     }
 
     /*
@@ -26,7 +30,7 @@ public class Profesor extends Persona {
      * la clase Profesor, al cual NO le pasamos el curso porque un profesor no
      * necesita ser tutor
      */
-    public Profesor(String nombre, String DNI, int tlf, int edad) {
+    public Profesor(String nombre, String DNI, String tlf, String edad) {
         super(nombre, DNI, tlf, edad);
         this.listaAsignaturas = new ArrayList<String>();
     }
@@ -36,6 +40,7 @@ public class Profesor extends Persona {
     public String getCurso() {
         return curso;
     }
+
     public void setCurso(String curso) {
         this.curso = curso;
     }
@@ -44,11 +49,13 @@ public class Profesor extends Persona {
     public List<String> getListaAsignaturas() {
         return listaAsignaturas;
     }
+
     public void setListaAsignaturas(List<String> listaAsignaturas) {
         this.listaAsignaturas = listaAsignaturas;
     }
 
     // ---- METODOS ----
+
     /**
      * Metodo para agregar una asignatura a el ArrayList listaAsignaturas
      *
@@ -60,7 +67,7 @@ public class Profesor extends Persona {
 
     /**
      * Metodo para eliminar todas las asignaturas del ArrayList listaAsignaturas al
-     *
+     * <p>
      * cual no le pasamos nada como parametro porque queremos eliminarlas todas
      */
     public void eliminarAsignaturas() {

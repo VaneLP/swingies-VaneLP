@@ -25,7 +25,7 @@ public class Menu extends JDialog {
     private JMenu menu, menuA, menuP, menuC;
     private JMenuBar menuBar;
     private JLabel icono;
-    private JMenuItem o1,a1,a2,a3,a4,p1,p2,p3,p4,c1,c2,c3,c4;
+    private JMenuItem o1, a1, a2, a3, a4, p1, p2, p3, p4, c1, c2, c3, c4;
 
     //atributos tabla
     private JTable tablaAlum;
@@ -68,7 +68,7 @@ public class Menu extends JDialog {
     private int ind;
     private boolean encontrado;
 
-    //-------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
     public Menu(Login l, boolean b) {
         super(l, b);
 
@@ -513,14 +513,14 @@ public class Menu extends JDialog {
     }
 
 
-
-//-------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     // ---- ALUMNO ----
     private void agregarAlumno() {
         AgregarAlumno a = new AgregarAlumno(this, true, listaAlum, listaCur);
         a.setVisible(true);
     }
+
     private void buscarAlumno() {
         dni = JOptionPane.showInputDialog("Introduce el DNI");
         String[] buscarAlum;
@@ -537,6 +537,7 @@ public class Menu extends JDialog {
             }
         }
     }
+
     private void eliminarAlumno() {
         // variables
         ind = 0;
@@ -575,6 +576,7 @@ public class Menu extends JDialog {
             }
         }
     }
+
     private void mostrarAlumnos() {
         indice = 0;
         modeloTablaAlum.setNumRows(0);
@@ -588,6 +590,7 @@ public class Menu extends JDialog {
             indice++;
         }
     }
+
     private void alumSuspensos() {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
@@ -603,6 +606,7 @@ public class Menu extends JDialog {
         }
         mostrarAlumnos();
     }
+
     private void alumAprobados() {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
@@ -625,6 +629,7 @@ public class Menu extends JDialog {
         AgregarProfesor p = new AgregarProfesor(this, true, listaProfe, listaCur);
         p.setVisible(true);
     }
+
     private void buscarProfesor() {
         dni = JOptionPane.showInputDialog("Introduce el DNI");
         String[] buscarProfe;
@@ -643,6 +648,7 @@ public class Menu extends JDialog {
             }
         }
     }
+
     private void eliminarProfesor() {
         // variables
         ind = 0;
@@ -681,6 +687,7 @@ public class Menu extends JDialog {
             }
         }
     }
+
     private void mostrarProfesores() {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
@@ -694,6 +701,7 @@ public class Menu extends JDialog {
             indice++;
         }
     }
+
     private void ordenarProfesoresAlfa() {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
@@ -715,30 +723,31 @@ public class Menu extends JDialog {
         nombreCur = JOptionPane.showInputDialog("Introduce el nombre del curso");
 
         //todo arreglar nulo
-        if (nombreCur.isEmpty())
+        if (nombreCur == null)
             //todo
             System.out.println("error");
         else {
             listaCur.agregar(new Curso(nombreCur));
         }
     }
+
     private void buscarCurso() {
         codigo = JOptionPane.showInputDialog("Introduce el codigo");
         String[] buscarCurso;
         indice = 0;
 
-        if (codigo != null) {
-            for (Curso curso : listaCur.getListaCursos()) {
-                if (codigo.equals(String.valueOf(curso.getCodigo()))) {
-                    buscarCurso = new String[]{String.valueOf(curso.getCodigo()), curso.getNombre()};
+        for (Curso curso : listaCur.getListaCursos()) {
+            if (codigo.equals(String.valueOf(curso.getCodigo()))) {
+                buscarCurso = new String[]{String.valueOf(curso.getCodigo()), curso.getNombre()};
 
-                    modeloTablaCur.setNumRows(0);
+                modeloTablaCur.setNumRows(0);
 
-                    modeloTablaCur.insertRow(indice, buscarCurso);
-                }
+                modeloTablaCur.insertRow(indice, buscarCurso);
             }
         }
+
     }
+
     private void eliminarcurso() {
         // variables
         ind = 0;
@@ -777,6 +786,7 @@ public class Menu extends JDialog {
             }
         }
     }
+
     private void mostrarCursos() {
         indice = 0;
         modeloTablaCur.setNumRows(0);

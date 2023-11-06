@@ -4,6 +4,7 @@ import controlador.ListaAlumnos;
 import controlador.ListaCursos;
 import modelo.Alumno;
 import modelo.Curso;
+import modelo.ExcepcionCurnoInvalido;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,18 +19,18 @@ public class AgregarAlumno extends JDialog {
     private JPanel panelAgregar;
     private JButton cancelarButton;
     private JButton aceptarButton;
-    private JComboBox<String>  cursoElegir;
+    private JComboBox<String> cursoElegir;
 
     //atributos controlador
     private ListaAlumnos listaAlum;
     private ListaCursos listaCurso;
 
-//-------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------
     //constructor
-    public AgregarAlumno(Menu m, boolean b, ListaAlumnos listaAlum,ListaCursos listaCurso) {
-        super(m,b);
-        this.listaAlum=listaAlum;
-        this.listaCurso =listaCurso;
+    public AgregarAlumno(Menu m, boolean b, ListaAlumnos listaAlum, ListaCursos listaCurso) {
+        super(m, b);
+        this.listaAlum = listaAlum;
+        this.listaCurso = listaCurso;
 
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelAgregar);
@@ -53,13 +54,17 @@ public class AgregarAlumno extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
                 //todo
-                if(cursoElegir.getSelectedItem() != null){
-                    listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), Integer.parseInt(textTlf.getText()),
-                            Integer.parseInt(textEdad.getText()), (String) cursoElegir.getSelectedItem()));
-                    dispose();
-                }
-                else {
-                    System.out.println("ERROR");
+                try {
+                    if (!textNombre.getText().isBlank() && !textDni.getText().isBlank() && !textTlf.getText().isBlank() && !textEdad.getText().isBlank()) {
+                        listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),
+                                textEdad.getText(), (String) cursoElegir.getSelectedItem()));
+
+                        dispose();
+                    } else
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+                } catch (ExcepcionCurnoInvalido ex) {
+                    System.out.println(ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
                 }
 
             }

@@ -14,10 +14,15 @@ public class Alumno extends Persona {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Alumno
      */
-    public Alumno(String nombre, String DNI, int tlf, int edad, String curso) {
+    public Alumno(String nombre, String DNI, String tlf, String edad, String curso) throws ExcepcionCurnoInvalido{
         super(nombre, DNI, tlf, edad);
-        this.curso = curso;
-        this.listaNotas = new ArrayList<Double>();
+
+        if(curso!=null) {
+            this.curso = curso;
+            this.listaNotas = new ArrayList<Double>();
+        }
+        else
+            throw new ExcepcionCurnoInvalido("ERROR: El curso puede que sea nulo");
     }
 
     // getters y setters
