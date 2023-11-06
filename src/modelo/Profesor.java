@@ -14,14 +14,14 @@ public class Profesor extends Persona {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
-    public Profesor(String nombre, String DNI, String tlf, String edad, String curso) throws ExcepcionCurnoInvalido {
+    public Profesor(String nombre, String DNI, String tlf, String edad, String curso) throws CursoInvalidoException {
         super(nombre, DNI, tlf, edad);
 
         if (curso != null) {
             this.curso = curso;
             this.listaAsignaturas = new ArrayList<String>();
         } else
-            throw new ExcepcionCurnoInvalido("ERROR: El curso puede que sea nulo");
+            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
     }
 
     /*

@@ -513,7 +513,7 @@ public class Menu extends JDialog {
     }
 
 
-    //-------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     // ---- ALUMNO ----
     private void agregarAlumno() {
@@ -550,7 +550,7 @@ public class Menu extends JDialog {
 
         if (opcion == JOptionPane.YES_OPTION) {
             if (filaSeleccionadaAlum == -1) {
-                System.out.println("error");
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
             } else {
                 String dniBorrar = String.valueOf(tablaAlum.getValueAt(filaSeleccionadaAlum, 1));
 
@@ -572,6 +572,7 @@ public class Menu extends JDialog {
                     // eliminamos de nuestra lista el curso en el indice que hemos guardado en
                     // nuestra variable
                     listaAlum.getListaAlumnos().remove(ind);
+
                 mostrarAlumnos();
             }
         }
@@ -661,7 +662,8 @@ public class Menu extends JDialog {
 
         if (opcion == JOptionPane.YES_OPTION) {
             if (filaSeleccionadaProfe == -1) {
-                System.out.println("error");
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
             } else {
                 String dniBorrar = String.valueOf(tablaProfe.getValueAt(filaSeleccionadaProfe, 1));
 
@@ -760,7 +762,7 @@ public class Menu extends JDialog {
 
         if (opcion == JOptionPane.YES_OPTION) {
             if (filaSeleccionadaCur == -1) {
-                System.out.println("error");
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
             } else {
                 int codigoBorrar = Integer.parseInt((String) tablaCur.getValueAt(filaSeleccionadaCur, 0));
 

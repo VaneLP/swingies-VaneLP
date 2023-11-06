@@ -4,7 +4,7 @@ import controlador.ListaAlumnos;
 import controlador.ListaCursos;
 import modelo.Alumno;
 import modelo.Curso;
-import modelo.ExcepcionCurnoInvalido;
+import modelo.CursoInvalidoException;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +25,7 @@ public class AgregarAlumno extends JDialog {
     private ListaAlumnos listaAlum;
     private ListaCursos listaCurso;
 
-    //-------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
     //constructor
     public AgregarAlumno(Menu m, boolean b, ListaAlumnos listaAlum, ListaCursos listaCurso) {
         super(m, b);
@@ -55,16 +55,26 @@ public class AgregarAlumno extends JDialog {
                 //agregamos a l alumno
                 //todo
                 try {
-                    if (!textNombre.getText().isBlank() && !textDni.getText().isBlank() && !textTlf.getText().isBlank() && !textEdad.getText().isBlank()) {
+                    if (textNombre.getText().isBlank() && textDni.getText().isBlank() && textTlf.getText().isBlank() && textEdad.getText().isBlank()) {
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+                    } else if (!textTlf.getText().matches("\\d{9}")) {
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el telefono sea incorrecto. Intentalo de nuevo.");
+                    }
+                    else if (!textEdad.getText().matches("\\d{2}")) {
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que la edad sea incorrecta. Intentalo de nuevo.");
+                    }
+                    else if (!textDni.getText().matches("[0-8]{8}[A-Za-z]")) {
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el DNI sea incorrecto. Intentalo de nuevo.");
+                    }
+                    else {
                         listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),
                                 textEdad.getText(), (String) cursoElegir.getSelectedItem()));
-
                         dispose();
-                    } else
-                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
-                } catch (ExcepcionCurnoInvalido ex) {
+                    }
+
+                } catch (CursoInvalidoException ex) {
+                    JOptionPane.showMessageDialog(null, "Ups... algo salió mal, el curso no puede ser nulo. Intentalo de nuevo o crea un nuevo curso.");
                     System.out.println(ex.getMessage());
-                    JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
                 }
 
             }

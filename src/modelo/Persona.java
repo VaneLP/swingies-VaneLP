@@ -8,18 +8,12 @@ public abstract class Persona {
     private int edad;
 
     // constructor al cual le pasamos el nombre, el DNI, el tlf y la edad
-    public Persona(String nombre, String DNI, String tlf, String edad) {
-        if (DNI.matches("[0-8]{8}[A-Za-z]") && tlf.matches("[0-9]{9}") && edad.matches("[0-9]{2}")) {
+    protected Persona(String nombre, String DNI, String tlf, String edad) {
+        if (DNI.matches("[0-8]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
             this.nombre = nombre;
             this.DNI = DNI;
             this.tlf = Integer.parseInt(tlf);
             this.edad = Integer.parseInt(edad);
-        }
-        else{
-            this.nombre = null;
-            this.DNI = null;
-            this.tlf = 0;
-            this.edad = 0;
         }
     }
 
@@ -38,8 +32,9 @@ public abstract class Persona {
         return DNI;
     }
 
-    public void setDNI(String dNI) {
-        DNI = dNI;
+    public void setDNI(String dni) {
+        if(DNI.matches("[0-8]{8}[A-Za-z]"))
+            this.DNI = dni;
     }
 
     // tlf
@@ -47,8 +42,9 @@ public abstract class Persona {
         return tlf;
     }
 
-    public void setTlf(int tlf) {
-        this.tlf = tlf;
+    public void setTlf(String tlf) {
+        if(tlf.matches("\\d{9}"))
+            this.tlf = Integer.parseInt(tlf);
     }
 
     // edad
@@ -56,8 +52,9 @@ public abstract class Persona {
         return edad;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setEdad(String edad) {
+        if(edad.matches("\\d{2}"))
+            this.edad = Integer.parseInt(edad);
     }
 
     /**

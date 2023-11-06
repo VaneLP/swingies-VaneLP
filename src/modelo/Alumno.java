@@ -14,7 +14,7 @@ public class Alumno extends Persona {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Alumno
      */
-    public Alumno(String nombre, String DNI, String tlf, String edad, String curso) throws ExcepcionCurnoInvalido{
+    public Alumno(String nombre, String DNI, String tlf, String edad, String curso) throws CursoInvalidoException {
         super(nombre, DNI, tlf, edad);
 
         if(curso!=null) {
@@ -22,7 +22,7 @@ public class Alumno extends Persona {
             this.listaNotas = new ArrayList<Double>();
         }
         else
-            throw new ExcepcionCurnoInvalido("ERROR: El curso puede que sea nulo");
+            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
     }
 
     // getters y setters
@@ -31,7 +31,8 @@ public class Alumno extends Persona {
         return curso;
     }
     public void setCurso(String curso) {
-        this.curso = curso;
+        if(curso!=null)
+            this.curso = curso;
     }
 
     // lista notas
@@ -39,7 +40,8 @@ public class Alumno extends Persona {
         return listaNotas;
     }
     public void setListaNotas(List<Double> listaNotas) {
-        this.listaNotas = listaNotas;
+        if(listaNotas!=null)
+            this.listaNotas = listaNotas;
     }
 
     // ---- METODOS ----
