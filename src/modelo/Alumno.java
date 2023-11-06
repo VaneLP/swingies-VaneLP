@@ -14,15 +14,10 @@ public class Alumno extends Persona {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Alumno
      */
-    public Alumno(String nombre, String DNI, String tlf, String edad, String curso) throws ExcepcionCurnoInvalido{
+    public Alumno(String nombre, String DNI, String tlf, String edad, String curso) {
         super(nombre, DNI, tlf, edad);
-
-        if(curso!=null) {
-            this.curso = curso;
-            this.listaNotas = new ArrayList<Double>();
-        }
-        else
-            throw new ExcepcionCurnoInvalido("ERROR: El curso puede que sea nulo");
+        this.curso = curso;
+        this.listaNotas = new ArrayList<Double>();
     }
 
     // getters y setters
@@ -30,6 +25,7 @@ public class Alumno extends Persona {
     public String getCurso() {
         return curso;
     }
+
     public void setCurso(String curso) {
         this.curso = curso;
     }
@@ -38,11 +34,13 @@ public class Alumno extends Persona {
     public List<Double> getListaNotas() {
         return listaNotas;
     }
+
     public void setListaNotas(List<Double> listaNotas) {
         this.listaNotas = listaNotas;
     }
 
     // ---- METODOS ----
+
     /**
      * Metodo para agregar una nota a el ArrayList listaNotas
      *
@@ -54,7 +52,7 @@ public class Alumno extends Persona {
 
     /**
      * Metodo para eliminar todas las nota del ArrayList listaNotas al cual no le
-     *
+     * <p>
      * pasamos nada como parametro porque queremos eliminarlas todas
      */
     public void eliminarNotas() {

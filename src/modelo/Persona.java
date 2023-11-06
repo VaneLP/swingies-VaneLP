@@ -9,18 +9,10 @@ public abstract class Persona {
 
     // constructor al cual le pasamos el nombre, el DNI, el tlf y la edad
     public Persona(String nombre, String DNI, String tlf, String edad) {
-        if (DNI.matches("[0-8]{8}[A-Za-z]") && tlf.matches("[0-9]{9}") && edad.matches("[0-9]{2}")) {
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
-        else{
-            this.nombre = null;
-            this.DNI = null;
-            this.tlf = 0;
-            this.edad = 0;
-        }
+        this.nombre = nombre;
+        this.DNI = DNI;
+        this.tlf = Integer.parseInt(tlf);
+        this.edad = Integer.parseInt(edad);
     }
 
     // getters y setters

@@ -4,7 +4,6 @@ import controlador.ListaAlumnos;
 import controlador.ListaCursos;
 import modelo.Alumno;
 import modelo.Curso;
-import modelo.ExcepcionCurnoInvalido;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -54,16 +53,12 @@ public class AgregarAlumno extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
                 //todo
-                try {
-                    if (!textNombre.getText().isBlank() && !textDni.getText().isBlank() && !textTlf.getText().isBlank() && !textEdad.getText().isBlank()) {
-                        listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),
-                                textEdad.getText(), (String) cursoElegir.getSelectedItem()));
+                if (cursoElegir.getSelectedItem() != null) {
+                    listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),
+                            textEdad.getText(), (String) cursoElegir.getSelectedItem()));
 
-                        dispose();
-                    } else
-                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
-                } catch (ExcepcionCurnoInvalido ex) {
-                    System.out.println(ex.getMessage());
+                    dispose();
+                } else {
                     JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
                 }
 
@@ -80,7 +75,7 @@ public class AgregarAlumno extends JDialog {
         });
     }
 
-//-------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     private void rellenar() {
         for (Curso c : listaCurso.getListaCursos()) {

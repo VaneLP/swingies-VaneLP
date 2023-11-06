@@ -68,7 +68,7 @@ public class Menu extends JDialog {
     private int ind;
     private boolean encontrado;
 
-//-------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------
     public Menu(Login l, boolean b) {
         super(l, b);
 
@@ -508,12 +508,9 @@ public class Menu extends JDialog {
                 mostrarCursos();
             }
         });
-
-
     }
 
-
-    //-------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     // ---- ALUMNO ----
     private void agregarAlumno() {
@@ -723,12 +720,8 @@ public class Menu extends JDialog {
         nombreCur = JOptionPane.showInputDialog("Introduce el nombre del curso");
 
         //todo arreglar nulo
-        if (nombreCur == null)
-            //todo
-            System.out.println("error");
-        else {
+        if (nombreCur != null)
             listaCur.agregar(new Curso(nombreCur));
-        }
     }
 
     private void buscarCurso() {
