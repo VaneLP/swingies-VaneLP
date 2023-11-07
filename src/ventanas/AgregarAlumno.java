@@ -53,7 +53,6 @@ public class AgregarAlumno extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //agregamos a l alumno
-                //todo
                 try {
                     if (textNombre.getText().isBlank() && textDni.getText().isBlank() && textTlf.getText().isBlank() && textEdad.getText().isBlank()) {
                         JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
@@ -63,8 +62,11 @@ public class AgregarAlumno extends JDialog {
                     else if (!textEdad.getText().matches("\\d{2}")) {
                         JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que la edad sea incorrecta. Intentalo de nuevo.");
                     }
-                    else if (!textDni.getText().matches("[0-8]{8}[A-Za-z]")) {
+                    else if (!textDni.getText().matches("[0-9]{8}[A-Za-z]")) {
                         JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el DNI sea incorrecto. Intentalo de nuevo.");
+                    }
+                    else if(!textNombre.getText().matches("[A-Za-z]+")){
+                        JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el nombre sea incorrecto. Intentalo de nuevo.");
                     }
                     else {
                         listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),

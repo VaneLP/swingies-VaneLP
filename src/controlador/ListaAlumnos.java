@@ -109,7 +109,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 
 	/**
 	 * Metodo ordenarAlfabeticamente
-	 * 
 	 * Nos devuelve la lista ordenada alfabeticamente
 	 */
 	public void ordenarAlfabeticamente() {

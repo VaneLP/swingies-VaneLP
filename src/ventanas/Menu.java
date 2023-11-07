@@ -52,6 +52,7 @@ public class Menu extends JDialog {
     private JCheckBox alfebeticamenteProfe;
     private JCheckBox tutores;
     private JCheckBox alfabeticamenteCuso;
+    private JButton añadirNotasButton;
     private DefaultTableModel modeloTablaAlum;
     private DefaultTableModel modeloTablaProfe;
     private DefaultTableModel modeloTablaCur;
@@ -183,6 +184,7 @@ public class Menu extends JDialog {
         modeloTablaAlum.addColumn("Telefono");
         modeloTablaAlum.addColumn("Edad");
         modeloTablaAlum.addColumn("Curso");
+        modeloTablaAlum.addColumn("Notas");
 
         //a nuestra tabla de alumnos le asignamos el modelo
         tablaAlum.setModel(modeloTablaAlum);
@@ -204,7 +206,7 @@ public class Menu extends JDialog {
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- TABLA PROFESORES ----
-        //creamos un modelo de tabla para los alumnos
+        //creamos un modelo de tabla para los profesores
         modeloTablaProfe = new DefaultTableModel();
 
         //le añadimos las columnas
@@ -234,7 +236,7 @@ public class Menu extends JDialog {
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- TABLA CURSOS ----
-        //creamos un modelo de tabla para los alumnos
+        //creamos un modelo de tabla para los curso
         modeloTablaCur = new DefaultTableModel();
 
         //le añadimos las columnas
@@ -291,6 +293,14 @@ public class Menu extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarAlumnos();
+            }
+        });
+
+        // ---- LISTENER BOTON AGREGAR NOTA ALUMNO ----
+        añadirNotasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarNotasAlum();
             }
         });
 
@@ -398,7 +408,7 @@ public class Menu extends JDialog {
         tutores.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ordenarProfesoresAlfa();
+                mostrarTutores();
             }
         });
 
@@ -512,19 +522,27 @@ public class Menu extends JDialog {
 
     }
 
-
 //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     // ---- ALUMNO ----
+
+    /**
+     * Metodo agregar alumno que nos abre otra ventana, la cual nos permitira agregar un alumno si rellenamos todos los
+     * campos correctamente
+     */
     private void agregarAlumno() {
         AgregarAlumno a = new AgregarAlumno(this, true, listaAlum, listaCur);
         a.setVisible(true);
     }
 
+    /**
+     * Metodo buscar alumno a traves de su DNI
+     */
     private void buscarAlumno() {
         dni = JOptionPane.showInputDialog("Introduce el DNI");
         String[] buscarAlum;
         indice = 0;
+
         if (dni != null) {
             for (Alumno a : listaAlum.getListaAlumnos()) {
                 if (dni.equalsIgnoreCase(a.getDNI())) {
@@ -536,8 +554,12 @@ public class Menu extends JDialog {
                 }
             }
         }
+
     }
 
+    /**
+     * Metodo eliminar un alumno seleccionado
+     */
     private void eliminarAlumno() {
         // variables
         ind = 0;
@@ -569,7 +591,7 @@ public class Menu extends JDialog {
 
                 // si el booleano es verdadero
                 if (encontrado)
-                    // eliminamos de nuestra lista el curso en el indice que hemos guardado en
+                    // eliminamos de nuestra lista el alumno en el indice que hemos guardado en
                     // nuestra variable
                     listaAlum.getListaAlumnos().remove(ind);
 
@@ -578,13 +600,16 @@ public class Menu extends JDialog {
         }
     }
 
+    /**
+     * Metodo mostrar todos los alumnos
+     */
     private void mostrarAlumnos() {
         indice = 0;
         modeloTablaAlum.setNumRows(0);
 
         for (Alumno alumno : listaAlum.getListaAlumnos()) {
             arrayMostrarAlum = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
-                    String.valueOf(alumno.getEdad()), alumno.getCurso()};
+                    String.valueOf(alumno.getEdad()), alumno.getCurso(), alumno.getListaNotas().toString()};
 
             modeloTablaAlum.insertRow(indice, arrayMostrarAlum);
 
@@ -592,45 +617,86 @@ public class Menu extends JDialog {
         }
     }
 
+    private void mostrarNotasAlum() {
+        String notasAlumno = JOptionPane.showInputDialog("Introduce la nota al alumno");
+
+        int filaSeleccionadaAlumNota = tablaAlum.getSelectedRow();
+
+        if (filaSeleccionadaAlumNota == -1 && notasAlumno.matches("[0-9]{1,2}[.]*[0-9]*")) {
+            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+        } else {
+            String dni = String.valueOf(tablaAlum.getValueAt(filaSeleccionadaAlumNota, 1));
+
+            // recorremos la listaAlumnos
+            for (int i = 0; i != listaAlum.getListaAlumnos().size(); i++) {
+                // si el DNI del alumno es igual al dni que nos pasan
+                if (dni.equalsIgnoreCase(listaAlum.getListaAlumnos().get(i).getDNI())) {
+                    for (int j = 0; j <= 5; j++) {
+                        if (j == 5) {
+                            listaAlum.agregarNotaAlumno(listaAlum.getListaAlumnos().get(i).getDNI(), Double.parseDouble(notasAlumno));
+                        }
+                    }
+                    // salimos
+                    break;
+                }
+            }
+            mostrarAlumnos();
+        }
+    }
+
+    /**
+     * Metodo para mostrar los alumnos suspensos
+     */
     private void alumSuspensos() {
         indice = 0;
-        modeloTablaProfe.setNumRows(0);
+        modeloTablaAlum.setNumRows(0);
         String[] arrayMostrarSus;
 
         for (Alumno alumno : listaAlum.listarSuspensos()) {
             arrayMostrarSus = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
-                    String.valueOf(alumno.getEdad()), alumno.getCurso()};
+                    String.valueOf(alumno.getEdad()), alumno.getCurso(),alumno.getListaNotas().toString()};
 
             modeloTablaAlum.insertRow(indice, arrayMostrarSus);
 
             indice++;
         }
-        mostrarAlumnos();
+
     }
 
+    /**
+     * Metodo para mostrar los alumnos aprobados
+     */
     private void alumAprobados() {
         indice = 0;
-        modeloTablaProfe.setNumRows(0);
+        modeloTablaAlum.setNumRows(0);
         String[] arrayMostrarApro;
 
         for (Alumno alumno : listaAlum.listarAprobados()) {
             arrayMostrarApro = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
-                    String.valueOf(alumno.getEdad()), alumno.getCurso()};
+                    String.valueOf(alumno.getEdad()), alumno.getCurso(),alumno.getListaNotas().toString()};
 
             modeloTablaAlum.insertRow(indice, arrayMostrarApro);
 
             indice++;
         }
-        mostrarAlumnos();
+
     }
 
     // -------------------------------------------------------------------------------------------------------------
     // ---- PROFESOR ----
+
+    /**
+     * Metodo agregar profesor, que nos abre otra ventana a traves de la cual rellenando correctamente los campos
+     * podremos añadir un nuevo profesor
+     */
     private void agregarProfesor() {
         AgregarProfesor p = new AgregarProfesor(this, true, listaProfe, listaCur);
         p.setVisible(true);
     }
 
+    /**
+     * Metodo buscar profesor, lo buscaremos a traves de su DNI
+     */
     private void buscarProfesor() {
         dni = JOptionPane.showInputDialog("Introduce el DNI");
         String[] buscarProfe;
@@ -650,6 +716,9 @@ public class Menu extends JDialog {
         }
     }
 
+    /**
+     * Metodo eliminar un profesor que tengamos seleccionado
+     */
     private void eliminarProfesor() {
         // variables
         ind = 0;
@@ -667,13 +736,13 @@ public class Menu extends JDialog {
             } else {
                 String dniBorrar = String.valueOf(tablaProfe.getValueAt(filaSeleccionadaProfe, 1));
 
-                // recorremos la listaAlumnos
+                // recorremos la listaProfe
                 for (int i = 0; i != listaProfe.getListaProfesores().size(); i++) {
-                    // si el DNI del alumno es igual al dni que nos pasan
+                    // si el DNI del profe es igual al dni que nos pasan
                     if (dniBorrar.equalsIgnoreCase(listaProfe.getListaProfesores().get(i).getDNI())) {
                         // guardamos en nuestra variable el indice en el que estamos
                         ind = i;
-                        // cambiamos el booleano a TRUE porque hemos encontrado el curso
+                        // cambiamos el booleano a TRUE porque hemos encontrado el dni
                         encontrado = true;
                         // salimos
                         break;
@@ -685,11 +754,16 @@ public class Menu extends JDialog {
                     // eliminamos de nuestra lista el curso en el indice que hemos guardado en
                     // nuestra variable
                     listaProfe.getListaProfesores().remove(ind);
+
                 mostrarProfesores();
             }
         }
+
     }
 
+    /**
+     * Metodo mostrar todos los profesores
+     */
     private void mostrarProfesores() {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
@@ -704,7 +778,10 @@ public class Menu extends JDialog {
         }
     }
 
-    private void ordenarProfesoresAlfa() {
+    /**
+     * Metodo para mostrar los tutores, que son los que tienen cursos
+     */
+    private void mostrarTutores() {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
         String[] arrayMostrarTutores;
@@ -721,18 +798,22 @@ public class Menu extends JDialog {
 
     // -------------------------------------------------------------------------------------------------------------
     // ---- CURSO ----
+
+    /**
+     * Metodo para agregar curso solo con el nombre, porque el codigo es automatico
+     */
     private void agregarCurso() {
         nombreCur = JOptionPane.showInputDialog("Introduce el nombre del curso");
 
-        //todo arreglar nulo
-        if (nombreCur == null)
-            //todo
-            System.out.println("error");
-        else {
+        if (nombreCur != null && nombreCur.matches("[A-Za-z]+"))
             listaCur.agregar(new Curso(nombreCur));
-        }
+        else
+            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, asegurate que el nombre no contenga numeros. Intentalo de nuevo.");
     }
 
+    /**
+     * Metodo para buscar curso a traves de su codigo
+     */
     private void buscarCurso() {
         codigo = JOptionPane.showInputDialog("Introduce el codigo");
         String[] buscarCurso;
@@ -746,16 +827,21 @@ public class Menu extends JDialog {
 
                 modeloTablaCur.insertRow(indice, buscarCurso);
             }
+            else
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
         }
 
     }
 
+    /**
+     * Metodo eliminar un curso, si lo tenemos seleccionado
+     */
     private void eliminarcurso() {
         // variables
         ind = 0;
         encontrado = false;
-
         int filaSeleccionadaCur = tablaCur.getSelectedRow();
+        String cursoSave = "";
 
         JPanel panel = new JPanel();
         int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?", "Eliminar", JOptionPane.YES_NO_OPTION);
@@ -766,29 +852,42 @@ public class Menu extends JDialog {
             } else {
                 int codigoBorrar = Integer.parseInt((String) tablaCur.getValueAt(filaSeleccionadaCur, 0));
 
-                // recorremos la listaAlumnos
+                // recorremos la listaCur
                 for (int i = 0; i != listaCur.getListaCursos().size(); i++) {
-                    // si el DNI del alumno es igual al dni que nos pasan
+                    // si el codigo del curso es igual al codigo del curso que nos pasan
                     if (codigoBorrar == listaCur.getListaCursos().get(i).getCodigo()) {
                         // guardamos en nuestra variable el indice en el que estamos
                         ind = i;
                         // cambiamos el booleano a TRUE porque hemos encontrado el curso
                         encontrado = true;
+                        cursoSave= listaCur.getListaCursos().get(i).getNombre();
                         // salimos
                         break;
                     }
                 }
 
                 // si el booleano es verdadero
-                if (encontrado)
+                if (encontrado) {
                     // eliminamos de nuestra lista el curso en el indice que hemos guardado en
                     // nuestra variable
                     listaCur.getListaCursos().remove(ind);
+                }
+
+
+                for (Alumno a : listaAlum.getListaAlumnos()) {
+                    System.out.println(a.getCurso());
+                    if(a.getCurso().equalsIgnoreCase(cursoSave))
+                        a.setCurso("");
+                }
                 mostrarCursos();
             }
         }
+
     }
 
+    /**
+     * Metodo mostrar todos los cursos
+     */
     private void mostrarCursos() {
         indice = 0;
         modeloTablaCur.setNumRows(0);
