@@ -8,10 +8,10 @@ import modelo.Curso;
 import modelo.Profesor;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicMenuUI;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 public class Menu extends JDialog {
     //atributos componentes menu
@@ -87,6 +87,7 @@ public class Menu extends JDialog {
         //asignamos el JMenuBAr
         setJMenuBar(menuBar);
 
+        menuBar.setBackground(new Color(129,153,146));
 //-------------------------------------------------------------------------------------------------------------
         // ---- ALUMNOS ----
         //creamos un nuevo menu y le ponemos un titulo
@@ -99,6 +100,11 @@ public class Menu extends JDialog {
         a2 = new JMenuItem("Buscar");
         a3 = new JMenuItem("Eliminar");
         a4 = new JMenuItem("Mostrar");
+
+        a1.setBackground(new Color(250,246,212));
+        a2.setBackground(new Color(250,246,212));
+        a3.setBackground(new Color(250,246,212));
+        a4.setBackground(new Color(250,246,212));
 
         //añadimos a nuestro menu los items que acabamos de crear
         menuA.add(a1);
@@ -128,6 +134,11 @@ public class Menu extends JDialog {
         menuP.add(p3);
         menuP.add(p4);
 
+        p1.setBackground(new Color(250,246,212));
+        p2.setBackground(new Color(250,246,212));
+        p3.setBackground(new Color(250,246,212));
+        p4.setBackground(new Color(250,246,212));
+
         // al menu de profesores le asociamos el atajo de Alt+P
         menuP.setMnemonic(KeyEvent.VK_P);
 
@@ -143,6 +154,11 @@ public class Menu extends JDialog {
         c2 = new JMenuItem("Buscar");
         c3 = new JMenuItem("Eliminar");
         c4 = new JMenuItem("Mostrar");
+
+        c1.setBackground(new Color(250,246,212));
+        c2.setBackground(new Color(250,246,212));
+        c3.setBackground(new Color(250,246,212));
+        c4.setBackground(new Color(250,246,212));
 
         //añadimos a nuestro menu los items que acabamos de crear
         menuC.add(c1);
@@ -163,6 +179,8 @@ public class Menu extends JDialog {
         //creamos los items y le pomenos un nombre
         o1 = new JMenuItem("Interfaz realizada por Vanessa Lopez Pastor");
 
+        o1.setBackground(new Color(250,246,212));
+
         //añadimos a nuestro menu los items que acabamos de crear
         menu.add(o1);
 
@@ -170,7 +188,6 @@ public class Menu extends JDialog {
         // ---- ICONO ----
         //agregamos una imagen
         icono.setIcon(new ImageIcon("src/imagenes/logoThiar.png"));
-
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- TABLAS ----
@@ -622,7 +639,7 @@ public class Menu extends JDialog {
 
         int filaSeleccionadaAlumNota = tablaAlum.getSelectedRow();
 
-        if (filaSeleccionadaAlumNota == -1 && notasAlumno.matches("[0-9]{1,2}[.]*[0-9]*")) {
+        if (filaSeleccionadaAlumNota == -1 || !notasAlumno.matches("[0-1]?[0-9]{1}([.][0-9]*)?")) {
             JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
         } else {
             String dni = String.valueOf(tablaAlum.getValueAt(filaSeleccionadaAlumNota, 1));
@@ -808,7 +825,7 @@ public class Menu extends JDialog {
         if (nombreCur != null && nombreCur.matches("[A-Za-z]+"))
             listaCur.agregar(new Curso(nombreCur));
         else
-            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, asegurate que el nombre no contenga numeros. Intentalo de nuevo.");
+            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
     }
 
     /**

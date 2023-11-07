@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="20" width="627" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-8283758"/>
+    </properties>
     <border type="none"/>
     <children>
       <tabbedpane id="b9146" binding="tabbedPane1" default-binding="true">
@@ -14,7 +16,10 @@
             <preferred-size width="200" height="200"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-330028"/>
+          <foreground color="-16369598"/>
+        </properties>
         <border type="none"/>
         <children>
           <grid id="9ab54" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -22,7 +27,9 @@
             <constraints>
               <tabbedpane title="Inicio"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-66845"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="77e9d" class="javax.swing.JLabel" binding="icono">
@@ -39,7 +46,9 @@
             <constraints>
               <tabbedpane title="Alumnos"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-330028"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="f6102" layout-manager="GridLayoutManager" row-count="2" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -54,7 +63,9 @@
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <background color="-66845"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="2adfe" class="javax.swing.JTable" binding="tablaAlum">
@@ -145,7 +156,9 @@
             <constraints>
               <tabbedpane title="Profesores"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-330028"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="bb980" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -160,7 +173,9 @@
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <background color="-66845"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="28cc4" class="javax.swing.JTable" binding="tablaProfe">
@@ -237,7 +252,9 @@
             <constraints>
               <tabbedpane title="Cursos"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-330028"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="47bfc" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -252,7 +269,9 @@
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <background color="-66845"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="e5fcb" class="javax.swing.JTable" binding="tablaCur">
@@ -321,7 +340,9 @@
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-2104859"/>
+        </properties>
       </component>
     </children>
   </grid>
