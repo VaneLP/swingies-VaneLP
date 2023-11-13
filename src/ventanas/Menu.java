@@ -8,7 +8,6 @@ import modelo.Curso;
 import modelo.Profesor;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicMenuUI;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,10 +21,14 @@ public class Menu extends JDialog {
     private JTabbedPane jTabbebPaneAlum;
 
     //atributos menu
-    private JMenu menu, menuA, menuP, menuC;
+    private JMenu menuAbout, menuAlum, menuProfe, menuCur, menuDatos, menuExportar, menuImportar;
     private JMenuBar menuBar;
     private JLabel icono;
-    private JMenuItem o1, a1, a2, a3, a4, p1, p2, p3, p4, c1, c2, c3, c4;
+    private JMenuItem itemAbout,
+            itemAgregarAlum, itemBuscarAlum, itemEliminarAlum, itemMostrarAlum,
+            itemAgregarProfe, itemBuscarProfe, itemEliminarProfe, itemMostrarProfe,
+            itemAgregarCur, itemBuscarCur, itemEliminarCur, itemMostrarCur,
+            itemExportarCur, itemImportarCur;
 
     //atributos tabla
     private JTable tablaAlum;
@@ -91,98 +94,118 @@ public class Menu extends JDialog {
 //-------------------------------------------------------------------------------------------------------------
         // ---- ALUMNOS ----
         //creamos un nuevo menu y le ponemos un titulo
-        menuA = new JMenu("Alumnos");
+        menuAlum = new JMenu("Alumnos");
         //a nuestro JMenuBar le asignamos nuestro menu
-        menuBar.add(menuA);
+        menuBar.add(menuAlum);
 
         //creamos los items y le pomenos un nombre
-        a1 = new JMenuItem("Agregar");
-        a2 = new JMenuItem("Buscar");
-        a3 = new JMenuItem("Eliminar");
-        a4 = new JMenuItem("Mostrar");
+        itemAgregarAlum = new JMenuItem("Agregar");
+        itemBuscarAlum = new JMenuItem("Buscar");
+        itemEliminarAlum = new JMenuItem("Eliminar");
+        itemMostrarAlum = new JMenuItem("Mostrar");
 
-        a1.setBackground(new Color(250,246,212));
-        a2.setBackground(new Color(250,246,212));
-        a3.setBackground(new Color(250,246,212));
-        a4.setBackground(new Color(250,246,212));
+        itemAgregarAlum.setBackground(new Color(250,246,212));
+        itemBuscarAlum.setBackground(new Color(250,246,212));
+        itemEliminarAlum.setBackground(new Color(250,246,212));
+        itemMostrarAlum.setBackground(new Color(250,246,212));
 
         //añadimos a nuestro menu los items que acabamos de crear
-        menuA.add(a1);
-        menuA.add(a2);
-        menuA.add(a3);
-        menuA.add(a4);
+        menuAlum.add(itemAgregarAlum);
+        menuAlum.add(itemBuscarAlum);
+        menuAlum.add(itemEliminarAlum);
+        menuAlum.add(itemMostrarAlum);
 
         // al menu de alumnos le asociamos el atajo de Alt+A
-        menuA.setMnemonic(KeyEvent.VK_A);
+        menuAlum.setMnemonic(KeyEvent.VK_A);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- PROFESORES ----
         //creamos un nuevo menu y le ponemos un titulo
-        menuP = new JMenu("Profesores");
+        menuProfe = new JMenu("Profesores");
         //a nuestro JMenuBar le asignamos nuestro menu
-        menuBar.add(menuP);
+        menuBar.add(menuProfe);
 
         //creamos los items y le pomenos un nombre
-        p1 = new JMenuItem("Agregar");
-        p2 = new JMenuItem("Buscar");
-        p3 = new JMenuItem("Eliminar");
-        p4 = new JMenuItem("Mostrar");
+        itemAgregarProfe = new JMenuItem("Agregar");
+        itemBuscarProfe = new JMenuItem("Buscar");
+        itemEliminarProfe = new JMenuItem("Eliminar");
+        itemMostrarProfe = new JMenuItem("Mostrar");
 
         //añadimos a nuestro menu los items que acabamos de crear
-        menuP.add(p1);
-        menuP.add(p2);
-        menuP.add(p3);
-        menuP.add(p4);
+        menuProfe.add(itemAgregarProfe);
+        menuProfe.add(itemBuscarProfe);
+        menuProfe.add(itemEliminarProfe);
+        menuProfe.add(itemMostrarProfe);
 
-        p1.setBackground(new Color(250,246,212));
-        p2.setBackground(new Color(250,246,212));
-        p3.setBackground(new Color(250,246,212));
-        p4.setBackground(new Color(250,246,212));
+        itemAgregarProfe.setBackground(new Color(250,246,212));
+        itemBuscarProfe.setBackground(new Color(250,246,212));
+        itemEliminarProfe.setBackground(new Color(250,246,212));
+        itemMostrarProfe.setBackground(new Color(250,246,212));
 
         // al menu de profesores le asociamos el atajo de Alt+P
-        menuP.setMnemonic(KeyEvent.VK_P);
+        menuProfe.setMnemonic(KeyEvent.VK_P);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- CURSO ----
         //creamos un nuevo menu y le ponemos un titulo
-        menuC = new JMenu("Curso");
+        menuCur = new JMenu("Curso");
         //a nuestro JMenuBar le asignamos nuestro menu
-        menuBar.add(menuC);
+        menuBar.add(menuCur);
 
         //creamos los items y le pomenos un nombre
-        c1 = new JMenuItem("Agregar");
-        c2 = new JMenuItem("Buscar");
-        c3 = new JMenuItem("Eliminar");
-        c4 = new JMenuItem("Mostrar");
+        itemAgregarCur = new JMenuItem("Agregar");
+        itemBuscarCur = new JMenuItem("Buscar");
+        itemEliminarCur = new JMenuItem("Eliminar");
+        itemMostrarCur = new JMenuItem("Mostrar");
 
-        c1.setBackground(new Color(250,246,212));
-        c2.setBackground(new Color(250,246,212));
-        c3.setBackground(new Color(250,246,212));
-        c4.setBackground(new Color(250,246,212));
+        itemAgregarCur.setBackground(new Color(250,246,212));
+        itemBuscarCur.setBackground(new Color(250,246,212));
+        itemEliminarCur.setBackground(new Color(250,246,212));
+        itemMostrarCur.setBackground(new Color(250,246,212));
 
         //añadimos a nuestro menu los items que acabamos de crear
-        menuC.add(c1);
-        menuC.add(c2);
-        menuC.add(c3);
-        menuC.add(c4);
+        menuCur.add(itemAgregarCur);
+        menuCur.add(itemBuscarCur);
+        menuCur.add(itemEliminarCur);
+        menuCur.add(itemMostrarCur);
 
         // al menu de curso le asociamos el atajo de Alt+C
-        menuC.setMnemonic(KeyEvent.VK_C);
+        menuCur.setMnemonic(KeyEvent.VK_C);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- ABOUT ----
         // creamos un nuevo menu y le ponemos un titulo
-        menu = new JMenu("About");
+        menuAbout = new JMenu("About");
         //a nuestro JMenuBar le asignamos nuestro menu
-        menuBar.add(menu);
+        menuBar.add(menuAbout);
 
         //creamos los items y le pomenos un nombre
-        o1 = new JMenuItem("Interfaz realizada por Vanessa Lopez Pastor");
+        itemAbout = new JMenuItem("Interfaz realizada por Vanessa Lopez Pastor");
 
-        o1.setBackground(new Color(250,246,212));
+        itemAbout.setBackground(new Color(250,246,212));
 
         //añadimos a nuestro menu los items que acabamos de crear
-        menu.add(o1);
+        menuAbout.add(itemAbout);
+
+//-------------------------------------------------------------------------------------------------------------
+        // ---- DATOS (ACCESOS) ----
+        // creamos un nuevo menu y le ponemos un titulo
+        menuDatos = new JMenu("Carga masiva");
+        //a nuestro JMenuBar le asignamos nuestro menu
+        menuBar.add(menuDatos);
+
+        //creamos los items y le pomenos un nombre
+        menuExportar = new JMenu("Exportar");
+        menuImportar = new JMenu("Importar");
+
+        menuDatos.add(menuExportar);
+        menuDatos.add(menuImportar);
+
+        menuExportar.setBackground(new Color(250,246,212));
+        menuImportar.setBackground(new Color(250,246,212));
+
+        //añadimos a nuestro menu los items que acabamos de crear
+        menuAbout.add(itemAbout);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- ICONO ----
@@ -347,7 +370,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU AGREGAR ALUMNO ----
-        a1.addActionListener(new ActionListener() {
+        itemAgregarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarAlumno();
@@ -355,7 +378,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU BUSCAR ALUMNO ----
-        a2.addActionListener(new ActionListener() {
+        itemBuscarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 buscarAlumno();
@@ -363,7 +386,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU ELIMINAR ALUMNO ----
-        a3.addActionListener(new ActionListener() {
+        itemEliminarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 eliminarAlumno();
@@ -371,7 +394,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU MOSTRAR ALUMNO ----
-        a4.addActionListener(new ActionListener() {
+        itemMostrarAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarAlumnos();
@@ -430,7 +453,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU AGREGAR PROFESOR ----
-        p1.addActionListener(new ActionListener() {
+        itemAgregarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarProfesor();
@@ -438,7 +461,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU BUSCAR PROFESOR ----
-        p2.addActionListener(new ActionListener() {
+        itemBuscarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 buscarProfesor();
@@ -446,7 +469,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU ELIMINAR PROFESOR ----
-        p3.addActionListener(new ActionListener() {
+        itemEliminarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 eliminarProfesor();
@@ -454,7 +477,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU MOSTRAR PROFESOR ----
-        p4.addActionListener(new ActionListener() {
+        itemMostrarProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarProfesores();
@@ -505,7 +528,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU AGREGAR CURSO ----
-        c1.addActionListener(new ActionListener() {
+        itemAgregarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarCurso();
@@ -513,7 +536,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU BUSCAR CURSO ----
-        c2.addActionListener(new ActionListener() {
+        itemBuscarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 buscarCurso();
@@ -521,7 +544,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU ELIMINAR CURSO ----
-        c3.addActionListener(new ActionListener() {
+        itemEliminarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 eliminarcurso();
@@ -529,7 +552,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU MOSTRAR CURSO ----
-        c4.addActionListener(new ActionListener() {
+        itemMostrarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mostrarCursos();
