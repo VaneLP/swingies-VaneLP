@@ -14,14 +14,11 @@ import java.awt.event.*;
 
 public class Menu extends JDialog {
     //atributos componentes menu
-    private JTabbedPane tabbedPane1;
+    private JTabbedPane tabbedPane1, jTabbedPaneProfe, jTabbedPaneCur, jTabbebPaneAlum;
     private JPanel panelPrincipal;
-    private JTabbedPane jTabbedPaneProfe;
-    private JTabbedPane jTabbedPaneCur;
-    private JTabbedPane jTabbebPaneAlum;
 
     //atributos menu
-    private JMenu menuAbout, menuAlum, menuProfe, menuCur, menuDatos, menuExportar, menuImportar;
+    private JMenu menuAbout, menuAlum, menuProfe, menuCur, menuCargaMasiva, menuExportar, menuImportar;
     private JMenuBar menuBar;
     private JLabel icono;
     private JMenuItem itemAbout,
@@ -31,34 +28,15 @@ public class Menu extends JDialog {
             itemExportarCur, itemImportarCur;
 
     //atributos tabla
-    private JTable tablaAlum;
-    private JScrollPane scrollAlum;
-    private JScrollPane scrollProfe;
-    private JTable tablaProfe;
-    private JScrollPane scrollCur;
-    private JTable tablaCur;
-    private JButton agregarAlum;
-    private JButton mostrarAlum;
-    private JButton buscarAlum;
-    private JButton eliminarAlum;
-    private JButton agregarProfe;
-    private JButton mostrarProfe;
-    private JButton buscarProfe;
-    private JButton eliminarProfe;
-    private JButton agregarCur;
-    private JButton mostrarCur;
-    private JButton buscarCur;
-    private JButton eliminaCur;
-    private JCheckBox alfaAlum;
-    private JCheckBox aproAlum;
-    private JCheckBox suspensoAlum;
-    private JCheckBox alfebeticamenteProfe;
-    private JCheckBox tutores;
-    private JCheckBox alfabeticamenteCuso;
-    private JButton añadirNotasButton;
-    private DefaultTableModel modeloTablaAlum;
-    private DefaultTableModel modeloTablaProfe;
-    private DefaultTableModel modeloTablaCur;
+    private JTable tablaAlum, tablaProfe, tablaCur;
+    private JScrollPane scrollAlum, scrollProfe, scrollCur;
+    private JButton agregarAlum, mostrarAlum, buscarAlum, eliminarAlum, añadirNotasButton,
+            agregarProfe, mostrarProfe, buscarProfe, eliminarProfe,
+            agregarCur, mostrarCur, buscarCur, eliminaCur;
+    private JCheckBox alfaAlum, aproAlum, suspensoAlum,
+            alfebeticamenteProfe, tutores,
+            alfabeticamenteCuso;
+    private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
     //Atributos controlador
     private ListaAlumnos listaAlum = new ListaAlumnos();
@@ -67,12 +45,11 @@ public class Menu extends JDialog {
 
     //atributos
     private String dni, codigo, nombreCur;
-    private int indice = 0;
+    private int indice = 0, ind;
     String[] arrayMostrarCursos, arrayMostrarProfe, arrayMostrarAlum;
-    private int ind;
     private boolean encontrado;
 
-//-------------------------------------------------------------------------------------------------------------
+    //-------------------------------------------------------------------------------------------------------------
     public Menu(Login l, boolean b) {
         super(l, b);
 
@@ -90,7 +67,7 @@ public class Menu extends JDialog {
         //asignamos el JMenuBAr
         setJMenuBar(menuBar);
 
-        menuBar.setBackground(new Color(129,153,146));
+        menuBar.setBackground(new Color(129, 153, 146));
 //-------------------------------------------------------------------------------------------------------------
         // ---- ALUMNOS ----
         //creamos un nuevo menu y le ponemos un titulo
@@ -104,10 +81,10 @@ public class Menu extends JDialog {
         itemEliminarAlum = new JMenuItem("Eliminar");
         itemMostrarAlum = new JMenuItem("Mostrar");
 
-        itemAgregarAlum.setBackground(new Color(250,246,212));
-        itemBuscarAlum.setBackground(new Color(250,246,212));
-        itemEliminarAlum.setBackground(new Color(250,246,212));
-        itemMostrarAlum.setBackground(new Color(250,246,212));
+        itemAgregarAlum.setBackground(new Color(250, 246, 212));
+        itemBuscarAlum.setBackground(new Color(250, 246, 212));
+        itemEliminarAlum.setBackground(new Color(250, 246, 212));
+        itemMostrarAlum.setBackground(new Color(250, 246, 212));
 
         //añadimos a nuestro menu los items que acabamos de crear
         menuAlum.add(itemAgregarAlum);
@@ -137,10 +114,10 @@ public class Menu extends JDialog {
         menuProfe.add(itemEliminarProfe);
         menuProfe.add(itemMostrarProfe);
 
-        itemAgregarProfe.setBackground(new Color(250,246,212));
-        itemBuscarProfe.setBackground(new Color(250,246,212));
-        itemEliminarProfe.setBackground(new Color(250,246,212));
-        itemMostrarProfe.setBackground(new Color(250,246,212));
+        itemAgregarProfe.setBackground(new Color(250, 246, 212));
+        itemBuscarProfe.setBackground(new Color(250, 246, 212));
+        itemEliminarProfe.setBackground(new Color(250, 246, 212));
+        itemMostrarProfe.setBackground(new Color(250, 246, 212));
 
         // al menu de profesores le asociamos el atajo de Alt+P
         menuProfe.setMnemonic(KeyEvent.VK_P);
@@ -158,10 +135,10 @@ public class Menu extends JDialog {
         itemEliminarCur = new JMenuItem("Eliminar");
         itemMostrarCur = new JMenuItem("Mostrar");
 
-        itemAgregarCur.setBackground(new Color(250,246,212));
-        itemBuscarCur.setBackground(new Color(250,246,212));
-        itemEliminarCur.setBackground(new Color(250,246,212));
-        itemMostrarCur.setBackground(new Color(250,246,212));
+        itemAgregarCur.setBackground(new Color(250, 246, 212));
+        itemBuscarCur.setBackground(new Color(250, 246, 212));
+        itemEliminarCur.setBackground(new Color(250, 246, 212));
+        itemMostrarCur.setBackground(new Color(250, 246, 212));
 
         //añadimos a nuestro menu los items que acabamos de crear
         menuCur.add(itemAgregarCur);
@@ -182,30 +159,33 @@ public class Menu extends JDialog {
         //creamos los items y le pomenos un nombre
         itemAbout = new JMenuItem("Interfaz realizada por Vanessa Lopez Pastor");
 
-        itemAbout.setBackground(new Color(250,246,212));
+        itemAbout.setBackground(new Color(250, 246, 212));
 
         //añadimos a nuestro menu los items que acabamos de crear
         menuAbout.add(itemAbout);
 
 //-------------------------------------------------------------------------------------------------------------
-        // ---- DATOS (ACCESOS) ----
+        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
         // creamos un nuevo menu y le ponemos un titulo
-        menuDatos = new JMenu("Carga masiva");
+        menuCargaMasiva = new JMenu("Carga masiva");
         //a nuestro JMenuBar le asignamos nuestro menu
-        menuBar.add(menuDatos);
+        menuBar.add(menuCargaMasiva);
 
-        //creamos los items y le pomenos un nombre
+        //creamos dos nuevo menus
         menuExportar = new JMenu("Exportar");
         menuImportar = new JMenu("Importar");
 
-        menuDatos.add(menuExportar);
-        menuDatos.add(menuImportar);
+        //los añadimos al menu de carga masiva
+        menuCargaMasiva.add(menuExportar);
+        menuCargaMasiva.add(menuImportar);
 
-        menuExportar.setBackground(new Color(250,246,212));
-        menuImportar.setBackground(new Color(250,246,212));
+        //creamos los items
+        itemExportarCur = new JMenuItem("Exportar curso");
+        itemImportarCur = new JMenuItem("Importar curso");
 
-        //añadimos a nuestro menu los items que acabamos de crear
-        menuAbout.add(itemAbout);
+        //añadimos los items al menu correspondiente
+        menuExportar.add(itemExportarCur);
+        menuImportar.add(itemImportarCur);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- ICONO ----
@@ -559,8 +539,26 @@ public class Menu extends JDialog {
             }
         });
 
+//-------------------------------------------------------------------------------------------------------------
+        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+        // ---- OPCION MENU EXPORTAR CURSO ----
+        itemExportarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
-    }
+            }
+        });
+
+        // ---- OPCION MENU IMPORTAR CURSO ----
+        itemImportarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+
+    }//Fin del constructor
 
 //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
@@ -694,7 +692,7 @@ public class Menu extends JDialog {
 
         for (Alumno alumno : listaAlum.listarSuspensos()) {
             arrayMostrarSus = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
-                    String.valueOf(alumno.getEdad()), alumno.getCurso(),alumno.getListaNotas().toString()};
+                    String.valueOf(alumno.getEdad()), alumno.getCurso(), alumno.getListaNotas().toString()};
 
             modeloTablaAlum.insertRow(indice, arrayMostrarSus);
 
@@ -713,7 +711,7 @@ public class Menu extends JDialog {
 
         for (Alumno alumno : listaAlum.listarAprobados()) {
             arrayMostrarApro = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
-                    String.valueOf(alumno.getEdad()), alumno.getCurso(),alumno.getListaNotas().toString()};
+                    String.valueOf(alumno.getEdad()), alumno.getCurso(), alumno.getListaNotas().toString()};
 
             modeloTablaAlum.insertRow(indice, arrayMostrarApro);
 
@@ -866,8 +864,7 @@ public class Menu extends JDialog {
                 modeloTablaCur.setNumRows(0);
 
                 modeloTablaCur.insertRow(indice, buscarCurso);
-            }
-            else
+            } else
                 JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
         }
 
@@ -900,7 +897,7 @@ public class Menu extends JDialog {
                         ind = i;
                         // cambiamos el booleano a TRUE porque hemos encontrado el curso
                         encontrado = true;
-                        cursoSave= listaCur.getListaCursos().get(i).getNombre();
+                        cursoSave = listaCur.getListaCursos().get(i).getNombre();
                         // salimos
                         break;
                     }
@@ -916,7 +913,7 @@ public class Menu extends JDialog {
 
                 for (Alumno a : listaAlum.getListaAlumnos()) {
                     System.out.println(a.getCurso());
-                    if(a.getCurso().equalsIgnoreCase(cursoSave))
+                    if (a.getCurso().equalsIgnoreCase(cursoSave))
                         a.setCurso("");
                 }
                 mostrarCursos();
