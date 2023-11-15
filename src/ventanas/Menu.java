@@ -32,8 +32,8 @@ public class Menu extends JDialog {
     private JMenuBar menuBar;
     private JLabel icono;
     private JMenuItem itemAbout,
-            itemAgregarAlum, itemBuscarAlum, itemEliminarAlum, itemMostrarAlum,
-            itemAgregarProfe, itemBuscarProfe, itemEliminarProfe, itemMostrarProfe,
+            itemAgregarAlum, itemBuscarAlum, itemEliminarAlum, itemMostrarAlum, itemImportarNotas,
+            itemAgregarProfe, itemBuscarProfe, itemEliminarProfe, itemMostrarProfe, itemImportarAsignaturas,
             itemAgregarCur, itemBuscarCur, itemEliminarCur, itemMostrarCur,
             itemExportarCur, itemImportarCur;
 
@@ -91,16 +91,23 @@ public class Menu extends JDialog {
         itemEliminarAlum = new JMenuItem("Eliminar");
         itemMostrarAlum = new JMenuItem("Mostrar");
 
+        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+        itemImportarNotas = new JMenuItem("Importar asignaturas");
+
         itemAgregarAlum.setBackground(new Color(250, 246, 212));
         itemBuscarAlum.setBackground(new Color(250, 246, 212));
         itemEliminarAlum.setBackground(new Color(250, 246, 212));
         itemMostrarAlum.setBackground(new Color(250, 246, 212));
+
 
         //añadimos a nuestro menu los items que acabamos de crear
         menuAlum.add(itemAgregarAlum);
         menuAlum.add(itemBuscarAlum);
         menuAlum.add(itemEliminarAlum);
         menuAlum.add(itemMostrarAlum);
+
+        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+        menuAlum.add(itemImportarNotas);
 
         // al menu de alumnos le asociamos el atajo de Alt+A
         menuAlum.setMnemonic(KeyEvent.VK_A);
@@ -118,11 +125,17 @@ public class Menu extends JDialog {
         itemEliminarProfe = new JMenuItem("Eliminar");
         itemMostrarProfe = new JMenuItem("Mostrar");
 
+        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+        itemImportarAsignaturas = new JMenuItem("Importar asignaturas");
+
         //añadimos a nuestro menu los items que acabamos de crear
         menuProfe.add(itemAgregarProfe);
         menuProfe.add(itemBuscarProfe);
         menuProfe.add(itemEliminarProfe);
         menuProfe.add(itemMostrarProfe);
+
+        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+        menuProfe.add(itemImportarAsignaturas);
 
         itemAgregarProfe.setBackground(new Color(250, 246, 212));
         itemBuscarProfe.setBackground(new Color(250, 246, 212));
@@ -560,8 +573,10 @@ public class Menu extends JDialog {
                          deseas guardar, si no por defecto se guardaran todos.
                                Escribe el nombre del archivo sin el .csv
                         """);
+                //llamamos al metodo
                 guardarArchivo(nombreArchivo);
 
+                //quitamos la seleccion de la tabla
                 tablaCur.getSelectionModel().clearSelection();
             }
         });
@@ -572,52 +587,118 @@ public class Menu extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //creamos un nuevo jfilechooser
                 JFileChooser elegirArchivo = new JFileChooser();
-                FileNameExtensionFilter extensionArchivo = new FileNameExtensionFilter("CSV","csv");
+                //creamos un nuevo FileNameExtensionFilter, para poder seleccionar solo ficheros .csv
+                FileNameExtensionFilter extensionArchivo = new FileNameExtensionFilter("CSV", "csv");
+                //le pasamos el filtro al fichero
                 elegirArchivo.setFileFilter(extensionArchivo);
 
                 //guardamos en una variable el resultado de abrir una venta de seleccion
                 int resultado = elegirArchivo.showOpenDialog(null);
                 File archivoElegido = new File("");
                 //si a seleccionado correctamente la opcion
-                if(resultado==JFileChooser.APPROVE_OPTION) {
+                if (resultado == JFileChooser.APPROVE_OPTION) {
                     //devuelve el file
                     archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
-                    leer(archivoElegido);
+                    //llamamos al metodo con el archivo elegido
+                    leerCursos(archivoElegido);
                 }
-
             }
         });
 
+        // ---- OPCION MENU IMPORTAR NOTAS ALUMNO ----
+        itemImportarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //creamos un nuevo jfilechooser
+                JFileChooser elegirArchivo = new JFileChooser();
+                //creamos un nuevo FileNameExtensionFilter, para poder seleccionar solo ficheros .csv
+                FileNameExtensionFilter extensionArchivo = new FileNameExtensionFilter("CSV", "csv");
+                //le pasamos el filtro al fichero
+                elegirArchivo.setFileFilter(extensionArchivo);
+
+                //guardamos en una variable el resultado de abrir una venta de seleccion
+                int resultado = elegirArchivo.showOpenDialog(null);
+                File archivoElegido = new File("");
+                //si a seleccionado correctamente la opcion
+                if (resultado == JFileChooser.APPROVE_OPTION) {
+                    //devuelve el file
+                    archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
+                    //llamamos al metodo con el archivo elegido
+                    //todo METODO PARA LEER LAS NOTAS
+                    //leerCursos(archivoElegido);
+                }
+            }
+        });
+
+        // ---- OPCION MENU IMPORTAR ASIGNATURAS PROFESOR ----
+        itemImportarCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //creamos un nuevo jfilechooser
+                JFileChooser elegirArchivo = new JFileChooser();
+                //creamos un nuevo FileNameExtensionFilter, para poder seleccionar solo ficheros .csv
+                FileNameExtensionFilter extensionArchivo = new FileNameExtensionFilter("CSV", "csv");
+                //le pasamos el filtro al fichero
+                elegirArchivo.setFileFilter(extensionArchivo);
+
+                //guardamos en una variable el resultado de abrir una venta de seleccion
+                int resultado = elegirArchivo.showOpenDialog(null);
+                File archivoElegido = new File("");
+                //si a seleccionado correctamente la opcion
+                if (resultado == JFileChooser.APPROVE_OPTION) {
+                    //devuelve el file
+                    archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
+                    //llamamos al metodo con el archivo elegido
+                    //TODO METODO PARA LEER LAS ASIGNATURAS CON ;
+                    leerCursos(archivoElegido);
+                }
+            }
+        });
 
     }//Fin del constructor
+
     /**
-     * Metodo para guardar usuarios
+     * Metodo para guardar archivos
      * @param nombreArchivo
      */
     public void guardarArchivo(String nombreArchivo) {
-        if(nombreArchivo!=null) {
+        //si el nombre del fichero no es nulo
+        if (nombreArchivo != null) {
+            //creamos un csvWriter que escriba el nombre del fichero que le hemos pasado.csv (para que no haya problemas)
             try (CSVWriter escribir = new CSVWriter(new FileWriter(Path.of(nombreArchivo + ".csv").toString()))) {
+                //creamos una lista de array de string para fuardar las filas que contendran los cursos
                 List<String[]> guardarFilasCur = new LinkedList<>();
 
+                //en un array de enteros guardamos las filas seleccionadas
                 int[] fila = tablaCur.getSelectedRows();
 
+                //si la fila es distinta de 0
                 if (fila.length != 0) {
+                    //recorremos el array de los cursos seleccionados
                     for (int i : fila) {
+                        //guardamos su codigo
                         String codigo = (String) tablaCur.getValueAt(i, 0);
 
+                        //recorremos la lista de cursos
                         for (Curso c : listaCur.getListaCursos()) {
+                            //cuando el codigo del curso coincida con el codigo del curso selccionado
                             if (codigo.equals(String.valueOf(c.getCodigo()))) {
+                                //añadimos a la lista de array de String el curso con el codigo y el nombre
                                 guardarFilasCur.add(new String[]{String.valueOf(c.getCodigo()), c.getNombre()});
                             }
                         }
                     }
-                } else {
+                }
+                //si la fila es igual a 0, osea que no a seleccionado nada
+                else {
+                    //recorremos la lista de cursos
                     for (Curso c : listaCur.getListaCursos()) {
+                        //añadimos todos los cursos a la lista de array de string
                         guardarFilasCur.add(new String[]{String.valueOf(c.getCodigo()), c.getNombre()});
                     }
                 }
 
-
+                //escribimos todas las filas en el fichero
                 escribir.writeAll(guardarFilasCur);
 
             } catch (IOException e) {
@@ -629,26 +710,32 @@ public class Menu extends JDialog {
     /**
      * Metodo para leer el archivo
      */
-    public void leer(File archivo){
+    public void leerCursos(File archivo) {
         //leemos el archivo
-        try(Reader lectura = Files.newBufferedReader(Path.of(archivo.toURI()))){
+        try (Reader lectura = Files.newBufferedReader(Path.of(archivo.toURI()))) {
             //CSVParse va analizando el archivo
             CSVParser parser = new CSVParserBuilder().build();
 
+            //leemis el fichero
             CSVReader lectorCSV = new CSVReaderBuilder(lectura)
-                    .withSkipLines(0)
+                    .withSkipLines(0)//desde la linea 0
                     .withCSVParser(parser)
                     .build();
 
+            //creamos un array de string
             String[] linea;
 
+            //vaciamos la lista de cursos para añadir los nuevos del fichero y para que no haya problemas
+            //si hay codigos repetidos
             listaCur.getListaCursos().clear();
 
             //mientras que el archivo tenga una siguiente linea
-            while ((linea = lectorCSV.readNext())!=null){
-                listaCur.agregar(new Curso(Integer.parseInt(linea[0]),linea[1]));
+            while ((linea = lectorCSV.readNext()) != null) {
+                //los agregamos los cursos a la lista
+                listaCur.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
             }
 
+            //mostramos la tabla
             mostrarCursos();
 
         } catch (IOException | CsvValidationException e) {
