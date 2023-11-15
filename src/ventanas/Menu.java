@@ -1,5 +1,7 @@
 package ventanas;
 
+import com.opencsv.*;
+import com.opencsv.exceptions.CsvValidationException;
 import controlador.ListaAlumnos;
 import controlador.ListaCursos;
 import controlador.ListaProfesores;
@@ -8,9 +10,17 @@ import modelo.Curso;
 import modelo.Profesor;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Menu extends JDialog {
     //atributos componentes menu
@@ -545,7 +555,14 @@ public class Menu extends JDialog {
         itemExportarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String nombreArchivo = JOptionPane.showInputDialog("""
+                        Selecciona con anterioridad en la tabla los cursos que 
+                         deseas guardar, si no por defecto se guardaran todos.
+                               Escribe el nombre del archivo sin el .csv
+                        """);
+                guardarArchivo(nombreArchivo);
 
+                tablaCur.getSelectionModel().clearSelection();
             }
         });
 
@@ -553,13 +570,92 @@ public class Menu extends JDialog {
         itemImportarCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                //creamos un nuevo jfilechooser
+                JFileChooser elegirArchivo = new JFileChooser();
+                FileNameExtensionFilter extensionArchivo = new FileNameExtensionFilter("CSV","csv");
+                elegirArchivo.setFileFilter(extensionArchivo);
+
+                //guardamos en una variable el resultado de abrir una venta de seleccion
+                int resultado = elegirArchivo.showOpenDialog(null);
+                File archivoElegido = new File("");
+                //si a seleccionado correctamente la opcion
+                if(resultado==JFileChooser.APPROVE_OPTION) {
+                    //devuelve el file
+                    archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
+                    leer(archivoElegido);
+                }
+
             }
         });
 
 
     }//Fin del constructor
+    /**
+     * Metodo para guardar usuarios
+     * @param nombreArchivo
+     */
+    public void guardarArchivo(String nombreArchivo) {
+        if(nombreArchivo!=null) {
+            try (CSVWriter escribir = new CSVWriter(new FileWriter(Path.of(nombreArchivo + ".csv").toString()))) {
+                List<String[]> guardarFilasCur = new LinkedList<>();
 
+                int[] fila = tablaCur.getSelectedRows();
+
+                if (fila.length != 0) {
+                    for (int i : fila) {
+                        String codigo = (String) tablaCur.getValueAt(i, 0);
+
+                        for (Curso c : listaCur.getListaCursos()) {
+                            if (codigo.equals(String.valueOf(c.getCodigo()))) {
+                                guardarFilasCur.add(new String[]{String.valueOf(c.getCodigo()), c.getNombre()});
+                            }
+                        }
+                    }
+                } else {
+                    for (Curso c : listaCur.getListaCursos()) {
+                        guardarFilasCur.add(new String[]{String.valueOf(c.getCodigo()), c.getNombre()});
+                    }
+                }
+
+
+                escribir.writeAll(guardarFilasCur);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * Metodo para leer el archivo
+     */
+    public void leer(File archivo){
+        //leemos el archivo
+        try(Reader lectura = Files.newBufferedReader(Path.of(archivo.toURI()))){
+            //CSVParse va analizando el archivo
+            CSVParser parser = new CSVParserBuilder().build();
+
+            CSVReader lectorCSV = new CSVReaderBuilder(lectura)
+                    .withSkipLines(0)
+                    .withCSVParser(parser)
+                    .build();
+
+            String[] linea;
+
+            listaCur.getListaCursos().clear();
+
+            //mientras que el archivo tenga una siguiente linea
+            while ((linea = lectorCSV.readNext())!=null){
+                listaCur.agregar(new Curso(Integer.parseInt(linea[0]),linea[1]));
+            }
+
+            mostrarCursos();
+
+        } catch (IOException | CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     // ---- ALUMNO ----

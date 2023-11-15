@@ -21,6 +21,13 @@ public class Curso {
         contador++;
     }
 
+    // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+    //constructor para poder pasarle el codigo y el nombre cuando leemos un fichero
+    public Curso(int codigo, String nombre) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+    }
+
     // getters y setters
     // codigo
     public int getCodigo() {
