@@ -249,6 +249,7 @@ public class Menu extends JDialog {
         modeloTablaProfe.addColumn("Telefono");
         modeloTablaProfe.addColumn("Edad");
         modeloTablaProfe.addColumn("Curso");
+        modeloTablaProfe.addColumn("Asignaturas");
 
         //a nuestra tabla de alumnos le asignamos el modelo
         tablaProfe.setModel(modeloTablaProfe);
@@ -615,9 +616,7 @@ public class Menu extends JDialog {
                     //devuelve el file
                     archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
                     //llamamos al metodo con el archivo elegido
-                    //todo METODO PARA LEER LAS NOTAS
                     leerNotasAlum(archivoElegido);
-                    //leerCursos(archivoElegido);
                 }
             }
         });
@@ -641,8 +640,7 @@ public class Menu extends JDialog {
                     //devuelve el file
                     archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
                     //llamamos al metodo con el archivo elegido
-                    //TODO METODO PARA LEER LAS ASIGNATURAS CON ;
-                    //leerCursos(archivoElegido);
+                    leerAsigProfe(archivoElegido);
                 }
             }
         });
@@ -806,7 +804,9 @@ public class Menu extends JDialog {
         //leemos el archivo
         try (Reader lectura = Files.newBufferedReader(Path.of(archivo.toURI()))) {
             //CSVParse va analizando el archivo
-            CSVParser parser = new CSVParserBuilder().build();
+            CSVParser parser = new CSVParserBuilder()
+                    .withSeparator(';') //porque esta separado por ; en vez de por ,
+                    .build();
 
             //leemis el fichero
             CSVReader lectorCSV = new CSVReaderBuilder(lectura)
@@ -819,11 +819,35 @@ public class Menu extends JDialog {
 
             //mientras que el archivo tenga una siguiente linea
             while ((linea = lectorCSV.readNext()) != null) {
-                //TODO
+                //creamos una nueva lista para los profesores no encontrados
+                List<String> listaProfeNoEncontrado = new ArrayList<>();
+
+                //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el profesor
+                if (listaProfe.buscar(linea[0]) == null){
+                    //lo guardamos en nuestra nueva lista
+                    listaProfeNoEncontrado.add(linea[0]);
+                }
+
+                //si la lista de profesores no encontrado es distinta de 0, es decir esta llena
+                if(listaProfeNoEncontrado.size()!=0){
+                    //recorremos dicha lista
+                    for (String s : listaProfeNoEncontrado) {
+                        //mostramos un mensaje
+                        JOptionPane.showMessageDialog(null, "Profesor con DNI: "+ s + " no encontrado");
+                    }
+                }
+
+                //por si hay mas de 3 asignaturas, hacemos un bucle vaya desde la columa 1 que seria la primera nota hasta
+                //el final de la linea
+                for(int col=1; col<linea.length;col++) {
+                    //vamos agregando al profesor con dni que corresponda la nota
+                    listaProfe.agregarAsigProfe(linea[0], linea[col]);
+                }
+
             }
 
             //mostramos la tabla
-            //mostrarCursos();
+            mostrarProfesores();
 
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
@@ -1078,7 +1102,7 @@ public class Menu extends JDialog {
 
         for (Profesor profesor : listaProfe.getListaProfesores()) {
             arrayMostrarProfe = new String[]{profesor.getNombre(), profesor.getDNI(),
-                    String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), profesor.getCurso()};
+                    String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), profesor.getCurso(), profesor.getListaAsignaturas().toString()};
 
             modeloTablaProfe.insertRow(indice, arrayMostrarProfe);
 

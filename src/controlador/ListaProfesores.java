@@ -1,5 +1,6 @@
 package controlador;
 
+import modelo.Alumno;
 import modelo.Profesor;
 
 import java.util.ArrayList;
@@ -45,8 +46,6 @@ public class ListaProfesores implements ILista<Profesor> {
 				// devolvemos el alumno
 				return profe;
 		}
-
-		System.out.println("Profesor no encontrado");
 		return null;
 	}
 
@@ -192,7 +191,17 @@ public class ListaProfesores implements ILista<Profesor> {
 				return p1.getNombre().compareTo(p2.getNombre());
 			}
 		});
+	}
 
+	public void agregarAsigProfe(String dni, String asig) {
+		// recorremos nuesta lista de alumnos
+		for (Profesor profe : listaProfesores) {
+			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
+			// parametro
+			if (profe.getDNI().equalsIgnoreCase(dni))
+				// si es correto agregamos la nota
+				profe.agregarAsignatura(asig);
+		}
 	}
 
 }
