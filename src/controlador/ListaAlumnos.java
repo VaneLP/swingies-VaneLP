@@ -50,8 +50,6 @@ public class ListaAlumnos implements ILista<Alumno> {
 				return alum;
 		}
 
-		// si no lo encuentra nos devuelve el alumno nulo
-		System.out.println("Alumno no encontrado");
 		return null;
 	}
 
