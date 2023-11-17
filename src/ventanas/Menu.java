@@ -7,6 +7,7 @@ import controlador.ListaCursos;
 import controlador.ListaProfesores;
 import modelo.Alumno;
 import modelo.Curso;
+import modelo.CursoInvalidoException;
 import modelo.Profesor;
 
 import javax.swing.*;
@@ -17,10 +18,8 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Scanner;
 
 public class Menu extends JDialog {
     //atributos componentes menu
@@ -91,9 +90,6 @@ public class Menu extends JDialog {
         itemEliminarAlum = new JMenuItem("Eliminar");
         itemMostrarAlum = new JMenuItem("Mostrar");
 
-        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
-        itemImportarNotas = new JMenuItem("Importar asignaturas");
-
         itemAgregarAlum.setBackground(new Color(250, 246, 212));
         itemBuscarAlum.setBackground(new Color(250, 246, 212));
         itemEliminarAlum.setBackground(new Color(250, 246, 212));
@@ -105,9 +101,6 @@ public class Menu extends JDialog {
         menuAlum.add(itemBuscarAlum);
         menuAlum.add(itemEliminarAlum);
         menuAlum.add(itemMostrarAlum);
-
-        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
-        menuAlum.add(itemImportarNotas);
 
         // al menu de alumnos le asociamos el atajo de Alt+A
         menuAlum.setMnemonic(KeyEvent.VK_A);
@@ -125,17 +118,11 @@ public class Menu extends JDialog {
         itemEliminarProfe = new JMenuItem("Eliminar");
         itemMostrarProfe = new JMenuItem("Mostrar");
 
-        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
-        itemImportarAsignaturas = new JMenuItem("Importar asignaturas");
-
         //añadimos a nuestro menu los items que acabamos de crear
         menuProfe.add(itemAgregarProfe);
         menuProfe.add(itemBuscarProfe);
         menuProfe.add(itemEliminarProfe);
         menuProfe.add(itemMostrarProfe);
-
-        // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
-        menuProfe.add(itemImportarAsignaturas);
 
         itemAgregarProfe.setBackground(new Color(250, 246, 212));
         itemBuscarProfe.setBackground(new Color(250, 246, 212));
@@ -205,10 +192,14 @@ public class Menu extends JDialog {
         //creamos los items
         itemExportarCur = new JMenuItem("Exportar curso");
         itemImportarCur = new JMenuItem("Importar curso");
+        itemImportarNotas = new JMenuItem("Importar notas");
+        itemImportarAsignaturas = new JMenuItem("Importar asignaturas");
 
         //añadimos los items al menu correspondiente
         menuExportar.add(itemExportarCur);
         menuImportar.add(itemImportarCur);
+        menuImportar.add(itemImportarNotas);
+        menuImportar.add(itemImportarAsignaturas);
 
 //-------------------------------------------------------------------------------------------------------------
         // ---- ICONO ----
@@ -606,7 +597,7 @@ public class Menu extends JDialog {
         });
 
         // ---- OPCION MENU IMPORTAR NOTAS ALUMNO ----
-        itemImportarCur.addActionListener(new ActionListener() {
+        itemImportarNotas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //creamos un nuevo jfilechooser
@@ -625,13 +616,14 @@ public class Menu extends JDialog {
                     archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
                     //llamamos al metodo con el archivo elegido
                     //todo METODO PARA LEER LAS NOTAS
+                    leerNotasAlum(archivoElegido);
                     //leerCursos(archivoElegido);
                 }
             }
         });
 
         // ---- OPCION MENU IMPORTAR ASIGNATURAS PROFESOR ----
-        itemImportarCur.addActionListener(new ActionListener() {
+        itemImportarAsignaturas.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //creamos un nuevo jfilechooser
@@ -650,15 +642,19 @@ public class Menu extends JDialog {
                     archivoElegido = elegirArchivo.getSelectedFile().getAbsoluteFile();
                     //llamamos al metodo con el archivo elegido
                     //TODO METODO PARA LEER LAS ASIGNATURAS CON ;
-                    leerCursos(archivoElegido);
+                    //leerCursos(archivoElegido);
                 }
             }
         });
 
     }//Fin del constructor
 
+//-------------------------------------------------------------------------------------------------------------
+    // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
+    // ---- METODOS ----
     /**
      * Metodo para guardar archivos
+     *
      * @param nombreArchivo
      */
     public void guardarArchivo(String nombreArchivo) {
@@ -708,7 +704,9 @@ public class Menu extends JDialog {
     }
 
     /**
-     * Metodo para leer el archivo
+     * Metodo para leer un archivo .csv de cursos que tendra:
+     * el codigo del curso , el nombre del curso
+     * @param archivo
      */
     public void leerCursos(File archivo) {
         //leemos el archivo
@@ -741,8 +739,97 @@ public class Menu extends JDialog {
         } catch (IOException | CsvValidationException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+    /**
+     * Metodo para leer un archo .csv de las notas del alumno, que tendra:
+     * el DNI del alumno , nota1 , nota2 , nota3
+     * @param archivo
+     */
+    public void leerNotasAlum(File archivo) {
+        //leemos el archivo
+        try (Reader lectura = Files.newBufferedReader(Path.of(archivo.toURI()))) {
+            //CSVParse va analizando el archivo
+            CSVParser parser = new CSVParserBuilder().build();
+
+            //leemis el fichero
+            CSVReader lectorCSV = new CSVReaderBuilder(lectura)
+                    .withSkipLines(0)//desde la linea 0
+                    .withCSVParser(parser)
+                    .build();
+
+            //creamos un array de string
+            String[] linea;
+
+            //mientras que el archivo tenga una siguiente linea
+            while ((linea = lectorCSV.readNext()) != null) {
+                //creamos una nueva lista para los alumnos no encontrados
+                List<String> listaAlumNoEncontrado = new ArrayList<>();
+
+                //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el alumno
+                if (listaAlum.buscar(linea[0]) == null){
+                    //lo guardamos en nuestra nueva lista
+                    listaAlumNoEncontrado.add(linea[0]);
+                }
+
+                //si la lista de alumnos no encontrado es distinta de 0, es decir esta llena
+                if(listaAlumNoEncontrado.size()!=0){
+                    //recorremos dicha lista
+                    for (String s : listaAlumNoEncontrado) {
+                        //mostramos un mensaje
+                        JOptionPane.showMessageDialog(null, "Alumno con DNI: "+ s + " no encontrado");
+                    }
+                }
+
+                //por si hay mas de 3 notas, hacemos un bucle vaya desde la columa 1 que seria la primera nota hasta
+                //el final de la linea
+                for(int col=1; col<linea.length;col++) {
+                    //vamos agregando al alumno con dni que corresponda la nota
+                    listaAlum.agregarNotaAlumno(linea[0], Double.parseDouble(linea[col]));
+                }
+            }
+
+            //mostramos la tabla
+            mostrarAlumnos();
+
+        } catch (IOException | CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Metodo para leer un archo .csv de las asignaturas de los profesores, que tendra:
+     * El DNI del profesor ; asignatura1 ; asignatura2 ; asignatura3
+     * @param archivo
+     */
+    public void leerAsigProfe(File archivo) {
+        //leemos el archivo
+        try (Reader lectura = Files.newBufferedReader(Path.of(archivo.toURI()))) {
+            //CSVParse va analizando el archivo
+            CSVParser parser = new CSVParserBuilder().build();
+
+            //leemis el fichero
+            CSVReader lectorCSV = new CSVReaderBuilder(lectura)
+                    .withSkipLines(0)//desde la linea 0
+                    .withCSVParser(parser)
+                    .build();
+
+            //creamos un array de string
+            String[] linea;
+
+            //mientras que el archivo tenga una siguiente linea
+            while ((linea = lectorCSV.readNext()) != null) {
+                //TODO
+            }
+
+            //mostramos la tabla
+            //mostrarCursos();
+
+        } catch (IOException | CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     // ---- ALUMNO ----
