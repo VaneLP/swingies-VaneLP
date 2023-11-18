@@ -7,7 +7,6 @@ import controlador.ListaCursos;
 import controlador.ListaProfesores;
 import modelo.Alumno;
 import modelo.Curso;
-import modelo.CursoInvalidoException;
 import modelo.Profesor;
 
 import javax.swing.*;
@@ -566,7 +565,7 @@ public class Menu extends JDialog {
                                Escribe el nombre del archivo sin el .csv
                         """);
                 //llamamos al metodo
-                guardarArchivo(nombreArchivo);
+                guardarCursos(nombreArchivo);
 
                 //quitamos la seleccion de la tabla
                 tablaCur.getSelectionModel().clearSelection();
@@ -655,7 +654,7 @@ public class Menu extends JDialog {
      *
      * @param nombreArchivo
      */
-    public void guardarArchivo(String nombreArchivo) {
+    public void guardarCursos(String nombreArchivo) {
         //si el nombre del fichero no es nulo
         if (nombreArchivo != null) {
             //creamos un csvWriter que escriba el nombre del fichero que le hemos pasado.csv (para que no haya problemas)
@@ -712,7 +711,7 @@ public class Menu extends JDialog {
             //CSVParse va analizando el archivo
             CSVParser parser = new CSVParserBuilder().build();
 
-            //leemis el fichero
+            //leemos el fichero
             CSVReader lectorCSV = new CSVReaderBuilder(lectura)
                     .withSkipLines(0)//desde la linea 0
                     .withCSVParser(parser)
