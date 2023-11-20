@@ -726,8 +726,13 @@ public class Menu extends JDialog {
 
             //mientras que el archivo tenga una siguiente linea
             while ((linea = lectorCSV.readNext()) != null) {
+                if(linea[0].matches("\\d"))
                 //los agregamos los cursos a la lista
                 listaCur.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
+                else{
+                    JOptionPane.showMessageDialog(null, "Error al importar, asegurate que el documento contenga cursos.");
+                    break;
+                }
             }
 
             //mostramos la tabla
@@ -781,6 +786,10 @@ public class Menu extends JDialog {
                 //por si hay mas de 3 notas, hacemos un bucle vaya desde la columa 1 que seria la primera nota hasta
                 //el final de la linea
                 for(int col=1; col<linea.length;col++) {
+                    if(!linea[col].matches("[0-9.]+")) {
+                        JOptionPane.showMessageDialog(null, "Error al importar, asegurate que el documento contenga alumnos con notas.");
+                        break;
+                    }
                     //vamos agregando al alumno con dni que corresponda la nota
                     listaAlum.agregarNotaAlumno(linea[0], Double.parseDouble(linea[col]));
                 }
