@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.Objects;
+
 public class Curso {
     // atributos de la clase Curso
     private final int codigo;
@@ -44,7 +46,6 @@ public class Curso {
 
     /**
      * Metodo toString
-     *
      * @return una cadena de texto formateada
      */
     @Override

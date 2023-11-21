@@ -649,6 +649,7 @@ public class Menu extends JDialog {
 //-------------------------------------------------------------------------------------------------------------
     // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
     // ---- METODOS ----
+
     /**
      * Metodo para guardar archivos
      *
@@ -703,6 +704,7 @@ public class Menu extends JDialog {
     /**
      * Metodo para leer un archivo .csv de cursos que tendra:
      * el codigo del curso , el nombre del curso
+     *
      * @param archivo
      */
     public void leerCursos(File archivo) {
@@ -722,17 +724,34 @@ public class Menu extends JDialog {
 
             //vaciamos la lista de cursos para añadir los nuevos del fichero y para que no haya problemas
             //si hay codigos repetidos
-            listaCur.getListaCursos().clear();
+            //listaCur.getListaCursos().clear();
+
+
 
             //mientras que el archivo tenga una siguiente linea
             while ((linea = lectorCSV.readNext()) != null) {
-                if(linea[0].matches("\\d"))
-                //los agregamos los cursos a la lista
-                listaCur.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
-                else{
+                boolean repe = false;
+                String cursoRepe = "";
+                for (Curso c : listaCur.getListaCursos()) {
+                    if(linea[0].matches("\\d") && c.getCodigo() == Integer.parseInt(linea[0])) {
+                        repe = true;
+                        cursoRepe= linea[0];
+                    }
+                }
+
+                if (linea[0].matches("\\d") && !repe) {
+                    //los agregamos los cursos a la lista
+                    listaCur.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
+                }
+                else if (repe) {
+                    JOptionPane.showMessageDialog(null, "Error al importar, curso "+cursoRepe+" repetido.");
+
+                }
+                else {
                     JOptionPane.showMessageDialog(null, "Error al importar, asegurate que el documento contenga cursos.");
                     break;
                 }
+
             }
 
             //mostramos la tabla
@@ -746,6 +765,7 @@ public class Menu extends JDialog {
     /**
      * Metodo para leer un archo .csv de las notas del alumno, que tendra:
      * el DNI del alumno , nota1 , nota2 , nota3
+     *
      * @param archivo
      */
     public void leerNotasAlum(File archivo) {
@@ -769,24 +789,24 @@ public class Menu extends JDialog {
                 List<String> listaAlumNoEncontrado = new ArrayList<>();
 
                 //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el alumno
-                if (listaAlum.buscar(linea[0]) == null){
+                if (listaAlum.buscar(linea[0]) == null) {
                     //lo guardamos en nuestra nueva lista
                     listaAlumNoEncontrado.add(linea[0]);
                 }
 
                 //si la lista de alumnos no encontrado es distinta de 0, es decir esta llena
-                if(listaAlumNoEncontrado.size()!=0){
+                if (listaAlumNoEncontrado.size() != 0) {
                     //recorremos dicha lista
                     for (String s : listaAlumNoEncontrado) {
                         //mostramos un mensaje
-                        JOptionPane.showMessageDialog(null, "Alumno con DNI: "+ s + " no encontrado");
+                        JOptionPane.showMessageDialog(null, "Alumno con DNI: " + s + " no encontrado");
                     }
                 }
 
                 //por si hay mas de 3 notas, hacemos un bucle vaya desde la columa 1 que seria la primera nota hasta
                 //el final de la linea
-                for(int col=1; col<linea.length;col++) {
-                    if(!linea[col].matches("[0-9.]+")) {
+                for (int col = 1; col < linea.length; col++) {
+                    if (!linea[col].matches("[0-9.]+")) {
                         JOptionPane.showMessageDialog(null, "Error al importar, asegurate que el documento contenga alumnos con notas.");
                         break;
                     }
@@ -806,6 +826,7 @@ public class Menu extends JDialog {
     /**
      * Metodo para leer un archo .csv de las asignaturas de los profesores, que tendra:
      * El DNI del profesor ; asignatura1 ; asignatura2 ; asignatura3
+     *
      * @param archivo
      */
     public void leerAsigProfe(File archivo) {
@@ -831,23 +852,23 @@ public class Menu extends JDialog {
                 List<String> listaProfeNoEncontrado = new ArrayList<>();
 
                 //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el profesor
-                if (listaProfe.buscar(linea[0]) == null){
+                if (listaProfe.buscar(linea[0]) == null) {
                     //lo guardamos en nuestra nueva lista
                     listaProfeNoEncontrado.add(linea[0]);
                 }
 
                 //si la lista de profesores no encontrado es distinta de 0, es decir esta llena
-                if(listaProfeNoEncontrado.size()!=0){
+                if (listaProfeNoEncontrado.size() != 0) {
                     //recorremos dicha lista
                     for (String s : listaProfeNoEncontrado) {
                         //mostramos un mensaje
-                        JOptionPane.showMessageDialog(null, "Profesor con DNI: "+ s + " no encontrado");
+                        JOptionPane.showMessageDialog(null, "Profesor con DNI: " + s + " no encontrado");
                     }
                 }
 
                 //por si hay mas de 3 asignaturas, hacemos un bucle vaya desde la columa 1 que seria la primera nota hasta
                 //el final de la linea
-                for(int col=1; col<linea.length;col++) {
+                for (int col = 1; col < linea.length; col++) {
                     //vamos agregando al profesor con dni que corresponda la nota
                     listaProfe.agregarAsigProfe(linea[0], linea[col]);
                 }
