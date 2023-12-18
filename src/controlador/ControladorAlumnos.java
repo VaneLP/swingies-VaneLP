@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 // Clase ListaAlumnos implementa la ILista para obtener sus metodos
-public class ListaAlumnos implements ILista<Alumno> {
+public class ControladorAlumnos implements ILista<Alumno> {
 	// atributos de la clase ListaAlumnos
 	private List<Alumno> listaAlumnos = new ArrayList<Alumno>();
 	private List<Double> listNota = new ArrayList<Double>();

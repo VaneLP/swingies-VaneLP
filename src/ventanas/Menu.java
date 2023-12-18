@@ -2,9 +2,9 @@ package ventanas;
 
 import com.opencsv.*;
 import com.opencsv.exceptions.CsvValidationException;
-import controlador.ListaAlumnos;
-import controlador.ListaCursos;
-import controlador.ListaProfesores;
+import controlador.ControladorAlumnos;
+import controlador.ControladorCursos;
+import controlador.ControladorProfesores;
 import modelo.Alumno;
 import modelo.Curso;
 import modelo.Profesor;
@@ -47,9 +47,9 @@ public class Menu extends JDialog {
     private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
     //Atributos controlador
-    private ListaAlumnos listaAlum = new ListaAlumnos();
-    private ListaCursos listaCur = new ListaCursos();
-    private ListaProfesores listaProfe = new ListaProfesores();
+    private ControladorAlumnos listaAlum = new ControladorAlumnos();
+    private ControladorCursos listaCur = new ControladorCursos();
+    private ControladorProfesores listaProfe = new ControladorProfesores();
 
     //atributos
     private String dni, codigo, nombreCur;

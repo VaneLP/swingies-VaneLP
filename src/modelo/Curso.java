@@ -1,6 +1,5 @@
 package modelo;
 
-import java.util.Objects;
 
 public class Curso {
     // atributos de la clase Curso

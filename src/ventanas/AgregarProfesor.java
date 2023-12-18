@@ -1,7 +1,7 @@
 package ventanas;
 
-import controlador.ListaCursos;
-import controlador.ListaProfesores;
+import controlador.ControladorCursos;
+import controlador.ControladorProfesores;
 import modelo.Curso;
 import modelo.CursoInvalidoException;
 import modelo.Profesor;
@@ -24,11 +24,11 @@ public class AgregarProfesor extends JDialog {
     private JComboBox<String> cursoElegir;
 
     //atributos controlador
-    private ListaProfesores listaProfe;
-    private ListaCursos listaCur;
+    private ControladorProfesores listaProfe;
+    private ControladorCursos listaCur;
 
     //constructor
-    public AgregarProfesor(Menu m, boolean b, ListaProfesores listaProfe, ListaCursos listaCur) {
+    public AgregarProfesor(Menu m, boolean b, ControladorProfesores listaProfe, ControladorCursos listaCur) {
         super(m, b);
         this.listaProfe = listaProfe;
         this.listaCur = listaCur;

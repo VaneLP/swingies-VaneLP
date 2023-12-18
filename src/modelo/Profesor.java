@@ -4,7 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 //clase Profesor que hereda de clases.Persona
-public class Profesor extends Persona {
+public class Profesor {
+    // ACCESO - BDD
+    //atributos de la clase persona
+    private String nombre;
+    private String DNI;
+    private int tlf;
+    private int edad;
+
+    private final int id;
+    private static int contador = 1;
+
     // atributos de la clase Profesor
     private String curso;
     private List<String> listaAsignaturas;
@@ -15,7 +25,16 @@ public class Profesor extends Persona {
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
     public Profesor(String nombre, String DNI, String tlf, String edad, String curso) throws CursoInvalidoException {
-        super(nombre, DNI, tlf, edad);
+        this.id = contador;
+        contador++;
+
+
+        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.nombre = nombre;
+            this.DNI = DNI;
+            this.tlf = Integer.parseInt(tlf);
+            this.edad = Integer.parseInt(edad);
+        }
 
         if (curso != null) {
             this.curso = curso;
@@ -31,7 +50,16 @@ public class Profesor extends Persona {
      * necesita ser tutor
      */
     public Profesor(String nombre, String DNI, String tlf, String edad) {
-        super(nombre, DNI, tlf, edad);
+        this.id = contador;
+        contador++;
+
+        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.nombre = nombre;
+            this.DNI = DNI;
+            this.tlf = Integer.parseInt(tlf);
+            this.edad = Integer.parseInt(edad);
+        }
+
         this.listaAsignaturas = new ArrayList<String>();
     }
 
@@ -49,9 +77,45 @@ public class Profesor extends Persona {
     public List<String> getListaAsignaturas() {
         return listaAsignaturas;
     }
-
     public void setListaAsignaturas(List<String> listaAsignaturas) {
         this.listaAsignaturas = listaAsignaturas;
+    }
+
+    //nombre
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    //dni
+    public String getDNI() {
+        return DNI;
+    }
+    public void setDNI(String DNI) {
+        this.DNI = DNI;
+    }
+
+    //tfln
+    public int getTlf() {
+        return tlf;
+    }
+    public void setTlf(int tlf) {
+        this.tlf = tlf;
+    }
+
+    //edad
+    public int getEdad() {
+        return edad;
+    }
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    //id
+    public int getId() {
+        return id;
     }
 
     // ---- METODOS ----

@@ -1,6 +1,5 @@
 package controlador;
 
-import modelo.Alumno;
 import modelo.Profesor;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 //Clase ListaProfesores implementa la ILista para obtener sus metodos
-public class ListaProfesores implements ILista<Profesor> {
+public class ControladorProfesores implements ILista<Profesor> {
 	// atributos de la clase ListaProfesores
 	private List<Profesor> listaProfesores = new ArrayList<Profesor>();
 
