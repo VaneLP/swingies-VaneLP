@@ -1,6 +1,6 @@
-package JDBC;
+package controlador.DAO.JDBC;
 
-import DAO.CursoDAO;
+import controlador.DAO.CursoDAO;
 import modelo.Curso;
 
 public class CursoDAOImpl implements CursoDAO {

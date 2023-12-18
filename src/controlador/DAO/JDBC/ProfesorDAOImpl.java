@@ -1,6 +1,6 @@
-package JDBC;
+package controlador.DAO.JDBC;
 
-import DAO.ProfesorDAO;
+import controlador.DAO.ProfesorDAO;
 import modelo.Profesor;
 
 public class ProfesorDAOImpl implements ProfesorDAO {

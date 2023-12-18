@@ -1,4 +1,4 @@
-package DAO;
+package controlador.DAO;
 
 import modelo.Alumno;
 
