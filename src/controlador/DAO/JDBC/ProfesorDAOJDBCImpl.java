@@ -3,7 +3,7 @@ package controlador.DAO.JDBC;
 import controlador.DAO.ProfesorDAO;
 import modelo.Profesor;
 
-public class ProfesorDAOImpl implements ProfesorDAO {
+public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     @Override
     public void insert(Profesor profe) {
 
