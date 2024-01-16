@@ -8,7 +8,6 @@ import controlador.ControladorProfesores;
 import modelo.Alumno;
 import modelo.Curso;
 import modelo.Profesor;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;

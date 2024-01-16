@@ -1,5 +1,7 @@
 package controlador;
 
+import controlador.DAO.AlumnoDAO;
+import controlador.DAO.JDBC.AlumnoDAOJDBCImpl;
 import modelo.Alumno;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	// atributos de la clase ListaAlumnos
 	private List<Alumno> listaAlumnos = new ArrayList<Alumno>();
 	private List<Double> listNota = new ArrayList<Double>();
+	private AlumnoDAO alumDao= new AlumnoDAOJDBCImpl();
 
 	private double allNotas = 0, media;
 	private int cont = 0;
@@ -30,6 +33,9 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 */
 	@Override
 	public boolean agregar(Alumno a) {
+		//BBDD
+		alumDao.insert(a);
+
 		return listaAlumnos.add(a);
 	}
 
@@ -79,6 +85,10 @@ public class ControladorAlumnos implements ILista<Alumno> {
 			}
 		}
 
+		//BBDD
+		//todo buscar segun DNI el id
+		alumDao.delete(1);
+
 		// si el booleano es verdadero
 		if (encontrado)
 			// eliminamos de nuestra lista el curso en el indice que hemos guardado en
@@ -98,6 +108,10 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 */
 	@Override
 	public void listar() {
+		//BBDD
+		//todo id del alumno
+		alumDao.read(1);
+
 		// hacemos un foreach para recorrer la lista
 		for (Alumno a : listaAlumnos) {
 			// mostramos el curso

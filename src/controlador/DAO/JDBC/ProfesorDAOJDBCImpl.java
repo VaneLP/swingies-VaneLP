@@ -17,7 +17,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
              Statement state = connect.createStatement()) {
 
             String crearTablaProfesores = "CREATE TABLE IF NOT EXISTS Profesores " +
-                    "(id INT PRIMARY KEY, " +
+                    "(id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "Nombre VARCHAR(255), " +
                     "DNI VARCHAR(255), " +
                     "Tlf VARCHAR(255), " +
@@ -34,15 +34,21 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
     @Override
     public void insert(Profesor profe) {
-        try (Connection connect2 = DriverManager.getConnection(url, "root", "admin")) {
+        try (Connection connect = DriverManager.getConnection(url, "root", "admin")) {
             String sentenciaInsertar = "INSERT INTO Alumno(id, Nombre, DNI, tlf, edad, curso)" +
                     "VALUES(?,?,?,?,?,?)";
-            try (PreparedStatement psAlumno = connect2.prepareStatement(sentenciaInsertar)) {
-                //psAlumno.setString( );
-
+            try (PreparedStatement psProfe = connect.prepareStatement(sentenciaInsertar)) {
+                psProfe.setInt(1, profe.getId());
+                psProfe.setString(2, profe.getNombre());
+                psProfe.setString(3, profe.getDNI());
+                psProfe.setInt(4, profe.getTlf());
+                psProfe.setInt(5, profe.getEdad());
+                psProfe.setString(6, profe.getCurso());
             }
+
             System.out.println("Insercion en las tablas compleatado con exito");
             System.out.println("---------------");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

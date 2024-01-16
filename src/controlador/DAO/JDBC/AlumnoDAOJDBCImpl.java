@@ -17,10 +17,10 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
              Statement state = connect.createStatement()) {
 
             String crearTablaAlumnos = "CREATE TABLE IF NOT EXISTS Alumnos " +
-                    "(id INT PRIMARY KEY, " +
+                    "(id INT AUTO_INCREMENT PRIMARY KEY, " +
                     "Nombre VARCHAR(255), " +
                     "DNI VARCHAR(255), " +
-                    "Tlf VARCHAR(255), " +
+                    "Tlf INT, " +
                     "Edad INT," +
                     "Curso VARCHAR(255)," +
                     "Notas"
@@ -33,15 +33,22 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
      */
     @Override
     public void insert(Alumno alum) {
-        try (Connection connect2 = DriverManager.getConnection(url, "root", "admin")) {
+        try (Connection connect = DriverManager.getConnection(url, "root", "admin")) {
         String sentenciaInsertar = "INSERT INTO Alumno(id, Nombre, DNI, tlf, edad, curso)" +
                 "VALUES(?,?,?,?,?,?)";
-            try (PreparedStatement psAlumno = connect2.prepareStatement(sentenciaInsertar)) {
-                //psAlumno.setString( );
 
+            try (PreparedStatement psAlumno = connect.prepareStatement(sentenciaInsertar)) {
+                psAlumno.setInt(1, alum.getId());
+                psAlumno.setString(2, alum.getNombre());
+                psAlumno.setString(3, alum.getDNI());
+                psAlumno.setInt(4, alum.getTlf());
+                psAlumno.setInt(5, alum.getEdad());
+                psAlumno.setString(6, alum.getCurso());
             }
+
             System.out.println("Insercion en las tablas compleatado con exito");
             System.out.println("---------------");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -54,7 +61,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void delete(Integer id) {
-        String sentencia = "DELETE FROM Alumno WHERE id = ";
+        String sentencia = "DELETE FROM Alumno WHERE id = ?";
     }
 
     @Override
