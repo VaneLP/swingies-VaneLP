@@ -34,8 +34,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     @Override
     public void insert(Alumno alum) {
         try (Connection connect2 = DriverManager.getConnection(url, "root", "admin")) {
-        String sentenciaInsertar = "INSERT INTO Alumno(Nombre, DNI, tlf, edad, curso)" +
-                "VALUES(?,?,?,?,?)";
+        String sentenciaInsertar = "INSERT INTO Alumno(id, Nombre, DNI, tlf, edad, curso)" +
+                "VALUES(?,?,?,?,?,?)";
             try (PreparedStatement psAlumno = connect2.prepareStatement(sentenciaInsertar)) {
                 //psAlumno.setString( );
 
@@ -54,7 +54,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void delete(Integer id) {
-        String sentencia = "";
+        String sentencia = "DELETE FROM Alumno WHERE id = ";
     }
 
     @Override
