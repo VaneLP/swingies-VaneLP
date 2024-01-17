@@ -3,7 +3,6 @@ package controlador;
 import controlador.DAO.CursoDAO;
 import controlador.DAO.JDBC.CursoDAOJDBCImpl;
 import modelo.Curso;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +45,7 @@ public class ControladorCursos implements ILista<Curso> {
         // hacemos un foreach de la lista
         for (Curso curso : listaCursos) {
             // si el codigo es igual al que le hemos pasado como parametro
-            if (curso.getCodigo() == Integer.parseInt(c))
+            if (curso.getId() == Integer.parseInt(c))
                 // nos devuelve el curso
                 return curso;
         }
@@ -68,6 +67,9 @@ public class ControladorCursos implements ILista<Curso> {
         int indice = 0;
         boolean encontrado = false;
 
+        //BBDD
+        curDao.delete(Integer.valueOf(codigo));
+
         /*
          * hacemos un for que empiece en 0 y continue mientras que el tamaño de la lista
          * sea diferente
@@ -75,16 +77,13 @@ public class ControladorCursos implements ILista<Curso> {
         for (int i = 0; i != listaCursos.size(); i++) {
             // si el codigo del parametro es igual al codigo de la listaCursos en la
             // posicion en la que estamos
-            if (Integer.parseInt(codigo) == listaCursos.get(i).getCodigo()) {
+            if (Integer.parseInt(codigo) == listaCursos.get(i).getId()) {
                 // guardamos en nuestra variable el indice en el que estamos
                 indice = i;
                 // cambiamos el booleano a TRUE porque hemos encontrado el curso
                 encontrado = true;
             }
         }
-
-        //BBDD
-        curDao.delete(Integer.valueOf(codigo));
 
         // si el booleano es verdadero
         if (encontrado)

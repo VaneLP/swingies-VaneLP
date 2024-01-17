@@ -3,7 +3,7 @@ package modelo;
 
 public class Curso {
     // atributos de la clase Curso
-    private final int codigo;
+    private final int id;
     private static int contador = 1;
     private String nombre;
 
@@ -17,7 +17,7 @@ public class Curso {
         this.nombre = nombre;
 
         // asignamos al codigo el contador
-        this.codigo = contador;
+        this.id = contador;
         // hacemos que el contador aumente para que el siguiente codigo sea diferente
         contador++;
     }
@@ -25,14 +25,14 @@ public class Curso {
     // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
     //constructor para poder pasarle el codigo y el nombre cuando leemos un fichero
     public Curso(int codigo, String nombre) {
-        this.codigo = codigo;
+        this.id = codigo;
         this.nombre = nombre;
     }
 
     // getters y setters
     // codigo
-    public int getCodigo() {
-        return codigo;
+    public int getId() {
+        return id;
     }
 
     // nombre
@@ -49,7 +49,7 @@ public class Curso {
      */
     @Override
     public String toString() {
-        return String.format("Curso: %s | codigo: %d", nombre, codigo);
+        return String.format("Curso: %s | codigo: %d", nombre, id);
     }
 
 }

@@ -46,12 +46,12 @@ public class Menu extends JDialog {
     private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
     //Atributos controlador
-    private ControladorAlumnos listaAlum = new ControladorAlumnos();
-    private ControladorCursos listaCur = new ControladorCursos();
-    private ControladorProfesores listaProfe = new ControladorProfesores();
+    private ControladorAlumnos controladorAlumnos = new ControladorAlumnos();
+    private ControladorCursos controladorCursos = new ControladorCursos();
+    private ControladorProfesores controladorProfesores = new ControladorProfesores();
 
     //atributos
-    private String dni, codigo, nombreCur;
+    private String dni, id, nombreCur;
     private int indice = 0, ind;
     String[] arrayMostrarCursos, arrayMostrarProfe, arrayMostrarAlum;
     private boolean encontrado;
@@ -341,7 +341,7 @@ public class Menu extends JDialog {
         alfaAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaAlum.ordenarAlfabeticamente();
+                controladorAlumnos.ordenarAlfabeticamente();
                 mostrarAlumnos();
             }
         });
@@ -432,7 +432,7 @@ public class Menu extends JDialog {
         alfebeticamenteProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaProfe.ordenarAlfabeticamente();
+                controladorProfesores.ordenarAlfabeticamente();
                 mostrarProfesores();
             }
         });
@@ -515,7 +515,7 @@ public class Menu extends JDialog {
         alfabeticamenteCuso.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listaCur.ordenarALfabeticamente();
+                controladorCursos.ordenarALfabeticamente();
                 mostrarCursos();
             }
         });
@@ -673,11 +673,11 @@ public class Menu extends JDialog {
                         String codigo = (String) tablaCur.getValueAt(i, 0);
 
                         //recorremos la lista de cursos
-                        for (Curso c : listaCur.getListaCursos()) {
+                        for (Curso c : controladorCursos.getListaCursos()) {
                             //cuando el codigo del curso coincida con el codigo del curso selccionado
-                            if (codigo.equals(String.valueOf(c.getCodigo()))) {
+                            if (codigo.equals(String.valueOf(c.getId()))) {
                                 //añadimos a la lista de array de String el curso con el codigo y el nombre
-                                guardarFilasCur.add(new String[]{String.valueOf(c.getCodigo()), c.getNombre()});
+                                guardarFilasCur.add(new String[]{String.valueOf(c.getId()), c.getNombre()});
                             }
                         }
                     }
@@ -685,9 +685,9 @@ public class Menu extends JDialog {
                 //si la fila es igual a 0, osea que no a seleccionado nada
                 else {
                     //recorremos la lista de cursos
-                    for (Curso c : listaCur.getListaCursos()) {
+                    for (Curso c : controladorCursos.getListaCursos()) {
                         //añadimos todos los cursos a la lista de array de string
-                        guardarFilasCur.add(new String[]{String.valueOf(c.getCodigo()), c.getNombre()});
+                        guardarFilasCur.add(new String[]{String.valueOf(c.getId()), c.getNombre()});
                     }
                 }
 
@@ -731,8 +731,8 @@ public class Menu extends JDialog {
             while ((linea = lectorCSV.readNext()) != null) {
                 boolean repe = false;
                 String cursoRepe = "";
-                for (Curso c : listaCur.getListaCursos()) {
-                    if(linea[0].matches("\\d") && c.getCodigo() == Integer.parseInt(linea[0])) {
+                for (Curso c : controladorCursos.getListaCursos()) {
+                    if(linea[0].matches("\\d") && c.getId() == Integer.parseInt(linea[0])) {
                         repe = true;
                         cursoRepe= linea[0];
                     }
@@ -740,7 +740,7 @@ public class Menu extends JDialog {
 
                 if (linea[0].matches("\\d") && !repe) {
                     //los agregamos los cursos a la lista
-                    listaCur.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
+                    controladorCursos.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
                 }
                 else if (repe) {
                     JOptionPane.showMessageDialog(null, "Error al importar, curso "+cursoRepe+" repetido.");
@@ -788,7 +788,7 @@ public class Menu extends JDialog {
                 List<String> listaAlumNoEncontrado = new ArrayList<>();
 
                 //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el alumno
-                if (listaAlum.buscar(linea[0]) == null) {
+                if (controladorAlumnos.buscar(linea[0]) == null) {
                     //lo guardamos en nuestra nueva lista
                     listaAlumNoEncontrado.add(linea[0]);
                 }
@@ -810,7 +810,7 @@ public class Menu extends JDialog {
                         break;
                     }
                     //vamos agregando al alumno con dni que corresponda la nota
-                    listaAlum.agregarNotaAlumno(linea[0], Double.parseDouble(linea[col]));
+                    controladorAlumnos.agregarNotaAlumno(linea[0], Double.parseDouble(linea[col]));
                 }
             }
 
@@ -851,7 +851,7 @@ public class Menu extends JDialog {
                 List<String> listaProfeNoEncontrado = new ArrayList<>();
 
                 //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el profesor
-                if (listaProfe.buscar(linea[0]) == null) {
+                if (controladorProfesores.buscar(linea[0]) == null) {
                     //lo guardamos en nuestra nueva lista
                     listaProfeNoEncontrado.add(linea[0]);
                 }
@@ -869,7 +869,7 @@ public class Menu extends JDialog {
                 //el final de la linea
                 for (int col = 1; col < linea.length; col++) {
                     //vamos agregando al profesor con dni que corresponda la nota
-                    listaProfe.agregarAsigProfe(linea[0], linea[col]);
+                    controladorProfesores.agregarAsigProfe(linea[0], linea[col]);
                 }
 
             }
@@ -891,7 +891,7 @@ public class Menu extends JDialog {
      * campos correctamente
      */
     private void agregarAlumno() {
-        AgregarAlumno a = new AgregarAlumno(this, true, listaAlum, listaCur);
+        AgregarAlumno a = new AgregarAlumno(this, true, controladorAlumnos, controladorCursos);
         a.setVisible(true);
     }
 
@@ -904,7 +904,7 @@ public class Menu extends JDialog {
         indice = 0;
 
         if (dni != null) {
-            for (Alumno a : listaAlum.getListaAlumnos()) {
+            for (Alumno a : controladorAlumnos.getListaAlumnos()) {
                 if (dni.equalsIgnoreCase(a.getDNI())) {
                     buscarAlum = new String[]{a.getNombre(), a.getDNI(), String.valueOf(a.getTlf()), String.valueOf(a.getEdad()), a.getCurso()};
 
@@ -937,9 +937,9 @@ public class Menu extends JDialog {
                 String dniBorrar = String.valueOf(tablaAlum.getValueAt(filaSeleccionadaAlum, 1));
 
                 // recorremos la listaAlumnos
-                for (int i = 0; i != listaAlum.getListaAlumnos().size(); i++) {
+                for (int i = 0; i != controladorAlumnos.getListaAlumnos().size(); i++) {
                     // si el DNI del alumno es igual al dni que nos pasan
-                    if (dniBorrar.equalsIgnoreCase(listaAlum.getListaAlumnos().get(i).getDNI())) {
+                    if (dniBorrar.equalsIgnoreCase(controladorAlumnos.getListaAlumnos().get(i).getDNI())) {
                         // guardamos en nuestra variable el indice en el que estamos
                         ind = i;
                         // cambiamos el booleano a TRUE porque hemos encontrado el curso
@@ -950,10 +950,12 @@ public class Menu extends JDialog {
                 }
 
                 // si el booleano es verdadero
-                if (encontrado)
+                if (encontrado) {
                     // eliminamos de nuestra lista el alumno en el indice que hemos guardado en
                     // nuestra variable
-                    listaAlum.getListaAlumnos().remove(ind);
+                    //controladorAlumnos.getListaAlumnos().remove(ind);
+                    controladorAlumnos.eliminar(dniBorrar);
+                }
 
                 mostrarAlumnos();
             }
@@ -967,7 +969,7 @@ public class Menu extends JDialog {
         indice = 0;
         modeloTablaAlum.setNumRows(0);
 
-        for (Alumno alumno : listaAlum.getListaAlumnos()) {
+        for (Alumno alumno : controladorAlumnos.getListaAlumnos()) {
             arrayMostrarAlum = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
                     String.valueOf(alumno.getEdad()), alumno.getCurso(), alumno.getListaNotas().toString()};
 
@@ -988,12 +990,12 @@ public class Menu extends JDialog {
             String dni = String.valueOf(tablaAlum.getValueAt(filaSeleccionadaAlumNota, 1));
 
             // recorremos la listaAlumnos
-            for (int i = 0; i != listaAlum.getListaAlumnos().size(); i++) {
+            for (int i = 0; i != controladorAlumnos.getListaAlumnos().size(); i++) {
                 // si el DNI del alumno es igual al dni que nos pasan
-                if (dni.equalsIgnoreCase(listaAlum.getListaAlumnos().get(i).getDNI())) {
+                if (dni.equalsIgnoreCase(controladorAlumnos.getListaAlumnos().get(i).getDNI())) {
                     for (int j = 0; j <= 5; j++) {
                         if (j == 5) {
-                            listaAlum.agregarNotaAlumno(listaAlum.getListaAlumnos().get(i).getDNI(), Double.parseDouble(notasAlumno));
+                            controladorAlumnos.agregarNotaAlumno(controladorAlumnos.getListaAlumnos().get(i).getDNI(), Double.parseDouble(notasAlumno));
                         }
                     }
                     // salimos
@@ -1012,7 +1014,7 @@ public class Menu extends JDialog {
         modeloTablaAlum.setNumRows(0);
         String[] arrayMostrarSus;
 
-        for (Alumno alumno : listaAlum.listarSuspensos()) {
+        for (Alumno alumno : controladorAlumnos.listarSuspensos()) {
             arrayMostrarSus = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
                     String.valueOf(alumno.getEdad()), alumno.getCurso(), alumno.getListaNotas().toString()};
 
@@ -1031,7 +1033,7 @@ public class Menu extends JDialog {
         modeloTablaAlum.setNumRows(0);
         String[] arrayMostrarApro;
 
-        for (Alumno alumno : listaAlum.listarAprobados()) {
+        for (Alumno alumno : controladorAlumnos.listarAprobados()) {
             arrayMostrarApro = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
                     String.valueOf(alumno.getEdad()), alumno.getCurso(), alumno.getListaNotas().toString()};
 
@@ -1050,7 +1052,7 @@ public class Menu extends JDialog {
      * podremos añadir un nuevo profesor
      */
     private void agregarProfesor() {
-        AgregarProfesor p = new AgregarProfesor(this, true, listaProfe, listaCur);
+        AgregarProfesor p = new AgregarProfesor(this, true, controladorProfesores, controladorCursos);
         p.setVisible(true);
     }
 
@@ -1063,7 +1065,7 @@ public class Menu extends JDialog {
         indice = 0;
 
         if (dni != null) {
-            for (Profesor p : listaProfe.getListaProfesores()) {
+            for (Profesor p : controladorProfesores.getListaProfesores()) {
                 if (dni.equalsIgnoreCase(p.getDNI())) {
                     buscarProfe = new String[]{p.getNombre(), p.getDNI(), String.valueOf(p.getTlf()),
                             String.valueOf(p.getEdad()), p.getCurso()};
@@ -1097,9 +1099,9 @@ public class Menu extends JDialog {
                 String dniBorrar = String.valueOf(tablaProfe.getValueAt(filaSeleccionadaProfe, 1));
 
                 // recorremos la listaProfe
-                for (int i = 0; i != listaProfe.getListaProfesores().size(); i++) {
+                for (int i = 0; i != controladorProfesores.getListaProfesores().size(); i++) {
                     // si el DNI del profe es igual al dni que nos pasan
-                    if (dniBorrar.equalsIgnoreCase(listaProfe.getListaProfesores().get(i).getDNI())) {
+                    if (dniBorrar.equalsIgnoreCase(controladorProfesores.getListaProfesores().get(i).getDNI())) {
                         // guardamos en nuestra variable el indice en el que estamos
                         ind = i;
                         // cambiamos el booleano a TRUE porque hemos encontrado el dni
@@ -1110,10 +1112,12 @@ public class Menu extends JDialog {
                 }
 
                 // si el booleano es verdadero
-                if (encontrado)
+                if (encontrado) {
                     // eliminamos de nuestra lista el curso en el indice que hemos guardado en
                     // nuestra variable
-                    listaProfe.getListaProfesores().remove(ind);
+                    //controladorProfesores.getListaProfesores().remove(ind);
+                    controladorProfesores.eliminar(dniBorrar);
+                }
 
                 mostrarProfesores();
             }
@@ -1128,7 +1132,7 @@ public class Menu extends JDialog {
         indice = 0;
         modeloTablaProfe.setNumRows(0);
 
-        for (Profesor profesor : listaProfe.getListaProfesores()) {
+        for (Profesor profesor : controladorProfesores.getListaProfesores()) {
             arrayMostrarProfe = new String[]{profesor.getNombre(), profesor.getDNI(),
                     String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), profesor.getCurso(), profesor.getListaAsignaturas().toString()};
 
@@ -1146,7 +1150,7 @@ public class Menu extends JDialog {
         modeloTablaProfe.setNumRows(0);
         String[] arrayMostrarTutores;
 
-        for (Profesor profesor : listaProfe.listarTutores()) {
+        for (Profesor profesor : controladorProfesores.listarTutores()) {
             arrayMostrarTutores = new String[]{profesor.getNombre(), profesor.getDNI(),
                     String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), profesor.getCurso()};
 
@@ -1166,7 +1170,7 @@ public class Menu extends JDialog {
         nombreCur = JOptionPane.showInputDialog("Introduce el nombre del curso");
 
         if (nombreCur != null && nombreCur.matches("[A-Za-z]+"))
-            listaCur.agregar(new Curso(nombreCur));
+            controladorCursos.agregar(new Curso(nombreCur));
         else
             JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
     }
@@ -1175,13 +1179,13 @@ public class Menu extends JDialog {
      * Metodo para buscar curso a traves de su codigo
      */
     private void buscarCurso() {
-        codigo = JOptionPane.showInputDialog("Introduce el codigo");
+        id = JOptionPane.showInputDialog("Introduce el codigo");
         String[] buscarCurso;
         indice = 0;
 
-        for (Curso curso : listaCur.getListaCursos()) {
-            if (codigo.equals(String.valueOf(curso.getCodigo()))) {
-                buscarCurso = new String[]{String.valueOf(curso.getCodigo()), curso.getNombre()};
+        for (Curso curso : controladorCursos.getListaCursos()) {
+            if (id.equals(String.valueOf(curso.getId()))) {
+                buscarCurso = new String[]{String.valueOf(curso.getId()), curso.getNombre()};
 
                 modeloTablaCur.setNumRows(0);
 
@@ -1212,14 +1216,14 @@ public class Menu extends JDialog {
                 int codigoBorrar = Integer.parseInt((String) tablaCur.getValueAt(filaSeleccionadaCur, 0));
 
                 // recorremos la listaCur
-                for (int i = 0; i != listaCur.getListaCursos().size(); i++) {
+                for (int i = 0; i != controladorCursos.getListaCursos().size(); i++) {
                     // si el codigo del curso es igual al codigo del curso que nos pasan
-                    if (codigoBorrar == listaCur.getListaCursos().get(i).getCodigo()) {
+                    if (codigoBorrar == controladorCursos.getListaCursos().get(i).getId()) {
                         // guardamos en nuestra variable el indice en el que estamos
                         ind = i;
                         // cambiamos el booleano a TRUE porque hemos encontrado el curso
                         encontrado = true;
-                        cursoSave = listaCur.getListaCursos().get(i).getNombre();
+                        cursoSave = controladorCursos.getListaCursos().get(i).getNombre();
                         // salimos
                         break;
                     }
@@ -1229,11 +1233,12 @@ public class Menu extends JDialog {
                 if (encontrado) {
                     // eliminamos de nuestra lista el curso en el indice que hemos guardado en
                     // nuestra variable
-                    listaCur.getListaCursos().remove(ind);
+                    //controladorCursos.getListaCursos().remove(ind);
+                    controladorCursos.eliminar(String.valueOf(codigoBorrar));
                 }
 
 
-                for (Alumno a : listaAlum.getListaAlumnos()) {
+                for (Alumno a : controladorAlumnos.getListaAlumnos()) {
                     System.out.println(a.getCurso());
                     if (a.getCurso().equalsIgnoreCase(cursoSave))
                         a.setCurso("");
@@ -1251,8 +1256,8 @@ public class Menu extends JDialog {
         indice = 0;
         modeloTablaCur.setNumRows(0);
 
-        for (Curso c : listaCur.getListaCursos()) {
-            arrayMostrarCursos = new String[]{String.valueOf(c.getCodigo()), c.getNombre()};
+        for (Curso c : controladorCursos.getListaCursos()) {
+            arrayMostrarCursos = new String[]{String.valueOf(c.getId()), c.getNombre()};
             modeloTablaCur.insertRow(indice, arrayMostrarCursos);
 
             indice++;

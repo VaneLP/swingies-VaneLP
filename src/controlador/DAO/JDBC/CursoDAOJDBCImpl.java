@@ -2,16 +2,13 @@ package controlador.DAO.JDBC;
 
 import controlador.DAO.CursoDAO;
 import modelo.Curso;
-
 import java.sql.*;
 
 public class CursoDAOJDBCImpl implements CursoDAO {
-
     private static final String url = "jdbc:mysql://localhost:3306/ies-thiar";
     private static final String user = "root";
     private static final String pass = "admin";
-
-
+    
     private static void crearTablasCur() {
         try (Connection connect = DriverManager.getConnection(url, user, pass);
              Statement state = connect.createStatement()) {
@@ -19,7 +16,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
             String crearTablaCusos = "CREATE TABLE IF NOT EXISTS Cursos " +
                     "(id INT PRIMARY KEY, " +
                     "Nombre VARCHAR(255) " +
-                    ");";
+                    ")";
 
             state.executeUpdate(crearTablaCusos);
 
@@ -39,7 +36,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
                     "VALUES(?,?)";
 
             try (PreparedStatement psCur = connect.prepareStatement(sentenciaInsertar)) {
-                psCur.setInt(1,cur.getCodigo());
+                psCur.setInt(1,cur.getId());
                 psCur.setString(2,cur.getNombre());
 
                 psCur.execute();
@@ -63,12 +60,12 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)){
 
-            String borrarTablaCur = "DELETE FROM Cusos WHERE id = ?;";
+            String borrarTablaCur = "DELETE FROM Cursos WHERE id = ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(borrarTablaCur)) {
                 psCur.setInt(1,idCur);
 
-                psCur.executeUpdate(borrarTablaCur);
+                psCur.executeUpdate();
             }
 
             System.out.println("Tablas cur borradas con exito");
