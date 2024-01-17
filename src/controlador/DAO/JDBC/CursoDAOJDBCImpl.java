@@ -22,6 +22,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
                     ");";
 
             state.executeUpdate(crearTablaCusos);
+
             System.out.println("Tabla creada cur");
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -53,10 +54,6 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
     @Override
     public void update(Curso cur) {
-
-        crearTablasCur();
-
-
     }
 
     @Override
@@ -64,13 +61,12 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
         crearTablasCur();
 
-        try (Connection connect = DriverManager.getConnection(url, "root", "admin")){
+        try (Connection connect = DriverManager.getConnection(url, user, pass)){
 
             String borrarTablaCur = "DELETE FROM Cusos WHERE id = ?;";
 
             try (PreparedStatement psCur = connect.prepareStatement(borrarTablaCur)) {
                 psCur.setInt(1,idCur);
-
 
                 psCur.executeUpdate(borrarTablaCur);
             }

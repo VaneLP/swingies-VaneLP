@@ -84,8 +84,7 @@ public class ControladorCursos implements ILista<Curso> {
         }
 
         //BBDD
-        //todo buscar segun DNI el id
-        curDao.delete(1);
+        curDao.delete(Integer.valueOf(codigo));
 
         // si el booleano es verdadero
         if (encontrado)

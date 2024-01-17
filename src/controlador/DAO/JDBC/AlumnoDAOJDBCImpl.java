@@ -3,17 +3,16 @@ package controlador.DAO.JDBC;
 import controlador.DAO.AlumnoDAO;
 import modelo.Alumno;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     //guardamos la url donde se encuentre nuestra BD
     private static final String url = "jdbc:mysql://localhost:3306/ies-thiar";
+    private static final String user = "root";
+    private static final String pass = "admin";
 
-    /*
-       try (Connection connect = DriverManager.getConnection(url, "root", "admin");
+    private static void crearTablasAlum() {
+        try (Connection connect = DriverManager.getConnection(url, user, pass);
              Statement state = connect.createStatement()) {
 
             String crearTablaAlumnos = "CREATE TABLE IF NOT EXISTS Alumnos " +
@@ -23,17 +22,23 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "Tlf INT, " +
                     "Edad INT," +
                     "Curso VARCHAR(255)," +
-                    "Notas"
-                    );";
+                    "Notas" +
+                    ");";
 
-        state.executeUpdate(crearTablaTrabajodores);
-     } catch (SQLException e) {
+            state.executeUpdate(crearTablaAlumnos);
+
+            System.out.println("Tabla creada Alum");
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-     */
+    }
+
     @Override
     public void insert(Alumno alum) {
-        try (Connection connect = DriverManager.getConnection(url, "root", "admin")) {
+
+        crearTablasAlum();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
         String sentenciaInsertar = "INSERT INTO Alumno(id, Nombre, DNI, tlf, edad, curso)" +
                 "VALUES(?,?,?,?,?,?)";
 
@@ -56,12 +61,28 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void update(Alumno alum) {
-        String sentencia = "";
     }
 
     @Override
-    public void delete(Integer id) {
-        String sentencia = "DELETE FROM Alumno WHERE id = ?";
+    public void delete(Integer idAlum) {
+
+        crearTablasAlum();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)){
+
+            String borrarTablaCur = "DELETE FROM Cusos WHERE id = ?;";
+
+            try (PreparedStatement psCur = connect.prepareStatement(borrarTablaCur)) {
+                psCur.setInt(1,idAlum);
+
+                psCur.executeUpdate(borrarTablaCur);
+            }
+
+            System.out.println("Tablas cur borradas con exito");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

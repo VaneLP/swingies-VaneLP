@@ -6,6 +6,6 @@ import modelo.Alumno;
 public interface AlumnoDAO {
     void insert(Alumno alum);
     void update(Alumno alum);
-    void delete(Integer id);
+    void delete(Integer idAlum);
     Alumno read(Integer idAlum);
 }
