@@ -3,21 +3,13 @@ package controlador;
 import controlador.DAO.JDBC.ProfesorDAOJDBCImpl;
 import controlador.DAO.ProfesorDAO;
 import modelo.Profesor;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 //Clase ListaProfesores implementa la ILista para obtener sus metodos
 public class ControladorProfesores implements ILista<Profesor> {
-	// atributos de la clase ListaProfesores
-	private List<Profesor> listaProfesores = new ArrayList<Profesor>();
 	private ProfesorDAO profeDao= new ProfesorDAOJDBCImpl();
-
-	// getter lista profesores
-	public List<Profesor> getListaProfesores() {
-		return listaProfesores;
-	}
 
 	// ---- METODOS ----
 	/**
@@ -28,11 +20,9 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 * @return nos duvuelve si se ha añadido o no
 	 */
 	@Override
-	public boolean agregar(Profesor p) {
+	public void agregar(Profesor p) {
 		//BDD
 		profeDao.insert(p);
-
-		return listaProfesores.add(p);
 	}
 
 	/**
@@ -62,39 +52,16 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 * @return nos duvuelve TRUE si se ha eliminado el profesore y FALSE sino
 	 */
 	@Override
-	public boolean eliminar(String DNI) {
-		// variables
-		int indice = 0;
-		boolean encontrado = false;
-
-		// recorremos la listaProfesores
-		for (int i = 0; i != listaProfesores.size(); i++) {
-			// si el DNI del profesor es igual al dni que nos pasan
-			if (DNI.equals(listaProfesores.get(i).getDNI())) {
-				// guardamos en nuestra variable el indice en el que estamos
-				indice = i;
-				// cambiamos el booleano a TRUE porque hemos encontrado el curso
-				encontrado = true;
-				// salimos
-				break;
-			}
-		}
-
+	public void eliminar(String DNI) {
 		//BBDD
 		//todo buscar segun DNI el id
 		profeDao.delete(1);
 
+		// variables
+		int indice = 0;
+		boolean encontrado = false;
 
-		// si el booleano es verdadero
-		if (encontrado)
-			// eliminamos de nuestra lista el curso en el indice que hemos guardado en
-			// nuestra variable
-			listaProfesores.remove(indice);
 
-		System.out.print("Alumno eliminado: " + encontrado + "\n");
-
-		// si no se a encontrado el curso devolvemos FALSE
-		return encontrado;
 	}
 
 	/**
@@ -107,7 +74,7 @@ public class ControladorProfesores implements ILista<Profesor> {
 	public Profesor mostrarProfesor(String dni) {
 		//BBDD
 		//todo id del alumno
-		profeDao.read(1);
+		profeDao.readUno(dni);
 
 		// recorremos la listaProfesores
 		for (Profesor profesor : listaProfesores) {
@@ -145,12 +112,6 @@ public class ControladorProfesores implements ILista<Profesor> {
 	public List<Profesor> listar() {
 		return null;
 
-
-//		// hacemos un foreach para recorrer la lista
-//		for (Profesor p : listaProfesores) {
-//			// mostramos el curso
-//			System.out.println(p);
-//		}
 
 	}
 

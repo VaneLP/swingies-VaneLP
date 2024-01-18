@@ -19,18 +19,18 @@ public class AgregarAlumno extends JDialog {
     private JPanel panelAgregar;
     private JButton cancelarButton;
     private JButton aceptarButton;
-    private JComboBox<String> cursoElegir;
+    private JComboBox<Curso> cursoElegir;
 
     //atributos controlador
     private ControladorAlumnos listaAlum;
-    private ControladorCursos listaCurso;
+    private ControladorCursos controladorCurso;
 
 //-------------------------------------------------------------------------------------------------------------
     //constructor
     public AgregarAlumno(Menu m, boolean b, ControladorAlumnos listaAlum, ControladorCursos listaCurso) {
         super(m, b);
         this.listaAlum = listaAlum;
-        this.listaCurso = listaCurso;
+        this.controladorCurso = listaCurso;
 
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelAgregar);
@@ -70,7 +70,7 @@ public class AgregarAlumno extends JDialog {
                     }
                     else {
                         listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),
-                                textEdad.getText(), (String) cursoElegir.getSelectedItem()));
+                                textEdad.getText(), (Curso) cursoElegir.getSelectedItem()));
                         dispose();
                     }
 
@@ -95,8 +95,8 @@ public class AgregarAlumno extends JDialog {
 //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     private void rellenar() {
-        for (Curso c : listaCurso.getListaCursos()) {
-            cursoElegir.addItem(c.getNombre());
+        for (Curso c : controladorCurso.listar()) {
+            cursoElegir.addItem(c);
         }
     }
 

@@ -2,7 +2,6 @@ package controlador.DAO.JDBC;
 
 import controlador.DAO.CursoDAO;
 import modelo.Curso;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +15,10 @@ public class CursoDAOJDBCImpl implements CursoDAO {
         try (Connection connect = DriverManager.getConnection(url, user, pass);
              Statement state = connect.createStatement()) {
 
-            String crearTablaCusos = "CREATE TABLE IF NOT EXISTS Cursos " +
-                    "(id INT PRIMARY KEY, " +
-                    "Nombre VARCHAR(255) " +
+            String crearTablaCusos =
+                    "CREATE TABLE IF NOT EXISTS Cursos " +
+                    "(id INT PRIMARY KEY AUTO_INCREMENT, " +
+                    "Nombre VARCHAR(255)  NOT NULL" +
                     ")";
 
             state.executeUpdate(crearTablaCusos);
@@ -35,25 +35,21 @@ public class CursoDAOJDBCImpl implements CursoDAO {
         crearTablasCur();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
-            String sentenciaInsertar = "INSERT INTO Cursos(id, Nombre)" +
-                    "VALUES(?,?)";
+            String sentenciaInsertar =
+                    "INSERT INTO Cursos(Nombre)" +
+                    "VALUES(?)";
 
             try (PreparedStatement psCur = connect.prepareStatement(sentenciaInsertar)) {
-                psCur.setInt(1, cur.getId());
-                psCur.setString(2, cur.getNombre());
+                psCur.setString(1, cur.getNombre());
 
                 psCur.execute();
             }
 
-            System.out.println("Insercion cur en las tablas compleatado con exito");
+            System.out.println("Insercion cur");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void update(Curso cur) {
     }
 
     @Override
@@ -71,7 +67,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
                 psCur.executeUpdate();
             }
 
-            System.out.println("Tablas cur borradas con exito");
+            System.out.println("Tablas cur borradas");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -79,10 +75,9 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public Curso read(Integer idCur) {
+    public Curso readUno(Integer idCur) {
 
         crearTablasCur();
-        Curso c=null;
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
@@ -92,21 +87,17 @@ public class CursoDAOJDBCImpl implements CursoDAO {
                 psCur.setInt(1, idCur);
                 ResultSet rs = psCur.executeQuery();
 
-                while (rs.next()) {
+                if (rs.next()) {
                     int id = rs.getInt("id");
                     String nombre = rs.getString("Nombre");
 
-                    c =new Curso(id, nombre);
+                    return new Curso(id, nombre);
                 }
-
                 System.out.println("Tablas cur listadas con exito");
-                return c;
             }
-
         } catch (SQLException e) {
             new RuntimeException(e);
         }
-
         return null;
     }
 
@@ -133,7 +124,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
             }
 
-            System.out.println("Tablas cur listadas con exito");
+            System.out.println("Tablas cur listadas");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -143,7 +134,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> ordenarAlfDAO() {
+    public List<Curso> ordenarCurAlfDAO() {
 
         crearTablasCur();
         List<Curso> listaCur = new ArrayList<>();
@@ -165,12 +156,11 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
             }
 
-            System.out.println("Tablas cur ordenadas alfa con exito");
+            System.out.println("Tablas cur ordenadas alfa");
+            return listaCur;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        return listaCur;
     }
 }

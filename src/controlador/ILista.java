@@ -9,9 +9,8 @@ interface ILista<T> {
 	 * Metodo agregar
 	 * 
 	 * @param object, le pasamos un objeto porque aun no sabemos la clase
-	 * @return True or false
 	 */
-	boolean agregar(T object);
+	void agregar(T object);
 
 	/**
 	 * Metodo buscar
@@ -25,16 +24,13 @@ interface ILista<T> {
 	 * Metodo eliminar
 	 * 
 	 * @param s, le pasamos un String
-	 * @return True o false
 	 */
-	boolean eliminar(String s);
+	void eliminar(String s);
 
 	/**
 	 * Metodo listar
 	 * <p>
 	 * No devuelve nada
-	 *
-	 * @return
 	 */
 	List<T> listar();
 }

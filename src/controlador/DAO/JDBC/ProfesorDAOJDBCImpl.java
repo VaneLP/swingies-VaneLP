@@ -1,9 +1,11 @@
 package controlador.DAO.JDBC;
 
 import controlador.DAO.ProfesorDAO;
+import modelo.Alumno;
 import modelo.Profesor;
 
 import java.sql.*;
+import java.util.List;
 
 public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     private static final String url = "jdbc:mysql://localhost:3306/ies-thiar";
@@ -107,7 +109,23 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public Profesor read(Integer idAlum) {
+    public Profesor readUno(String dniProfe) {
         return null;
     }
+
+    @Override
+    public List<Profesor> listaProfeDAO() {
+        return null;
+    }
+
+    @Override
+    public List<Profesor> listaProfeTutorDAO() {
+        return null;
+    }
+
+    @Override
+    public List<Profesor> ordenarProfeAlfDAO() {
+        return null;
+    }
+
 }

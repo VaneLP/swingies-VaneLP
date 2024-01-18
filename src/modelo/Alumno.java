@@ -12,11 +12,11 @@ public class Alumno {
     private int tlf;
     private int edad;
 
-    private final int id;
+    private  int id;
     private static int contador = 1;
 
     // atributos de la clase clases.Alumno
-    private String curso;
+    private Curso curso;
     private List<Double> listaNotas;
 
     /*
@@ -24,7 +24,7 @@ public class Alumno {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Alumno
      */
-    public Alumno(String nombre, String DNI, String tlf, String edad, String curso) throws CursoInvalidoException {
+    public Alumno(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
         this.id = contador;
         contador++;
 
@@ -42,13 +42,29 @@ public class Alumno {
         else
             throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
     }
+    public Alumno(int id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.id = id;
+            this.nombre = nombre;
+            this.DNI = DNI;
+            this.tlf = Integer.parseInt(tlf);
+            this.edad = Integer.parseInt(edad);
+        }
+
+        if(curso!=null) {
+            this.curso = curso;
+            this.listaNotas = new ArrayList<Double>();
+        }
+        else
+            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
+    }
 
     // getters y setters
     // curso
-    public String getCurso() {
+    public Curso getCurso() {
         return curso;
     }
-    public void setCurso(String curso) {
+    public void setCurso(Curso curso) {
         if(curso!=null)
             this.curso = curso;
     }
