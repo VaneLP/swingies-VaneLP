@@ -42,17 +42,22 @@ public class ControladorCursos implements ILista<Curso> {
      */
     @Override
     public Curso buscar(String c) {
-        // hacemos un foreach de la lista
-        for (Curso curso : listaCursos) {
-            // si el codigo es igual al que le hemos pasado como parametro
-            if (curso.getId() == Integer.parseInt(c))
-                // nos devuelve el curso
-                return curso;
-        }
 
-        // si no lo encuentra nos devuelve el curso nulo
-        System.out.println("Curso no encontrado");
-        return null;
+        //BBDD
+        //todo id del alumno
+        return curDao.read(Integer.valueOf(c));
+
+//        // hacemos un foreach de la lista
+//        for (Curso curso : listaCursos) {
+//            // si el codigo es igual al que le hemos pasado como parametro
+//            if (curso.getId() == Integer.parseInt(c))
+//                // nos devuelve el curso
+//                return curso;
+//        }
+//
+//        // si no lo encuentra nos devuelve el curso nulo
+//        System.out.println("Curso no encontrado");
+//        return null;
     }
 
     /**
@@ -104,32 +109,32 @@ public class ControladorCursos implements ILista<Curso> {
      * @return nos duvuelve todos los cursos que tenemos en la lista
      */
     @Override
-    public void listar() {
-        //BBDD
-        //todo id del alumno
-        curDao.read(1);
+    public List<Curso> listar() {
+    return curDao.listaCurDAO();
 
-        // hacemos un foreach para recorrer la lista
-        for (Curso curso : listaCursos) {
-            // mostramos el curso
-            System.out.println(curso);
-        }
+//        // hacemos un foreach para recorrer la lista
+//        for (Curso curso : listaCursos) {
+//            // mostramos el curso
+//            System.out.println(curso);
+//        }
     }
 
-    public void ordenarALfabeticamente() {
-        /*
-         * cogemos nuestra lista de alumnos y con el metodo . sort que tienen los
-         * arrayList hacemos un new Comparator de la clase clases.Alumno
-         */
-        listaCursos.sort(new Comparator<Curso>() {
-            // sobreescribimos el metodo que tiene el Comparator de compare, al cual le
-            // pasamos 2 alumnos
-            @Override
-            public int compare(Curso c1, Curso c2) {
-                // nos devuelve ya la comparion entre los nombre de los dos alumnos ordenandolos
-                // asi
-                return c1.getNombre().compareToIgnoreCase(c2.getNombre());
-            }
-        });
+    public List<Curso> ordenarALfabeticamente() {
+        return curDao.ordenarAlfDAO();
+
+//        /*
+//         * cogemos nuestra lista de alumnos y con el metodo . sort que tienen los
+//         * arrayList hacemos un new Comparator de la clase clases.Alumno
+//         */
+//        listaCursos.sort(new Comparator<Curso>() {
+//            // sobreescribimos el metodo que tiene el Comparator de compare, al cual le
+//            // pasamos 2 alumnos
+//            @Override
+//            public int compare(Curso c1, Curso c2) {
+//                // nos devuelve ya la comparion entre los nombre de los dos alumnos ordenandolos
+//                // asi
+//                return c1.getNombre().compareToIgnoreCase(c2.getNombre());
+//            }
+//        });
     }
 }

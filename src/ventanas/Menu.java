@@ -515,8 +515,7 @@ public class Menu extends JDialog {
         alfabeticamenteCuso.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controladorCursos.ordenarALfabeticamente();
-                mostrarCursos();
+                mostrarCursosAlfa();
             }
         });
 
@@ -1180,19 +1179,21 @@ public class Menu extends JDialog {
      */
     private void buscarCurso() {
         id = JOptionPane.showInputDialog("Introduce el codigo");
-        String[] buscarCurso;
-        indice = 0;
+        //indice = 0;
 
-        for (Curso curso : controladorCursos.getListaCursos()) {
-            if (id.equals(String.valueOf(curso.getId()))) {
-                buscarCurso = new String[]{String.valueOf(curso.getId()), curso.getNombre()};
+        Curso cursito = controladorCursos.buscar(id);
+        String[] buscarCurso = new String[]{String.valueOf(cursito.getId()), cursito.getNombre()};
 
+//        for (Curso curso : controladorCursos.getListaCursos()) {
+//            if (id.equals(String.valueOf(curso.getId()))) {
+//                buscarCurso = new String[]{String.valueOf(curso.getId()), curso.getNombre()};
+//
                 modeloTablaCur.setNumRows(0);
-
-                modeloTablaCur.insertRow(indice, buscarCurso);
-            } else
-                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
-        }
+//
+                modeloTablaCur.insertRow(0, buscarCurso);
+//            } else
+//                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+//        }
 
     }
 
@@ -1216,14 +1217,14 @@ public class Menu extends JDialog {
                 int codigoBorrar = Integer.parseInt((String) tablaCur.getValueAt(filaSeleccionadaCur, 0));
 
                 // recorremos la listaCur
-                for (int i = 0; i != controladorCursos.getListaCursos().size(); i++) {
+                for (int i = 0; i != controladorCursos.listar().size(); i++) {
                     // si el codigo del curso es igual al codigo del curso que nos pasan
-                    if (codigoBorrar == controladorCursos.getListaCursos().get(i).getId()) {
+                    if (codigoBorrar == controladorCursos.listar().get(i).getId()) {
                         // guardamos en nuestra variable el indice en el que estamos
                         ind = i;
                         // cambiamos el booleano a TRUE porque hemos encontrado el curso
                         encontrado = true;
-                        cursoSave = controladorCursos.getListaCursos().get(i).getNombre();
+                        cursoSave = controladorCursos.listar().get(i).getNombre();
                         // salimos
                         break;
                     }
@@ -1238,11 +1239,11 @@ public class Menu extends JDialog {
                 }
 
 
-                for (Alumno a : controladorAlumnos.getListaAlumnos()) {
-                    System.out.println(a.getCurso());
-                    if (a.getCurso().equalsIgnoreCase(cursoSave))
-                        a.setCurso("");
-                }
+//                for (Alumno a : controladorAlumnos.listar()) {
+//                    System.out.println(a.getCurso());
+//                    if (a.getCurso().equalsIgnoreCase(cursoSave))
+//                        a.setCurso("");
+//                }
                 mostrarCursos();
             }
         }
@@ -1253,16 +1254,28 @@ public class Menu extends JDialog {
      * Metodo mostrar todos los cursos
      */
     private void mostrarCursos() {
+
         indice = 0;
         modeloTablaCur.setNumRows(0);
 
-        for (Curso c : controladorCursos.getListaCursos()) {
+        for (Curso c : controladorCursos.listar()) {
+            arrayMostrarCursos = new String[]{String.valueOf(c.getId()), c.getNombre()};
+            modeloTablaCur.insertRow(indice, arrayMostrarCursos);
+
+           indice++;
+       }
+    }
+    private void mostrarCursosAlfa() {
+
+        indice = 0;
+        modeloTablaCur.setNumRows(0);
+
+        for (Curso c : controladorCursos.ordenarALfabeticamente()) {
             arrayMostrarCursos = new String[]{String.valueOf(c.getId()), c.getNombre()};
             modeloTablaCur.insertRow(indice, arrayMostrarCursos);
 
             indice++;
         }
     }
-
 
 }

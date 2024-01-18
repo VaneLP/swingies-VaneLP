@@ -105,6 +105,10 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 * @return nos devuelve un prodesor si corresponde el DNI
 	 */
 	public Profesor mostrarProfesor(String dni) {
+		//BBDD
+		//todo id del alumno
+		profeDao.read(1);
+
 		// recorremos la listaProfesores
 		for (Profesor profesor : listaProfesores) {
 			// si el dni del profesor es igual al pasado por parametro
@@ -138,16 +142,15 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 * @return nos duvuelve todos los profesores que tenemos en la lista
 	 */
 	@Override
-	public void listar() {
-		//BBDD
-		//todo id del alumno
-		profeDao.read(1);
+	public List<Profesor> listar() {
+		return null;
 
-		// hacemos un foreach para recorrer la lista
-		for (Profesor p : listaProfesores) {
-			// mostramos el curso
-			System.out.println(p);
-		}
+
+//		// hacemos un foreach para recorrer la lista
+//		for (Profesor p : listaProfesores) {
+//			// mostramos el curso
+//			System.out.println(p);
+//		}
 
 	}
 

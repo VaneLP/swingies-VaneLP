@@ -48,6 +48,10 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 */
 	@Override
 	public Alumno buscar(String dni) {
+		//BBDD
+		//todo id del alumno
+		alumDao.read(1);
+
 		// recorremos la lista de alumnos
 		for (Alumno alum : listaAlumnos) {
 			// controbamos si el dni es igual que nos pasan como parametro
@@ -107,16 +111,15 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * @return nos duvuelve todos los alumnos que tenemos en la lista
 	 */
 	@Override
-	public void listar() {
-		//BBDD
-		//todo id del alumno
-		alumDao.read(1);
+	public List<Alumno> listar() {
 
-		// hacemos un foreach para recorrer la lista
-		for (Alumno a : listaAlumnos) {
-			// mostramos el curso
-			System.out.println(a);
-		}
+		return null;
+
+//		// hacemos un foreach para recorrer la lista
+//		for (Alumno a : listaAlumnos) {
+//			// mostramos el curso
+//			System.out.println(a);
+//		}
 	}
 
 	/**

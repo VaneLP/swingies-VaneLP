@@ -1,5 +1,7 @@
 package controlador;
 
+import java.util.List;
+
 //Interfaz la cual puede contener <T> porque no sabemos que clase va a contener
 interface ILista<T> {
 	// ---- METODOS ----
@@ -34,5 +36,5 @@ interface ILista<T> {
 	 *
 	 * @return
 	 */
-	void listar();
+	List<T> listar();
 }
