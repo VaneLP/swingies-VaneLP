@@ -11,7 +11,8 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     private static final String user = "root";
     private static final String pass = "admin";
 
-    private static void crearTablasCur() {
+    @Override
+    public void crearTablasCur() {
         try (Connection connect = DriverManager.getConnection(url, user, pass);
              Statement state = connect.createStatement()) {
 
@@ -31,9 +32,6 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
     @Override
     public void insert(Curso cur) {
-
-        crearTablasCur();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
             String sentenciaInsertar =
                     "INSERT INTO Cursos(Nombre)" +
@@ -54,9 +52,6 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
     @Override
     public void delete(Integer idCur) {
-
-        crearTablasCur();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
             String borrarTablaCur = "DELETE FROM Cursos WHERE id = ?";
@@ -76,9 +71,6 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
     @Override
     public Curso readUno(Integer idCur) {
-
-        crearTablasCur();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
             String leerTablaCur = "SELECT * FROM Cursos WHERE id = ?";
@@ -103,8 +95,6 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
     @Override
     public List<Curso> listaCurDAO() {
-
-        crearTablasCur();
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -135,8 +125,6 @@ public class CursoDAOJDBCImpl implements CursoDAO {
 
     @Override
     public List<Curso> ordenarCurAlfDAO() {
-
-        crearTablasCur();
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {

@@ -49,7 +49,7 @@ public class Curso {
      */
     @Override
     public String toString() {
-        return String.format("Curso: %s | codigo: %d", nombre, id);
+        return nombre;
     }
 
 }

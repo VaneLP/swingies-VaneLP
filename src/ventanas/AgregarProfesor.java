@@ -5,12 +5,9 @@ import controlador.ControladorProfesores;
 import modelo.Curso;
 import modelo.CursoInvalidoException;
 import modelo.Profesor;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AgregarProfesor extends JDialog {
     //atributos
@@ -21,17 +18,17 @@ public class AgregarProfesor extends JDialog {
     private JPanel panelAgregar;
     private JButton cancelarButton;
     private JButton aceptarButton;
-    private JComboBox<String> cursoElegir;
+    private JComboBox<Curso> cursoElegir;
 
     //atributos controlador
     private ControladorProfesores listaProfe;
-    private ControladorCursos listaCur;
+    private ControladorCursos controladorCursos;
 
     //constructor
     public AgregarProfesor(Menu m, boolean b, ControladorProfesores listaProfe, ControladorCursos listaCur) {
         super(m, b);
         this.listaProfe = listaProfe;
-        this.listaCur = listaCur;
+        this.controladorCursos = listaCur;
 
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelAgregar);
@@ -96,7 +93,7 @@ public class AgregarProfesor extends JDialog {
             JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el nombre sea incorrecto. Intentalo de nuevo.");
         }else {
             listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), textTlf.getText(),
-                    textEdad.getText(), Curso.cursoNulo));
+                    textEdad.getText(), (Curso) cursoElegir.getSelectedItem()));
 
             dispose();
         }
@@ -105,24 +102,10 @@ public class AgregarProfesor extends JDialog {
     //-------------------------------------------------------------------------------------------------------------
     // ---- METODOS ----
     private void rellenar() {
-        List<Curso> listaCursoSinTutor = new ArrayList<>();
-        boolean cursoTieneTutor;
+        cursoElegir.addItem(Curso.cursoNulo);
 
-        for (Curso c : listaCur.listar()) {
-            cursoTieneTutor=false;
-
-            for (Profesor p : listaProfe.listar()) {
-                if(p.getCurso().getId()!=c.getId())
-                    cursoTieneTutor=true;
-            }
-            if(!cursoTieneTutor)
-                listaCursoSinTutor.add(c);
-        }
-
-        cursoElegir.addItem("No");
-
-        for (Curso c : listaCursoSinTutor) {
-            cursoElegir.addItem(c.getNombre());
+        for (Curso c : controladorCursos.listar()) {
+            cursoElegir.addItem(c);
         }
     }
 

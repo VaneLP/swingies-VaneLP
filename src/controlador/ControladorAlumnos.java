@@ -16,6 +16,12 @@ public class ControladorAlumnos implements ILista<Alumno> {
 
 
 	// ---- METODOS ----
+
+	@Override
+	public void crearTablas() {
+		alumDao.crearTablasAlum();
+	}
+
 	/**
 	 * Metodo agregar de la interfaz ILista
 	 * 

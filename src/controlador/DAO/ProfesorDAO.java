@@ -1,12 +1,11 @@
 package controlador.DAO;
 
-import modelo.Alumno;
 import modelo.Profesor;
-
 import java.util.List;
 
 //clase para incluir logica de BDD
 public interface ProfesorDAO {
+    void crearTablasProfe();
     void insert(Profesor profe);
     void delete(String dni);
     Profesor readUno(String idAlum);

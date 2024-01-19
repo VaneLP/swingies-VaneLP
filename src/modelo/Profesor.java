@@ -25,9 +25,6 @@ public class Profesor {
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
     public Profesor(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        this.id = contador;
-        contador++;
-
         if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
             this.nombre = nombre;
             this.DNI = DNI;
@@ -56,38 +53,6 @@ public class Profesor {
             this.listaAsignaturas = new ArrayList<String>();
         } else
             throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
-    }
-
-    /*
-     * constructor al cual le pasamos un super con los atributos de la clase Persona
-     * porque hemos heredado de ella y tambien le pasamos los atributos propios de
-     * la clase Profesor, al cual NO le pasamos el curso porque un profesor no
-     * necesita ser tutor
-     */
-    public Profesor(String nombre, String DNI, String tlf, String edad) {
-        this.id = contador;
-        contador++;
-
-        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
-
-        this.listaAsignaturas = new ArrayList<String>();
-    }
-
-    public Profesor(int id,String nombre, String DNI, String tlf, String edad) {
-        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
-            this.id = id;
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
-
-        this.listaAsignaturas = new ArrayList<String>();
     }
 
     // getters y setters

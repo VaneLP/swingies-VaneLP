@@ -4,6 +4,7 @@ import controlador.DAO.AlumnoDAO;
 import modelo.Alumno;
 import modelo.Curso;
 import modelo.CursoInvalidoException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     private static final String user = "root";
     private static final String pass = "admin";
 
-    private static void crearTablasAlum() {
+    @Override
+    public void crearTablasAlum() {
         try (Connection connect = DriverManager.getConnection(url, user, pass);
              Statement state = connect.createStatement()) {
 
@@ -45,9 +47,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void insert(Alumno alum) {
-
-        crearTablasAlum();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
             String sentenciaInsertar = "INSERT INTO Alumnos(Nombre, DNI, Tlf, Edad, Curso_id)" +
                     "VALUES(?,?,?,?,?)";
@@ -71,9 +70,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void delete(String dni) {
-
-        crearTablasAlum();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
             String borrarTablaAlum = "DELETE FROM Alumnos WHERE DNI = ?";
 
@@ -91,7 +87,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public Alumno readUno(String dniAlum) {
-        crearTablasAlum();
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -126,6 +121,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
                     psNotas.setInt(1, id);
                     List<Double> notas = new ArrayList<>();
+
                     try (ResultSet rsNotas = psNotas.executeQuery()) {
                         while (rsNotas.next()) {
                             notas.add(rsNotas.getDouble("nota"));
@@ -150,7 +146,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public List<Alumno> listaAlumDAO() {
-        crearTablasAlum();
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -184,6 +179,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
                     psNotas.setInt(1, id);
                     List<Double> notas = new ArrayList<>();
+
                     try (ResultSet rsNotas = psNotas.executeQuery()) {
                         while (rsNotas.next()) {
                             notas.add(rsNotas.getDouble("nota"));
@@ -201,8 +197,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
             } catch (CursoInvalidoException e) {
                 throw new RuntimeException(e);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -211,7 +205,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public List<Alumno> ordenarAlumAlfDAO() {
-        crearTablasAlum();
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -224,7 +217,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
-                if (rsAlum.next()) {
+                while (rsAlum.next()) {
                     int id = rsAlum.getInt("id");
                     String nombre = rsAlum.getString("Nombre");
                     String dni = rsAlum.getString("DNI");
@@ -244,8 +237,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                 }
 
                 System.out.println("Tablas Alum ordenadas alfa");
-
                 return listaAlum;
+
             } catch (CursoInvalidoException e) {
                 throw new RuntimeException(e);
             }
@@ -256,18 +249,16 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void insertNota(String dni, double nota) {
-        crearTablasAlum();
-
         int id;
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
             String sentenciaInsertarNota =
                     "INSERT INTO Notas(Alumno_id, nota)" +
-                    "VALUES(?,?)";
+                            "VALUES(?,?)";
 
             String sentenciaBuscarAlum =
                     "SELECT id FROM Alumnos WHERE dni = ?" +
-                    "VALUES(?,?)";
+                            "VALUES(?,?)";
 
             try (PreparedStatement psAlum = connect.prepareStatement(sentenciaBuscarAlum)) {
                 psAlum.setString(1, dni);
@@ -290,9 +281,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void insertNota(Alumno a, double nota) {
-
-        crearTablasAlum();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
             String sentenciaInsertarNota = "INSERT INTO Notas(Alumno_id, nota)" +
                     "VALUES(?,?)";
@@ -313,15 +301,135 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public List<Alumno> listaAlumAproDAO() {
-        crearTablasAlum();
+        List<Alumno> listaAlum = new ArrayList<>();
 
-        return null;
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    double sumaNotas=0;
+                    for (Double n : notas) {
+                        sumaNotas+=n;
+                    }
+                    double media =sumaNotas/notas.size();
+
+                    if(media>=5){
+                        Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                        a.setListaNotas(notas);
+
+                        listaAlum.add(a);
+                    }
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<Alumno> listaAlumSusDAO() {
-        crearTablasAlum();
+        List<Alumno> listaAlum = new ArrayList<>();
 
-        return null;
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    double sumaNotas=0;
+                    for (Double n : notas) {
+                        sumaNotas+=n;
+                    }
+                    double media =sumaNotas/notas.size();
+
+                    if(media<5){
+                        Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                        a.setListaNotas(notas);
+
+                        listaAlum.add(a);
+                    }
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

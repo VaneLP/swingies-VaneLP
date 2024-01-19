@@ -43,6 +43,7 @@ public class Menu extends JDialog {
     private JCheckBox alfaAlum, aproAlum, suspensoAlum,
             alfebeticamenteProfe, tutores,
             alfabeticamenteCuso;
+    private JButton botonVentanaCheck;
     private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
     //Atributos controlador
@@ -295,6 +296,10 @@ public class Menu extends JDialog {
         scrollCur.setViewportView(tablaCur);
 
         //BBDD
+        controladorCursos.crearTablas();
+        controladorAlumnos.crearTablas();
+        controladorProfesores.crearTablas();
+
         mostrarCursos();
         mostrarAlumnos();
         mostrarProfesores();
@@ -346,8 +351,9 @@ public class Menu extends JDialog {
         alfaAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controladorAlumnos.ordenarAlfabeticamente();
-                mostrarAlumnos();
+                if(alfaAlum.isSelected()) {
+                    mostrarAlumAlfa();
+                }
             }
         });
 
@@ -355,7 +361,9 @@ public class Menu extends JDialog {
         aproAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                alumAprobados();
+                if(aproAlum.isSelected()) {
+                    alumAprobados();
+                }
             }
         });
 
@@ -363,7 +371,9 @@ public class Menu extends JDialog {
         suspensoAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                alumSuspensos();
+                if(suspensoAlum.isSelected()) {
+                    alumSuspensos();
+                }
             }
         });
 
@@ -437,8 +447,9 @@ public class Menu extends JDialog {
         alfebeticamenteProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controladorProfesores.ordenarAlfabeticamente();
-                mostrarProfesores();
+                if(alfebeticamenteProfe.isSelected()) {
+                    mostrarProfeAlfa();
+                }
             }
         });
 
@@ -446,7 +457,10 @@ public class Menu extends JDialog {
         tutores.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarTutores();
+                if(tutores.isSelected()) {
+                    mostrarTutores();
+                }
+
             }
         });
 
@@ -520,7 +534,9 @@ public class Menu extends JDialog {
         alfabeticamenteCuso.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarCursosAlfa();
+                if(alfabeticamenteCuso.isSelected()) {
+                    mostrarCursosAlfa();
+                }
             }
         });
 
@@ -647,6 +663,12 @@ public class Menu extends JDialog {
             }
         });
 
+        botonVentanaCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //todo
+            }
+        });
     }//Fin del constructor
 
 //-------------------------------------------------------------------------------------------------------------
@@ -982,6 +1004,21 @@ public class Menu extends JDialog {
             indice++;
         }
     }
+    private void mostrarAlumAlfa() {
+
+        indice = 0;
+        modeloTablaAlum.setNumRows(0);
+
+        for (Alumno alumno : controladorAlumnos.ordenarAlfabeticamente()) {
+            arrayMostrarAlum = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
+                    String.valueOf(alumno.getEdad()), alumno.getCurso().getNombre(), alumno.getListaNotas().toString()};
+
+            modeloTablaAlum.insertRow(indice, arrayMostrarAlum);
+
+            indice++;
+        }
+    }
+
 
     private void mostrarNotasAlum() {
         String notasAlumno = JOptionPane.showInputDialog("Introduce la nota al alumno");
@@ -1145,6 +1182,19 @@ public class Menu extends JDialog {
             indice++;
         }
     }
+    private void mostrarProfeAlfa() {
+        indice = 0;
+        modeloTablaProfe.setNumRows(0);
+
+        for (Profesor p : controladorProfesores.ordenarAlfabeticamente()) {
+            arrayMostrarProfe = new String[]{p.getNombre(), p.getDNI(),
+                    String.valueOf(p.getTlf()), String.valueOf(p.getEdad()), String.valueOf(p.getCurso()), p.getListaAsignaturas().toString()};
+
+            modeloTablaProfe.insertRow(indice, arrayMostrarProfe);
+
+            indice++;
+        }
+    }
 
     /**
      * Metodo para mostrar los tutores, que son los que tienen cursos
@@ -1252,7 +1302,6 @@ public class Menu extends JDialog {
        }
     }
     private void mostrarCursosAlfa() {
-
         indice = 0;
         modeloTablaCur.setNumRows(0);
 

@@ -14,7 +14,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     private static final String user = "root";
     private static final String pass = "admin";
 
-    private static void crearTablasProfe() {
+    @Override
+    public void crearTablasProfe() {
         try (Connection connect = DriverManager.getConnection(url, user, pass);
              Statement state = connect.createStatement()) {
 
@@ -25,7 +26,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                             "DNI VARCHAR(255) NOT NULL UNIQUE, " +
                             "Tlf VARCHAR(255) NOT NULL, " +
                             "Edad VARCHAR(255) NOT NULL," +
-                            "Curso_id INT NOT NULL, FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE SET NULL" +
+                            "Curso_id INT, FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE SET NULL" +
                             ");";
 
             String crearTablaAsig =
@@ -46,19 +47,20 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
     @Override
     public void insert(Profesor profe) {
-
-        crearTablasProfe();
-
         try (Connection connect = DriverManager.getConnection(url,  user, pass)) {
-            String sentenciaInsertar = "INSERT INTO Profesores(id, Nombre, DNI, Tlf, Edad)" +
+            String sentenciaInsertar = "INSERT INTO Profesores(Nombre, DNI, Tlf, Edad, Curso_id)" +
                     "VALUES(?,?,?,?,?)";
 
             try (PreparedStatement psProfe = connect.prepareStatement(sentenciaInsertar)) {
-                psProfe.setInt(1, profe.getId());
-                psProfe.setString(2, profe.getNombre());
-                psProfe.setString(3, profe.getDNI());
-                psProfe.setInt(4, profe.getTlf());
-                psProfe.setInt(5, profe.getEdad());
+                psProfe.setString(1, profe.getNombre());
+                psProfe.setString(2, profe.getDNI());
+                psProfe.setInt(3, profe.getTlf());
+                psProfe.setInt(4, profe.getEdad());
+
+                if(profe.getCurso().getId() == -1)
+                    psProfe.setNull(5, Types.NULL);
+                else
+                    psProfe.setInt(5,profe.getCurso().getId());
 
                 psProfe.execute();
             }
@@ -71,9 +73,6 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
     @Override
     public void delete(String dni) {
-
-        crearTablasProfe();
-
         try (Connection connect = DriverManager.getConnection(url, user, pass)){
             String borrarTablaProfe = "DELETE FROM Profesores WHERE DNI = ?";
 
@@ -91,7 +90,6 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
     @Override
     public Profesor readUno(String dniProfe) {
-        crearTablasProfe();
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -126,6 +124,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
                     psAsig.setInt(1, id);
                     List<String> asignaturas = new ArrayList<>();
+
                     try (ResultSet rsAsig = psAsig.executeQuery()) {
                         while (rsAsig.next()) {
                             asignaturas.add(rsAsig.getString("asignatura"));
@@ -150,7 +149,6 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
     @Override
     public List<Profesor> listaProfeDAO() {
-        crearTablasProfe();
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -162,7 +160,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                             "ON profe.Curso_id = cur.id ";
 
             String leerTablaAsig =
-                    "SELECT asginatura " +
+                    "SELECT asignatura " +
                             "FROM Asignaturas " +
                             "WHERE Profesor_id = ?";
 
@@ -172,7 +170,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
-                if (rsProfe.next()) {
+                while (rsProfe.next()) {
                     int id = rsProfe.getInt("id");
                     String nombre = rsProfe.getString("Nombre");
                     String dni = rsProfe.getString("DNI");
@@ -184,6 +182,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
                     psAsig.setInt(1, id);
                     List<String> asignaturas = new ArrayList<>();
+
                     try (ResultSet rsAsig = psAsig.executeQuery()) {
                         while (rsAsig.next()) {
                             asignaturas.add(rsAsig.getString("asignatura"));
@@ -191,24 +190,24 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     }
 
                     Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
                     p.setListaAsignaturas(asignaturas);
 
                     listaProfe.add(p);
                 }
 
                 System.out.println("Tablas profe listadas");
+                return listaProfe;
+
             } catch (CursoInvalidoException e) {
                 throw new RuntimeException(e);
             }
         } catch (SQLException e) {
-            new RuntimeException(e);
+            throw new RuntimeException(e);
         }
-        return null;
-    }
-
-    @Override
-    public List<Profesor> listaProfeTutorDAO() {
-        return null;
     }
 
     @Override
@@ -217,36 +216,117 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaProfe = "SELECT * FROM Profesores ORDER BY nombre ASC";
-            String leerTablaAsig = "SELECT * FROM Asignaturas WHERE id = ?";
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id " +
+                            "ORDER BY profe.nombre ASC";
 
-            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaProfe);
-                 PreparedStatement psCur = connect.prepareStatement(leerTablaAsig)) {
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
 
-                ResultSet rsAlum = psAlum.executeQuery();
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
 
-                if (rsAlum.next()) {
-                    int id = rsAlum.getInt("id");
-                    String nombre = rsAlum.getString("Nombre");
-                    String dni = rsAlum.getString("DNI");
-                    String tlfn = rsAlum.getString("Tlf");
-                    String edad = rsAlum.getString("Edad");
-                    int idCur = rsAlum.getInt("Curso_id");
+                ResultSet rsProfe = psProfe.executeQuery();
 
-                    psCur.setInt(1, idCur);
-                    ResultSet rsCur = psCur.executeQuery();
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
 
-                    if (rsCur.next()) {
-                        int curId = rsCur.getInt("id");
-                        String curNombre = rsCur.getString("Nombre");
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
 
-                        listaProfe.add(new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre)));
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
                     }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
                 }
 
-                System.out.println("Tablas Alum ordenadas alfa");
-
+                System.out.println("Tablas profe listadas");
                 return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> listaProfeTutorDAO() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()!=null)
+                        listaProfe.add(p);
+
+                    p.setListaAsignaturas(asignaturas);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
             } catch (CursoInvalidoException e) {
                 throw new RuntimeException(e);
             }

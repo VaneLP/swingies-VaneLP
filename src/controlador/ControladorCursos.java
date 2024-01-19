@@ -11,6 +11,12 @@ public class ControladorCursos implements ILista<Curso> {
     private CursoDAO curDao = new CursoDAOJDBCImpl();
 
     // ---- METODOS ----
+
+    @Override
+    public void crearTablas() {
+        curDao.crearTablasCur();
+    }
+
     /**
      * Metodo agregar de la interfaz ILista
      *

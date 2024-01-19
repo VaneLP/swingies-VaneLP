@@ -12,6 +12,12 @@ public class ControladorProfesores implements ILista<Profesor> {
 	private ProfesorDAO profeDao= new ProfesorDAOJDBCImpl();
 
 	// ---- METODOS ----
+
+	@Override
+	public void crearTablas() {
+		profeDao.crearTablasProfe();
+	}
+
 	/**
 	 * Metodo agregar de la interfaz ILista
 	 * 
@@ -60,43 +66,8 @@ public class ControladorProfesores implements ILista<Profesor> {
 	}
 
 	// listarTutores
-	public ArrayList<Profesor> listarTutores() {
-		// creamos una nueva lista
-		ArrayList<Profesor> listaTut = new ArrayList<Profesor>();
-
-		// recorremos los profesores
-		for (Profesor profesor : listar()) {
-			// si el profesor su curso no es nulo es tutor
-			if (!profesor.getCurso().equals("No"))
-				// añadimos a la listaTut el profesor
-				listaTut.add(profesor);
-		}
-
-		// devuelve la lista
-		return listaTut;
-	}
-
-	/**
-	 * Metodo listar por asignatura
-	 * 
-	 * @param asignatura, le pasamos una cadena de texto con el nombre de la
-	 *                    asignatura
-	 */
-	public void listarPorAsignaturas(String asignatura) {
-		System.out.println("Asignatura buscada: " + asignatura);
-
-		// recorremos la listaProfesores
-		for (Profesor p : listar()) {
-			// ahora podemos recorrer la lista de asignaturas
-			for (String asig : p.getListaAsignaturas()) {
-				// si la asignatura en la que estamos es igual a la que pasamos como parametro
-				if (asig.equalsIgnoreCase(asignatura)) {
-					// mostramos al profesor
-					System.out.println(p);
-				}
-			}
-		}
-
+	public List<Profesor> listarTutores() {
+		return profeDao.listaProfeTutorDAO();
 	}
 
 	public List<Profesor> ordenarAlfabeticamente(){
