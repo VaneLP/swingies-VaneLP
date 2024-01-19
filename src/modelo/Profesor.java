@@ -12,11 +12,11 @@ public class Profesor {
     private int tlf;
     private int edad;
 
-    private final int id;
+    private int id;
     private static int contador = 1;
 
     // atributos de la clase Profesor
-    private String curso;
+    private Curso curso;
     private List<String> listaAsignaturas;
 
     /*
@@ -24,12 +24,27 @@ public class Profesor {
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
-    public Profesor(String nombre, String DNI, String tlf, String edad, String curso) throws CursoInvalidoException {
+    public Profesor(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
         this.id = contador;
         contador++;
 
-
         if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.nombre = nombre;
+            this.DNI = DNI;
+            this.tlf = Integer.parseInt(tlf);
+            this.edad = Integer.parseInt(edad);
+        }
+
+        if (curso != null) {
+            this.curso = curso;
+            this.listaAsignaturas = new ArrayList<String>();
+        } else
+            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
+    }
+
+    public Profesor(int id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.id = id;
             this.nombre = nombre;
             this.DNI = DNI;
             this.tlf = Integer.parseInt(tlf);
@@ -63,13 +78,25 @@ public class Profesor {
         this.listaAsignaturas = new ArrayList<String>();
     }
 
+    public Profesor(int id,String nombre, String DNI, String tlf, String edad) {
+        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.id = id;
+            this.nombre = nombre;
+            this.DNI = DNI;
+            this.tlf = Integer.parseInt(tlf);
+            this.edad = Integer.parseInt(edad);
+        }
+
+        this.listaAsignaturas = new ArrayList<String>();
+    }
+
     // getters y setters
     // curso
-    public String getCurso() {
+    public Curso getCurso() {
         return curso;
     }
 
-    public void setCurso(String curso) {
+    public void setCurso(Curso curso) {
         this.curso = curso;
     }
 

@@ -96,7 +96,7 @@ public class AgregarProfesor extends JDialog {
             JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el nombre sea incorrecto. Intentalo de nuevo.");
         }else {
             listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), textTlf.getText(),
-                    textEdad.getText(), "No"));
+                    textEdad.getText(), Curso.cursoNulo));
 
             dispose();
         }
@@ -108,11 +108,11 @@ public class AgregarProfesor extends JDialog {
         List<Curso> listaCursoSinTutor = new ArrayList<>();
         boolean cursoTieneTutor;
 
-        for (Curso c : listaCur.getListaCursos()) {
+        for (Curso c : listaCur.listar()) {
             cursoTieneTutor=false;
 
-            for (Profesor p : listaProfe.getListaProfesores()) {
-                if(!p.getCurso().equalsIgnoreCase(c.getNombre()))
+            for (Profesor p : listaProfe.listar()) {
+                if(p.getCurso().getId()!=c.getId())
                     cursoTieneTutor=true;
             }
             if(!cursoTieneTutor)

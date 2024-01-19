@@ -1072,7 +1072,7 @@ public class Menu extends JDialog {
             for (Profesor p : controladorProfesores.listar()) {
                 if (dni.equalsIgnoreCase(p.getDNI())) {
                     buscarProfe = new String[]{p.getNombre(), p.getDNI(), String.valueOf(p.getTlf()),
-                            String.valueOf(p.getEdad()), p.getCurso()};
+                            String.valueOf(p.getEdad()), String.valueOf(p.getCurso())};
 
                     modeloTablaProfe.setNumRows(0);
 
@@ -1138,7 +1138,7 @@ public class Menu extends JDialog {
 
         for (Profesor profesor : controladorProfesores.listar()) {
             arrayMostrarProfe = new String[]{profesor.getNombre(), profesor.getDNI(),
-                    String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), profesor.getCurso(), profesor.getListaAsignaturas().toString()};
+                    String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), String.valueOf(profesor.getCurso()), profesor.getListaAsignaturas().toString()};
 
             modeloTablaProfe.insertRow(indice, arrayMostrarProfe);
 
@@ -1156,7 +1156,7 @@ public class Menu extends JDialog {
 
         for (Profesor profesor : controladorProfesores.listarTutores()) {
             arrayMostrarTutores = new String[]{profesor.getNombre(), profesor.getDNI(),
-                    String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), profesor.getCurso()};
+                    String.valueOf(profesor.getTlf()), String.valueOf(profesor.getEdad()), String.valueOf(profesor.getCurso())};
 
             modeloTablaProfe.insertRow(indice, arrayMostrarTutores);
 

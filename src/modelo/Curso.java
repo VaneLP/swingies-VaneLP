@@ -1,11 +1,11 @@
 package modelo;
 
-
 public class Curso {
     // atributos de la clase Curso
     private final int id;
     private static int contador = 1;
     private String nombre;
+    public static final Curso cursoNulo= new Curso(-1,"Ninguno");
 
     /*
      * constructor al que le pasamos unicamente el nombre, porque no queremos que el

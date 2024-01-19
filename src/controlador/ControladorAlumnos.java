@@ -3,10 +3,7 @@ package controlador;
 import controlador.DAO.AlumnoDAO;
 import controlador.DAO.JDBC.AlumnoDAOJDBCImpl;
 import modelo.Alumno;
-import modelo.Curso;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 // Clase ListaAlumnos implementa la ILista para obtener sus metodos
@@ -74,51 +71,14 @@ public class ControladorAlumnos implements ILista<Alumno> {
 
 	/**
 	 * Metodo agregarNotaAlumno
-	 * 
-	 * @param dni, nota le pasamos tanto el DNI del alumno para poder identificarlo
-	 *             y ponerle correctamente la nota al alumno que queremos, como la
-	 *             nota que queremos ponerle
 	 */
 	public void agregarNotaAlumno(Alumno a, double nota) {
-		alumDao.insertNota();
-		// recorremos nuesta lista de alumnos
-		for (Alumno alumno : listaAlumnos) {
-			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
-			// parametro
-			if (alumno.getDNI().equalsIgnoreCase(dni))
-				// si es correto agregamos la nota
-				alumno.agregarNota(nota);
-		}
+		alumDao.insertNota(a,nota);
 	}
 	public void agregarNotaAlumno(String dni, double nota) {
-		alumDao.insertNota();
-		// recorremos nuesta lista de alumnos
-		for (Alumno alumno : listaAlumnos) {
-			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
-			// parametro
-			if (alumno.getDNI().equalsIgnoreCase(dni))
-				// si es correto agregamos la nota
-				alumno.agregarNota(nota);
-		}
+		alumDao.insertNota(dni,nota);
 	}
 
-	/**
-	 * Metodo eliminarNotasAlumno
-	 * 
-	 * @param dni, le pasamos el DNI del alumno para poder identinficarlo y poder
-	 *             eliminarle todas las notas
-	 */
-	public void eliminarNotasAlumno(String dni) {
-		alumDao.deleteNota();
-		// recorremos nuesta lista de alumnos
-		for (Alumno alumno : listaAlumnos) {
-			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
-			// parametro
-			if (alumno.getDNI().equalsIgnoreCase(dni))
-				// si es correto eliminamos todas las notas
-				alumno.eliminarNotas();
-		}
-	}
 
 	/**
 	 * Metodo listarAprobados
@@ -126,39 +86,40 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos aprobados
 	 */
 	public List<Alumno> listarAprobados() {
-		alumDao.listaAlumAproDAO();
+		//alumDao.listaAlumAproDAO();
 		// creamos una nueva lista
-		ArrayList<Alumno> listaApro = new ArrayList<Alumno>();
-
-		// recorremos la lista de los alumnos
-		for (Alumno alumno : listaAlumnos) {
-			// a la variable listNota le añadimos las notas del alumno
-			listNota = alumno.getListaNotas();
-
-			// recorremos la listNotas
-			for (Double nota : listNota) {
-				// y a la variable allNotas le asignamos la misma variabla + nota para tener
-				// todas las notas sumadas
-				allNotas = allNotas + nota;
-				// tenemos un contador que va autoincrementando
-				cont++;
-			}
-
-			// sacamos la media con todas las notas y el contador
-			media = allNotas / cont;
-
-			// si la media es mayor o igual a 5 esta aprobado
-			if (media >= 5)
-				// añadimos al alumno a la listaApro
-				listaApro.add(alumno);
-
-			// reseteamos las variables para que no den problemas con otros alumnos
-			allNotas = 0;
-			cont = 0;
-		}
-		
-		// devolvemos la lista
-		return listaApro;
+//		ArrayList<Alumno> listaApro = new ArrayList<Alumno>();
+//
+//		// recorremos la lista de los alumnos
+//		for (Alumno alumno : listaAlumnos) {
+//			// a la variable listNota le añadimos las notas del alumno
+//			listNota = alumno.getListaNotas();
+//
+//			// recorremos la listNotas
+//			for (Double nota : listNota) {
+//				// y a la variable allNotas le asignamos la misma variabla + nota para tener
+//				// todas las notas sumadas
+//				allNotas = allNotas + nota;
+//				// tenemos un contador que va autoincrementando
+//				cont++;
+//			}
+//
+//			// sacamos la media con todas las notas y el contador
+//			media = allNotas / cont;
+//
+//			// si la media es mayor o igual a 5 esta aprobado
+//			if (media >= 5)
+//				// añadimos al alumno a la listaApro
+//				listaApro.add(alumno);
+//
+//			// reseteamos las variables para que no den problemas con otros alumnos
+//			allNotas = 0;
+//			cont = 0;
+//		}
+//
+//		// devolvemos la lista
+//		return listaApro;
+		return null;
 	}
 
 	/**
@@ -167,38 +128,39 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos suspensos
 	 */
 	public List<Alumno> listarSuspensos() {
-		alumDao.listaAlumSusDAO();
-		// creamos una nueva lista
-		ArrayList<Alumno> listaSus = new ArrayList<Alumno>();
-
-		// recorremos la lista de los alumnos
-		for (Alumno alumno : listaAlumnos) {
-			// a la variable listNota le añadimos las notas del alumno
-			listNota = alumno.getListaNotas();
-
-			// recorremos la listNotas
-			for (Double nota : listNota) {
-				// y a la variable allNotas le asignamos la misma variabla + nota para tener
-				// todas las notas sumadas
-				allNotas = allNotas + nota;
-				// tenemos un contador que va autoincrementando
-				cont++;
-			}
-
-			// sacamos la media con todas las notas y el contador
-			media = allNotas / cont;
-
-			// si la media es menor a 5 esta aprobado
-			if (media < 5)
-				// añadimos al alumno a la listaSus
-				listaSus.add(alumno);
-
-			// reseteamos las variables para que no den problemas con otros alumnos
-			allNotas = 0;
-			cont = 0;
-		}
-		
-		// devolvemos la lista
-		return listaSus;
+		//alumDao.listaAlumSusDAO();
+//		// creamos una nueva lista
+//		ArrayList<Alumno> listaSus = new ArrayList<Alumno>();
+//
+//		// recorremos la lista de los alumnos
+//		for (Alumno alumno : listaAlumnos) {
+//			// a la variable listNota le añadimos las notas del alumno
+//			listNota = alumno.getListaNotas();
+//
+//			// recorremos la listNotas
+//			for (Double nota : listNota) {
+//				// y a la variable allNotas le asignamos la misma variabla + nota para tener
+//				// todas las notas sumadas
+//				allNotas = allNotas + nota;
+//				// tenemos un contador que va autoincrementando
+//				cont++;
+//			}
+//
+//			// sacamos la media con todas las notas y el contador
+//			media = allNotas / cont;
+//
+//			// si la media es menor a 5 esta aprobado
+//			if (media < 5)
+//				// añadimos al alumno a la listaSus
+//				listaSus.add(alumno);
+//
+//			// reseteamos las variables para que no den problemas con otros alumnos
+//			allNotas = 0;
+//			cont = 0;
+//		}
+//
+//		// devolvemos la lista
+//		return listaSus;
+		return null;
 	}
 }

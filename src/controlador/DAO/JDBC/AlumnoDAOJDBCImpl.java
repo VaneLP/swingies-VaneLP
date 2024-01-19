@@ -32,7 +32,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "CREATE TABLE IF NOT EXISTS Notas" +
                             "(Alumno_id INT, FOREIGN KEY (alumno_id) REFERENCES alumnos(id) ON DELETE CASCADE," +
                             "id INT AUTO_INCREMENT PRIMARY KEY," +
-                            "Nota DECIMAL);";
+                            "Nota DECIMAL NOT NULL);";
 
             state.executeUpdate(crearTablaAlumnos);
             state.executeUpdate(crearTablaNotas);
@@ -75,7 +75,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
         crearTablasAlum();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
-
             String borrarTablaAlum = "DELETE FROM Alumnos WHERE DNI = ?";
 
             try (PreparedStatement psAlum = connect.prepareStatement(borrarTablaAlum)) {
@@ -85,7 +84,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             }
 
             System.out.println("Tablas Alum borradas");
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -258,15 +256,26 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
     @Override
     public void insertNota(String dni, double nota) {
-
         crearTablasAlum();
 
+        int id;
+
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
-            String sentenciaInsertarNota = "INSERT INTO Notas(Alumno_id, nota)" +
+            String sentenciaInsertarNota =
+                    "INSERT INTO Notas(Alumno_id, nota)" +
                     "VALUES(?,?)";
 
+            String sentenciaBuscarAlum =
+                    "SELECT id FROM Alumnos WHERE dni = ?" +
+                    "VALUES(?,?)";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(sentenciaBuscarAlum)) {
+                psAlum.setString(1, dni);
+                id = psAlum.executeQuery().getInt("id");
+            }
+
             try (PreparedStatement psNotas = connect.prepareStatement(sentenciaInsertarNota)) {
-                psNotas.setInt(1, a.getId());
+                psNotas.setInt(1, id);
                 psNotas.setDouble(2, nota);
 
                 psNotas.execute();
@@ -296,17 +305,11 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             }
 
             System.out.println("Insercion notas ");
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public void deleteNota(String dni, double nota) {
-        crearTablasAlum();
-
-    }
 
     @Override
     public List<Alumno> listaAlumAproDAO() {

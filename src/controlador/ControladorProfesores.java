@@ -34,73 +34,19 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 */
 	@Override
 	public Profesor buscar(String dni) {
-		// recorremos la lista de alumnos
-		for (Profesor profe : listaProfesores) {
-			// controbamos si el dni es igual que nos pasan como parametro
-			if (profe.getDNI().equalsIgnoreCase(dni))
-				// devolvemos el alumno
-				return profe;
-		}
-		return null;
+		return profeDao.readUno(dni);
 	}
 
 	/**
 	 * Metodo eliminar de la interfaz ILista
 	 * 
-	 * @param DNI le pasamos una cadena de texto, que haria referencia al DNI
+	 * @param dni le pasamos una cadena de texto, que haria referencia al DNI
 	 * 
 	 * @return nos duvuelve TRUE si se ha eliminado el profesore y FALSE sino
 	 */
 	@Override
-	public void eliminar(String DNI) {
-		//BBDD
-		//todo buscar segun DNI el id
-		profeDao.delete(1);
-
-		// variables
-		int indice = 0;
-		boolean encontrado = false;
-
-
-	}
-
-	/**
-	 * Metodo MostrarProfesor
-	 * 
-	 * @param dni, le pasamos una cadena de texto que hace referencia al DNI
-	 * 
-	 * @return nos devuelve un prodesor si corresponde el DNI
-	 */
-	public Profesor mostrarProfesor(String dni) {
-		//BBDD
-		//todo id del alumno
-		profeDao.readUno(dni);
-
-		// recorremos la listaProfesores
-		for (Profesor profesor : listaProfesores) {
-			// si el dni del profesor es igual al pasado por parametro
-			if (profesor.getDNI().equalsIgnoreCase(dni))
-				// devolvemos al profesor
-				return profesor;
-		}
-
-		// si no devolvemos nulo
-		return null;
-	}
-
-	/**
-	 * Metodo eliminarAsignatuasProfesor
-	 * 
-	 * @param dni, le pasamos una cadena de texto que hace referencia al DNI
-	 */
-	public void eliminarAsignaturasProfesor(String dni) {
-		// recorremos la lista
-		for (Profesor profesor : listaProfesores) {
-			// si el dni del profesor corresponde al que pasamos por parametro
-			if (profesor.getDNI().equalsIgnoreCase(dni))
-				// Eliminamos las asginaturas del profesor
-				profesor.eliminarAsignaturas();
-		}
+	public void eliminar(String dni) {
+		profeDao.delete(dni);
 	}
 
 	/**
@@ -110,9 +56,7 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 */
 	@Override
 	public List<Profesor> listar() {
-		return null;
-
-
+		return profeDao.listaProfeDAO();
 	}
 
 	// listarTutores
@@ -121,7 +65,7 @@ public class ControladorProfesores implements ILista<Profesor> {
 		ArrayList<Profesor> listaTut = new ArrayList<Profesor>();
 
 		// recorremos los profesores
-		for (Profesor profesor : listaProfesores) {
+		for (Profesor profesor : listar()) {
 			// si el profesor su curso no es nulo es tutor
 			if (!profesor.getCurso().equals("No"))
 				// añadimos a la listaTut el profesor
@@ -142,7 +86,7 @@ public class ControladorProfesores implements ILista<Profesor> {
 		System.out.println("Asignatura buscada: " + asignatura);
 
 		// recorremos la listaProfesores
-		for (Profesor p : listaProfesores) {
+		for (Profesor p : listar()) {
 			// ahora podemos recorrer la lista de asignaturas
 			for (String asig : p.getListaAsignaturas()) {
 				// si la asignatura en la que estamos es igual a la que pasamos como parametro
@@ -155,26 +99,13 @@ public class ControladorProfesores implements ILista<Profesor> {
 
 	}
 
-	public void ordenarAlfabeticamente(){
-		/*
-		 * cogemos nuestra lista de profesores y con el metodo . sort que tienen los
-		 * arrayList hacemos un new Comparator de la clase Profesor
-		 */
-		listaProfesores.sort(new Comparator<Profesor>() {
-			// sobreescribimos el metodo que tiene el Comparator de compare, al cual le
-			// pasamos 2 profes
-			@Override
-			public int compare(Profesor p1, Profesor p2) {
-				// nos devuelve ya la comparion entre los nombre de los dos profes ordenandolos
-				// asi
-				return p1.getNombre().compareTo(p2.getNombre());
-			}
-		});
+	public List<Profesor> ordenarAlfabeticamente(){
+		return profeDao.ordenarProfeAlfDAO();
 	}
 
 	public void agregarAsigProfe(String dni, String asig) {
 		// recorremos nuesta lista de alumnos
-		for (Profesor profe : listaProfesores) {
+		for (Profesor profe : listar()) {
 			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
 			// parametro
 			if (profe.getDNI().equalsIgnoreCase(dni))

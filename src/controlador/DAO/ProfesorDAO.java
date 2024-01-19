@@ -8,8 +8,7 @@ import java.util.List;
 //clase para incluir logica de BDD
 public interface ProfesorDAO {
     void insert(Profesor profe);
-    void update(Profesor profe);
-    void delete(Integer idProfe);
+    void delete(String dni);
     Profesor readUno(String idAlum);
     List<Profesor> listaProfeDAO();
     List<Profesor> listaProfeTutorDAO();
