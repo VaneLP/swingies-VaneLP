@@ -4,7 +4,6 @@ import controlador.DAO.AlumnoDAO;
 import modelo.Alumno;
 import modelo.Curso;
 import modelo.CursoInvalidoException;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -260,20 +259,66 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     @Override
     public void insertNota(String dni, double nota) {
 
+        crearTablasAlum();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+            String sentenciaInsertarNota = "INSERT INTO Notas(Alumno_id, nota)" +
+                    "VALUES(?,?)";
+
+            try (PreparedStatement psNotas = connect.prepareStatement(sentenciaInsertarNota)) {
+                psNotas.setInt(1, a.getId());
+                psNotas.setDouble(2, nota);
+
+                psNotas.execute();
+            }
+
+            System.out.println("Insercion notas ");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertNota(Alumno a, double nota) {
+
+        crearTablasAlum();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+            String sentenciaInsertarNota = "INSERT INTO Notas(Alumno_id, nota)" +
+                    "VALUES(?,?)";
+
+            try (PreparedStatement psNotas = connect.prepareStatement(sentenciaInsertarNota)) {
+                psNotas.setInt(1, a.getId());
+                psNotas.setDouble(2, nota);
+
+                psNotas.execute();
+            }
+
+            System.out.println("Insercion notas ");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void deleteNota(String dni, double nota) {
+        crearTablasAlum();
 
     }
 
     @Override
     public List<Alumno> listaAlumAproDAO() {
+        crearTablasAlum();
+
         return null;
     }
 
     @Override
     public List<Alumno> listaAlumSusDAO() {
+        crearTablasAlum();
+
         return null;
     }
 }

@@ -79,6 +79,17 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 *             y ponerle correctamente la nota al alumno que queremos, como la
 	 *             nota que queremos ponerle
 	 */
+	public void agregarNotaAlumno(Alumno a, double nota) {
+		alumDao.insertNota();
+		// recorremos nuesta lista de alumnos
+		for (Alumno alumno : listaAlumnos) {
+			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
+			// parametro
+			if (alumno.getDNI().equalsIgnoreCase(dni))
+				// si es correto agregamos la nota
+				alumno.agregarNota(nota);
+		}
+	}
 	public void agregarNotaAlumno(String dni, double nota) {
 		alumDao.insertNota();
 		// recorremos nuesta lista de alumnos
