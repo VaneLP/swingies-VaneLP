@@ -77,7 +77,7 @@ public class Login extends JFrame {
 
     //metodo abrir el menu
     public void abrirMenu(){
-        Menu m1 = new Menu(this,true);
+        Menu m1 = new Menu();
         m1.setVisible(true);
     }
 

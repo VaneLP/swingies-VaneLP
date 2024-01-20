@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
-public class Menu extends JDialog {
+public class Menu extends JFrame {
     //atributos componentes menu
     private JTabbedPane tabbedPane1, jTabbedPaneProfe, jTabbedPaneCur, jTabbebPaneAlum;
     private JPanel panelPrincipal;
@@ -39,11 +39,13 @@ public class Menu extends JDialog {
     private JScrollPane scrollAlum, scrollProfe, scrollCur;
     private JButton agregarAlum, mostrarAlum, buscarAlum, eliminarAlum, añadirNotasButton,
             agregarProfe, mostrarProfe, buscarProfe, eliminarProfe,
-            agregarCur, mostrarCur, buscarCur, eliminaCur;
+            agregarCur, mostrarCur, buscarCur, eliminaCur,
+            botonVentanaCheck,
+            avanzadaAlum, avanzadaProfe, avanzadaCur;
     private JCheckBox alfaAlum, aproAlum, suspensoAlum,
             alfebeticamenteProfe, tutores,
             alfabeticamenteCuso;
-    private JButton botonVentanaCheck;
+
     private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
     //Atributos controlador
@@ -58,9 +60,7 @@ public class Menu extends JDialog {
     private boolean encontrado;
 
     //-------------------------------------------------------------------------------------------------------------
-    public Menu(Login l, boolean b) {
-        super(l, b);
-
+    public Menu() {
         //para que se muestre en la ventana nuestro panel
         setContentPane(panelPrincipal);
 
@@ -663,12 +663,36 @@ public class Menu extends JDialog {
             }
         });
 
+        //BBDD
         botonVentanaCheck.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //todo
+                VentanaCheckBox vcb = new VentanaCheckBox();
+            }
+        });
+
+        avanzadaAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //todo
             }
         });
+
+        avanzadaProfe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        avanzadaCur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
     }//Fin del constructor
 
 //-------------------------------------------------------------------------------------------------------------

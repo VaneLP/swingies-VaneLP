@@ -298,7 +298,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
         }
     }
 
-
     @Override
     public List<Alumno> listaAlumAproDAO() {
         List<Alumno> listaAlum = new ArrayList<>();
@@ -420,6 +419,543 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
 
                         listaAlum.add(a);
                     }
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //todo
+    @Override
+    public List<Alumno> coincidenciaExactaNombre() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> contienePalabraClaveNombre() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> empiezaPorNombre() {
+        return null;
+    }
+
+    @Override
+    public List<Alumno> terminaEnNombre() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> coincidenciaExactaDni() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> contienePalabraClaveDni() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> empiezaPorDni() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> terminaEnDni() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> notaMediaAlum() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> profesorTutorAlum() {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
                 }
 
                 System.out.println("Tablas Alum listadas");

@@ -16,4 +16,18 @@ public interface AlumnoDAO {
     List<Alumno> listaAlumAproDAO();
     List<Alumno> listaAlumSusDAO();
 
+    List<Alumno> coincidenciaExactaNombre();
+    List<Alumno> contienePalabraClaveNombre();
+    List<Alumno> empiezaPorNombre();
+    List<Alumno> terminaEnNombre();
+
+    List<Alumno> coincidenciaExactaDni();
+    List<Alumno> contienePalabraClaveDni();
+    List<Alumno> empiezaPorDni();
+    List<Alumno> terminaEnDni();
+
+    List<Alumno> notaMediaAlum();
+    List<Alumno> profesorTutorAlum();
+
+
 }

@@ -12,4 +12,16 @@ public interface ProfesorDAO {
     List<Profesor> listaProfeDAO();
     List<Profesor> listaProfeTutorDAO();
     List<Profesor> ordenarProfeAlfDAO();
+
+    List<Profesor> coincidenciaExactaNombre();
+    List<Profesor> contienePalabraClaveNombre();
+    List<Profesor> empiezaPorNombre();
+    List<Profesor> terminaEnNombre();
+
+    List<Profesor> coincidenciaExactaDni();
+    List<Profesor> contienePalabraClaveDni();
+    List<Profesor> empiezaPorDni();
+    List<Profesor> terminaEnDni();
+
+    List<Profesor> agruparAsignraturaProf();
 }

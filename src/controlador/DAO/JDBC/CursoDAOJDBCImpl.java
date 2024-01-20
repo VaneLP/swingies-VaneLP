@@ -151,4 +151,245 @@ public class CursoDAOJDBCImpl implements CursoDAO {
             throw new RuntimeException(e);
         }
     }
+
+    //todo
+    @Override
+    public List<Curso> coincidenciaExactaId() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> contienePalabraClaveId() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> empiezaPorId() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> terminaEnId() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> coincidenciaExactaNombre() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> contienePalabraClaveNombre() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> empiezaPorNombre() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
+
+    @Override
+    public List<Curso> terminaEnNombre() {
+        List<Curso> listaCur = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+
+            try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+
+                ResultSet rs = psCur.executeQuery();
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String nombre = rs.getString("Nombre");
+
+                    listaCur.add(new Curso(id, nombre));
+                }
+
+            }
+
+            System.out.println("Tablas cur listadas");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listaCur;
+    }
 }

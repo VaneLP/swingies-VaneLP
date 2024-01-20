@@ -274,6 +274,574 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
         }
     }
 
+    //todo
+    @Override
+    public List<Profesor> coincidenciaExactaNombre() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> contienePalabraClaveNombre() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> empiezaPorNombre() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> terminaEnNombre() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> coincidenciaExactaDni() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> contienePalabraClaveDni() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> empiezaPorDni() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> terminaEnDni() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Profesor> agruparAsignraturaProf() {
+        List<Profesor> listaProfe = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaProfe =
+                    "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Profesores AS profe " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON profe.Curso_id = cur.id ";
+
+            String leerTablaAsig =
+                    "SELECT asignatura " +
+                            "FROM Asignaturas " +
+                            "WHERE Profesor_id = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
+                 PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
+            ) {
+
+                ResultSet rsProfe = psProfe.executeQuery();
+
+                while (rsProfe.next()) {
+                    int id = rsProfe.getInt("id");
+                    String nombre = rsProfe.getString("Nombre");
+                    String dni = rsProfe.getString("DNI");
+                    String tlfn = rsProfe.getString("Tlf");
+                    String edad = rsProfe.getString("Edad");
+
+                    int curId = rsProfe.getInt("id_curso");
+                    String curNombre = rsProfe.getString("nombre_curso");
+
+                    psAsig.setInt(1, id);
+                    List<String> asignaturas = new ArrayList<>();
+
+                    try (ResultSet rsAsig = psAsig.executeQuery()) {
+                        while (rsAsig.next()) {
+                            asignaturas.add(rsAsig.getString("asignatura"));
+                        }
+                    }
+
+                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+
+                    if(p.getCurso().getNombre()==null)
+                        p.setCurso(Curso.cursoNulo);
+
+                    p.setListaAsignaturas(asignaturas);
+
+                    listaProfe.add(p);
+                }
+
+                System.out.println("Tablas profe listadas");
+                return listaProfe;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public List<Profesor> listaProfeTutorDAO() {
         List<Profesor> listaProfe = new ArrayList<>();

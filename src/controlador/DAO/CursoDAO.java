@@ -11,4 +11,14 @@ public interface CursoDAO {
     Curso readUno(Integer idCur);
     List<Curso> listaCurDAO();
     List<Curso> ordenarCurAlfDAO();
+
+    List<Curso> coincidenciaExactaId();
+    List<Curso> contienePalabraClaveId();
+    List<Curso> empiezaPorId();
+    List<Curso> terminaEnId();
+
+    List<Curso> coincidenciaExactaNombre();
+    List<Curso> contienePalabraClaveNombre();
+    List<Curso> empiezaPorNombre();
+    List<Curso> terminaEnNombre();
 }
