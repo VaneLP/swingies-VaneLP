@@ -340,13 +340,13 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                         }
                     }
 
-                    double sumaNotas=0;
+                    double sumaNotas = 0;
                     for (Double n : notas) {
-                        sumaNotas+=n;
+                        sumaNotas += n;
                     }
-                    double media =sumaNotas/notas.size();
+                    double media = sumaNotas / notas.size();
 
-                    if(media>=5){
+                    if (media >= 5) {
                         Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
                         a.setListaNotas(notas);
 
@@ -407,13 +407,13 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                         }
                     }
 
-                    double sumaNotas=0;
+                    double sumaNotas = 0;
                     for (Double n : notas) {
-                        sumaNotas+=n;
+                        sumaNotas += n;
                     }
-                    double media =sumaNotas/notas.size();
+                    double media = sumaNotas / notas.size();
 
-                    if(media<5){
+                    if (media < 5) {
                         Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
                         a.setListaNotas(notas);
 
@@ -432,9 +432,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
         }
     }
 
-    //todo
     @Override
-    public List<Alumno> coincidenciaExactaNombre() {
+    public List<Alumno> coincidenciaExactaNombre(String name) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -443,7 +442,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.nombre = ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -453,6 +453,69 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, name);
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    a.setListaNotas(notas);
+
+                    listaAlum.add(a);
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> contienePalabraClaveNombre(String name) {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.nombre LIKE ?";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+                psAlum.setString(1, "%" + name + "%");
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -493,7 +556,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> contienePalabraClaveNombre() {
+    public List<Alumno> empiezaPorNombre(String name) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -502,7 +565,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.nombre LIKE ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -512,6 +576,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, name + "%");
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -552,12 +617,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> empiezaPorNombre() {
-        return null;
-    }
-
-    @Override
-    public List<Alumno> terminaEnNombre() {
+    public List<Alumno> terminaEnNombre(String name) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -566,7 +626,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.nombre LIKE ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -576,6 +637,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, "%" + name);
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -616,7 +678,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> coincidenciaExactaDni() {
+    public List<Alumno> coincidenciaExactaDni(String dnii) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -625,7 +687,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.dni = ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -635,6 +698,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, dnii);
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -675,7 +739,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> contienePalabraClaveDni() {
+    public List<Alumno> contienePalabraClaveDni(String dnii) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -684,7 +748,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.dni LIKE ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -694,6 +759,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, "%" + dnii + "%");
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -734,7 +800,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> empiezaPorDni() {
+    public List<Alumno> empiezaPorDni(String dnii) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -743,7 +809,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id" +
+                            "WHERE alum.dni LIKE ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -753,6 +820,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, dnii + "%");
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -793,7 +861,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> terminaEnDni() {
+    public List<Alumno> terminaEnDni(String dnii) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -802,7 +870,8 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id " +
+                            "WHERE alum.dni LIKE ?";
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -812,6 +881,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+                psAlum.setString(1, "%" + dnii);
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -852,7 +922,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> notaMediaAlum() {
+    public List<Alumno> notaMediaAlum(int mediia) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -871,6 +941,79 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+
+                ResultSet rsAlum = psAlum.executeQuery();
+
+                while (rsAlum.next()) {
+                    int id = rsAlum.getInt("id");
+                    String nombre = rsAlum.getString("Nombre");
+                    String dni = rsAlum.getString("DNI");
+                    String tlfn = rsAlum.getString("Tlf");
+                    String edad = rsAlum.getString("Edad");
+
+                    int curId = rsAlum.getInt("id_curso");
+                    String curNombre = rsAlum.getString("nombre_curso");
+
+                    psNotas.setInt(1, id);
+                    List<Double> notas = new ArrayList<>();
+
+                    try (ResultSet rsNotas = psNotas.executeQuery()) {
+                        while (rsNotas.next()) {
+                            notas.add(rsNotas.getDouble("nota"));
+                        }
+                    }
+
+                    double sumaNotas = 0;
+                    for (Double n : notas) {
+                        sumaNotas += n;
+                    }
+                    double media = sumaNotas / notas.size();
+
+                    if (media == mediia) {
+                        Alumno a = new Alumno(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                        a.setListaNotas(notas);
+
+                        listaAlum.add(a);
+                    }
+                }
+
+                System.out.println("Tablas Alum listadas");
+                return listaAlum;
+
+            } catch (CursoInvalidoException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Alumno> profesorTutorAlum(String nombreTutor) {
+        List<Alumno> listaAlum = new ArrayList<>();
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+
+            String mostrarTodoTablaAlum =
+                    "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
+                            "FROM Alumnos AS alum " +
+
+                            "LEFT JOIN Cursos AS cur " +
+                            "ON alum.Curso_id = cur.id " +
+
+                            "JOIN profesores AS p " +
+                            "ON p.curso_id = cur.id " +
+                            "WHERE p.nombre = ?";
+
+            String leerTablaNotas =
+                    "SELECT nota " +
+                            "FROM notas " +
+                            "WHERE Alumno_id = ?";
+
+            try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
+                 PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
+            ) {
+                psAlum.setString(1, nombreTutor);
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -911,7 +1054,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> profesorTutorAlum() {
+    public List<Alumno> buscarCursoAlum(List<String> listaCur) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -920,7 +1063,20 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "SELECT alum.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Alumnos AS alum " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON alum.Curso_id = cur.id";
+                            "ON alum.Curso_id = cur.id ";
+
+
+            int cursoCont = listaCur.size();
+
+            if (cursoCont > 0) {
+                mostrarTodoTablaAlum = mostrarTodoTablaAlum + " WHERE cur.nombre = ? ";
+
+                for (int i = 1; i < cursoCont; i++) {
+                    mostrarTodoTablaAlum = mostrarTodoTablaAlum + " OR cur.nombre = ? ";
+                }
+
+            }
+
 
             String leerTablaNotas =
                     "SELECT nota " +
@@ -930,6 +1086,12 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             try (PreparedStatement psAlum = connect.prepareStatement(mostrarTodoTablaAlum);
                  PreparedStatement psNotas = connect.prepareStatement(leerTablaNotas)
             ) {
+
+                if (cursoCont > 0) {
+                    for (int i = 0; i < cursoCont; i++) {
+                        psAlum.setString(i+1,listaCur.get(i));
+                    }
+                }
 
                 ResultSet rsAlum = psAlum.executeQuery();
 
@@ -968,4 +1130,6 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
             throw new RuntimeException(e);
         }
     }
+
+
 }

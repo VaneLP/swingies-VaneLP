@@ -276,7 +276,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
 
     //todo
     @Override
-    public List<Profesor> coincidenciaExactaNombre() {
+    public List<Profesor> coincidenciaExactaNombre(String name) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -285,7 +285,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id "+
+                            "WHERE profe.nombre = ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -295,6 +296,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,name);
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -339,7 +341,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> contienePalabraClaveNombre() {
+    public List<Profesor> contienePalabraClaveNombre(String name) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -348,7 +350,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id "+
+                            "WHERE profe.nombre LIKE ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -358,6 +361,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,"%"+name+"%");
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -402,7 +406,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> empiezaPorNombre() {
+    public List<Profesor> empiezaPorNombre(String name) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -411,7 +415,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id "+
+                            "WHERE profe.nombre LIKE ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -421,6 +426,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,name+"%");
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -465,7 +471,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> terminaEnNombre() {
+    public List<Profesor> terminaEnNombre(String name) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -474,7 +480,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id "+
+                            "WHERE profe.nombre LIKE ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -484,6 +491,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,"%"+name);
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -528,7 +536,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> coincidenciaExactaDni() {
+    public List<Profesor> coincidenciaExactaDni(String dnii) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -537,7 +545,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id " +
+                            "WHERE profe.dni = ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -547,6 +556,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,dnii);
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -591,7 +601,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> contienePalabraClaveDni() {
+    public List<Profesor> contienePalabraClaveDni(String dnii) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -600,7 +610,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id "+
+                            "WHERE profe.dni LIKE ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -610,6 +621,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,"%"+dnii+"%");
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -654,7 +666,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> empiezaPorDni() {
+    public List<Profesor> empiezaPorDni(String dnii) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -663,7 +675,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id " +
+                            "WHERE profe.dni LIKE ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -673,6 +686,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,dnii+"%");
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -717,7 +731,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> terminaEnDni() {
+    public List<Profesor> terminaEnDni(String dnii) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -726,7 +740,8 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     "SELECT profe.*, cur.id AS id_curso, cur.nombre AS nombre_curso " +
                             "FROM Profesores AS profe " +
                             "LEFT JOIN Cursos AS cur " +
-                            "ON profe.Curso_id = cur.id ";
+                            "ON profe.Curso_id = cur.id "+
+                            "WHERE profe.dni LIKE ?";
 
             String leerTablaAsig =
                     "SELECT asignatura " +
@@ -736,6 +751,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             try (PreparedStatement psProfe = connect.prepareStatement(mostrarTodoTablaProfe);
                  PreparedStatement psAsig = connect.prepareStatement(leerTablaAsig)
             ) {
+                psProfe.setString(1,"%"+dnii);
 
                 ResultSet rsProfe = psProfe.executeQuery();
 
@@ -780,7 +796,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
-    public List<Profesor> agruparAsignraturaProf() {
+    public List<Profesor> agruparAsignraturaProf(String asginatura) {
         List<Profesor> listaProfe = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
@@ -821,14 +837,16 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                         }
                     }
 
-                    Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
+                    if(asignaturas.contains(asginatura)) {
+                        Profesor p = new Profesor(id, nombre, dni, tlfn, edad, new Curso(curId, curNombre));
 
-                    if(p.getCurso().getNombre()==null)
-                        p.setCurso(Curso.cursoNulo);
+                        if(p.getCurso().getNombre()==null)
+                            p.setCurso(Curso.cursoNulo);
 
-                    p.setListaAsignaturas(asignaturas);
+                        p.setListaAsignaturas(asignaturas);
 
-                    listaProfe.add(p);
+                        listaProfe.add(p);
+                    }
                 }
 
                 System.out.println("Tablas profe listadas");

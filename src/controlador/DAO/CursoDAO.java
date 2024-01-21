@@ -12,13 +12,13 @@ public interface CursoDAO {
     List<Curso> listaCurDAO();
     List<Curso> ordenarCurAlfDAO();
 
-    List<Curso> coincidenciaExactaId();
-    List<Curso> contienePalabraClaveId();
-    List<Curso> empiezaPorId();
-    List<Curso> terminaEnId();
+    List<Curso> coincidenciaExactaId(int idd);
+    List<Curso> contienePalabraClaveId(int idd);
+    List<Curso> empiezaPorId(int idd);
+    List<Curso> terminaEnId(int idd);
 
-    List<Curso> coincidenciaExactaNombre();
-    List<Curso> contienePalabraClaveNombre();
-    List<Curso> empiezaPorNombre();
-    List<Curso> terminaEnNombre();
+    List<Curso> coincidenciaExactaNombre(String name);
+    List<Curso> contienePalabraClaveNombre(String name);
+    List<Curso> empiezaPorNombre(String name);
+    List<Curso> terminaEnNombre(String name);
 }

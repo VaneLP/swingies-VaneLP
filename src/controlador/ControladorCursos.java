@@ -67,4 +67,29 @@ public class ControladorCursos implements ILista<Curso> {
         //BBDD
         return curDao.ordenarCurAlfDAO();
     }
+
+    public List<Curso> coincidenciaExactaId(int idd){
+        return curDao.coincidenciaExactaId(idd);
+    }
+    public List<Curso> contienePalabraClaveId(int idd){
+        return curDao.contienePalabraClaveId(idd);
+    }
+    public List<Curso> empiezaPorId(int idd){
+        return curDao.empiezaPorId(idd);
+    }
+    public List<Curso> terminaEnId(int idd){
+        return curDao.terminaEnId(idd);
+    }
+    public List<Curso> coincidenciaExactaNombre(String name){
+        return curDao.coincidenciaExactaNombre(name);
+    }
+    public List<Curso> contienePalabraClaveNombre(String name){
+        return curDao.contienePalabraClaveNombre(name);
+    }
+    public List<Curso> empiezaPorNombre(String name){
+        return curDao.empiezaPorNombre(name);
+    }
+    public List<Curso> terminaEnNombre(String name){
+        return curDao.terminaEnNombre(name);
+    }
 }

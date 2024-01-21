@@ -65,7 +65,7 @@ public class Menu extends JFrame {
         setContentPane(panelPrincipal);
 
         //el tamaño de la ventana
-        setSize(700, 500);
+        setSize(800, 500);
 
         //para que se centre en medio de la pantalla
         setLocationRelativeTo(null);
@@ -667,29 +667,28 @@ public class Menu extends JFrame {
         botonVentanaCheck.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //todo
-                VentanaCheckBox vcb = new VentanaCheckBox();
+                VentanaCheckBox vcb = new VentanaCheckBox(modeloTablaAlum);
             }
         });
 
         avanzadaAlum.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //todo
+                BusquedaAvanzadaAlum baA = new BusquedaAvanzadaAlum(modeloTablaAlum);
             }
         });
 
         avanzadaProfe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                BusquedaAvanzadaProfe baP = new BusquedaAvanzadaProfe(modeloTablaProfe);
             }
         });
 
         avanzadaCur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                BusquedaAvanzadaCur baC = new BusquedaAvanzadaCur(modeloTablaCur);
             }
         });
 
@@ -1276,8 +1275,13 @@ public class Menu extends JFrame {
         int filaSeleccionadaCur = tablaCur.getSelectedRow();
         String cursoSave = "";
 
+        List<String> listaCur = new ArrayList<>();
+        listaCur.add((String) tablaCur.getValueAt(filaSeleccionadaCur,1));
+
+        int numeroAlum = controladorAlumnos.buscarCursoAlum(listaCur).size();
+
         JPanel panel = new JPanel();
-        int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?", "Eliminar", JOptionPane.YES_NO_OPTION);
+        int opcion = JOptionPane.showConfirmDialog(panel, "¿Estas seguro?\n Se van a eliminar " + numeroAlum + " alumnos.", "Eliminar", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
             if (filaSeleccionadaCur == -1) {

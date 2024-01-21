@@ -22,14 +22,14 @@ public class AgregarAlumno extends JDialog {
     private JComboBox<Curso> cursoElegir;
 
     //atributos controlador
-    private ControladorAlumnos listaAlum;
+    private ControladorAlumnos controladorAlumnos;
     private ControladorCursos controladorCurso;
 
 //-------------------------------------------------------------------------------------------------------------
     //constructor
     public AgregarAlumno(Menu m, boolean b, ControladorAlumnos listaAlum, ControladorCursos listaCurso) {
         super(m, b);
-        this.listaAlum = listaAlum;
+        this.controladorAlumnos = listaAlum;
         this.controladorCurso = listaCurso;
 
         //para que se muestre en la ventana nuestro panel

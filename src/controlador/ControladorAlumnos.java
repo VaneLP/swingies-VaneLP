@@ -3,6 +3,8 @@ package controlador;
 import controlador.DAO.AlumnoDAO;
 import controlador.DAO.JDBC.AlumnoDAOJDBCImpl;
 import modelo.Alumno;
+import modelo.Curso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +26,9 @@ public class ControladorAlumnos implements ILista<Alumno> {
 
 	/**
 	 * Metodo agregar de la interfaz ILista
-	 * 
+	 *
 	 * @param a le pasamos un alumno
-	 * 
+	 *
 	 * @return nos duvuelve si se ha añadido o no
 	 */
 	@Override
@@ -88,44 +90,11 @@ public class ControladorAlumnos implements ILista<Alumno> {
 
 	/**
 	 * Metodo listarAprobados
-	 * 
+	 *
 	 * @return devuelve una nueva lista con los alumnos aprobados
 	 */
 	public List<Alumno> listarAprobados() {
-		//alumDao.listaAlumAproDAO();
-		// creamos una nueva lista
-//		ArrayList<Alumno> listaApro = new ArrayList<Alumno>();
-//
-//		// recorremos la lista de los alumnos
-//		for (Alumno alumno : listaAlumnos) {
-//			// a la variable listNota le añadimos las notas del alumno
-//			listNota = alumno.getListaNotas();
-//
-//			// recorremos la listNotas
-//			for (Double nota : listNota) {
-//				// y a la variable allNotas le asignamos la misma variabla + nota para tener
-//				// todas las notas sumadas
-//				allNotas = allNotas + nota;
-//				// tenemos un contador que va autoincrementando
-//				cont++;
-//			}
-//
-//			// sacamos la media con todas las notas y el contador
-//			media = allNotas / cont;
-//
-//			// si la media es mayor o igual a 5 esta aprobado
-//			if (media >= 5)
-//				// añadimos al alumno a la listaApro
-//				listaApro.add(alumno);
-//
-//			// reseteamos las variables para que no den problemas con otros alumnos
-//			allNotas = 0;
-//			cont = 0;
-//		}
-//
-//		// devolvemos la lista
-//		return listaApro;
-		return null;
+		return alumDao.listaAlumAproDAO();
 	}
 
 	/**
@@ -134,39 +103,41 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos suspensos
 	 */
 	public List<Alumno> listarSuspensos() {
-		//alumDao.listaAlumSusDAO();
-//		// creamos una nueva lista
-//		ArrayList<Alumno> listaSus = new ArrayList<Alumno>();
-//
-//		// recorremos la lista de los alumnos
-//		for (Alumno alumno : listaAlumnos) {
-//			// a la variable listNota le añadimos las notas del alumno
-//			listNota = alumno.getListaNotas();
-//
-//			// recorremos la listNotas
-//			for (Double nota : listNota) {
-//				// y a la variable allNotas le asignamos la misma variabla + nota para tener
-//				// todas las notas sumadas
-//				allNotas = allNotas + nota;
-//				// tenemos un contador que va autoincrementando
-//				cont++;
-//			}
-//
-//			// sacamos la media con todas las notas y el contador
-//			media = allNotas / cont;
-//
-//			// si la media es menor a 5 esta aprobado
-//			if (media < 5)
-//				// añadimos al alumno a la listaSus
-//				listaSus.add(alumno);
-//
-//			// reseteamos las variables para que no den problemas con otros alumnos
-//			allNotas = 0;
-//			cont = 0;
-//		}
-//
-//		// devolvemos la lista
-//		return listaSus;
-		return null;
+		return alumDao.listaAlumSusDAO();
+	}
+	public List<Alumno> coincidenciaExactaNombre(String name){
+		return alumDao.coincidenciaExactaNombre(name);
+	}
+	public List<Alumno> contienePalabraClaveNombre(String name){
+		return alumDao.contienePalabraClaveNombre(name);
+	}
+	public List<Alumno> empiezaPorNombre(String name){
+		return alumDao.empiezaPorNombre(name);
+	}
+	public List<Alumno> terminaEnNombre(String name){
+		return alumDao.terminaEnNombre(name);
+	}
+
+	public List<Alumno> coincidenciaExactaDni(String dni){
+		return alumDao.coincidenciaExactaDni(dni);
+	}
+	public List<Alumno> contienePalabraClaveDni(String dni){
+		return alumDao.contienePalabraClaveDni(dni);
+	}
+	public List<Alumno> empiezaPorDni(String dni){
+		return alumDao.empiezaPorDni(dni);
+	}
+	public List<Alumno> terminaEnDni(String dni){
+		return alumDao.terminaEnDni(dni);
+	}
+	public List<Alumno> notaMediaAlum(int mediia){
+		return alumDao.notaMediaAlum(mediia);
+	}
+	public List<Alumno> profesorTutorAlum(String nombreTutor){
+		return alumDao.profesorTutorAlum(nombreTutor);
+	}
+
+	public List<Alumno> buscarCursoAlum(List<String> listaCur){
+		return alumDao.buscarCursoAlum(listaCur);
 	}
 }

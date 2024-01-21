@@ -85,4 +85,32 @@ public class ControladorProfesores implements ILista<Profesor> {
 		}
 	}
 
+	public List<Profesor> coincidenciaExactaNombre(String name){
+		return profeDao.coincidenciaExactaNombre(name);
+	}
+	public List<Profesor> contienePalabraClaveNombre(String name){
+		return profeDao.contienePalabraClaveNombre(name);
+	}
+	public List<Profesor> empiezaPorNombre(String name){
+		return profeDao.empiezaPorNombre(name);
+	}
+	public List<Profesor> terminaEnNombre(String name){
+		return profeDao.terminaEnNombre(name);
+	}
+	public List<Profesor> coincidenciaExactaDni(String dni){
+		return profeDao.coincidenciaExactaDni(dni);
+	}
+	public List<Profesor> contienePalabraClaveDni(String dni){
+		return profeDao.contienePalabraClaveDni(dni);
+	}
+	public List<Profesor> empiezaPorDni(String dni){
+		return profeDao.empiezaPorDni(dni);
+	}
+	public List<Profesor> terminaEnDni(String dni){
+		return profeDao.terminaEnDni(dni);
+	}
+	public List<Profesor> agruparAsignraturaProf(String asignatura){
+		return profeDao.agruparAsignraturaProf(asignatura);
+	}
+
 }

@@ -13,15 +13,15 @@ public interface ProfesorDAO {
     List<Profesor> listaProfeTutorDAO();
     List<Profesor> ordenarProfeAlfDAO();
 
-    List<Profesor> coincidenciaExactaNombre();
-    List<Profesor> contienePalabraClaveNombre();
-    List<Profesor> empiezaPorNombre();
-    List<Profesor> terminaEnNombre();
+    List<Profesor> coincidenciaExactaNombre(String name);
+    List<Profesor> contienePalabraClaveNombre(String name);
+    List<Profesor> empiezaPorNombre(String name);
+    List<Profesor> terminaEnNombre(String name);
 
-    List<Profesor> coincidenciaExactaDni();
-    List<Profesor> contienePalabraClaveDni();
-    List<Profesor> empiezaPorDni();
-    List<Profesor> terminaEnDni();
+    List<Profesor> coincidenciaExactaDni(String dni);
+    List<Profesor> contienePalabraClaveDni(String dni);
+    List<Profesor> empiezaPorDni(String dni);
+    List<Profesor> terminaEnDni(String dni);
 
-    List<Profesor> agruparAsignraturaProf();
+    List<Profesor> agruparAsignraturaProf(String asginatura);
 }

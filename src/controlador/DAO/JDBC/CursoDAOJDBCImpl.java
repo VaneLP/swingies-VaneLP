@@ -152,16 +152,17 @@ public class CursoDAOJDBCImpl implements CursoDAO {
         }
     }
 
-    //todo
     @Override
-    public List<Curso> coincidenciaExactaId() {
+    public List<Curso> coincidenciaExactaId(int idd) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos " +
+                    "WHERE id = ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setInt(1,idd);
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -184,14 +185,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> contienePalabraClaveId() {
+    public List<Curso> contienePalabraClaveId(int idd) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos " +
+                    "WHERE id = ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, "%"+idd+"%");
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -214,14 +217,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> empiezaPorId() {
+    public List<Curso> empiezaPorId(int idd) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos " +
+                    "WHERE dni LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, idd+"%");
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -244,14 +249,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> terminaEnId() {
+    public List<Curso> terminaEnId(int idd) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos " +
+                    "WHERE dni LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, "%"+idd);
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -274,14 +281,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> coincidenciaExactaNombre() {
+    public List<Curso> coincidenciaExactaNombre(String name) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos "+
+                    "WHERE nombre = ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, name);
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -304,14 +313,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> contienePalabraClaveNombre() {
+    public List<Curso> contienePalabraClaveNombre(String name) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos "+
+                    "WHERE nombre LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, "%"+name+"%");
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -334,14 +345,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> empiezaPorNombre() {
+    public List<Curso> empiezaPorNombre(String name) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos "+
+                    "WHERE nombre LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, name+"%");
 
                 ResultSet rs = psCur.executeQuery();
 
@@ -364,14 +377,16 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
-    public List<Curso> terminaEnNombre() {
+    public List<Curso> terminaEnNombre(String name) {
         List<Curso> listaCur = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
-            String mostrarTodoTablaCur = "SELECT * FROM Cursos";
+            String mostrarTodoTablaCur = "SELECT * FROM Cursos "+
+                    "WHERE nombre LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
+                psCur.setString(1, "%"+name);
 
                 ResultSet rs = psCur.executeQuery();
 
