@@ -75,14 +75,16 @@ public class ControladorProfesores implements ILista<Profesor> {
 	}
 
 	public void agregarAsigProfe(String dni, String asig) {
-		// recorremos nuesta lista de alumnos
-		for (Profesor profe : listar()) {
-			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
-			// parametro
-			if (profe.getDNI().equalsIgnoreCase(dni))
-				// si es correto agregamos la nota
-				profe.agregarAsignatura(asig);
-		}
+//		// recorremos nuesta lista de alumnos
+//		for (Profesor profe : listar()) {
+//			// comprobamos si el DNI que tenemos es igual al DNI que nos pasan como
+//			// parametro
+//			if (profe.getDNI().equalsIgnoreCase(dni))
+//				// si es correto agregamos la nota
+//				profe.agregarAsignatura(asig);
+//		}
+
+		profeDao.insertAsig(dni, asig);
 	}
 
 	public List<Profesor> coincidenciaExactaNombre(String name){

@@ -132,6 +132,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     a.setListaNotas(notas);
 
                     listaAlum.add(a);
+                    return a;
                 }
 
                 System.out.println("Tablas Alum read 1");
@@ -257,12 +258,18 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                             "VALUES(?,?)";
 
             String sentenciaBuscarAlum =
-                    "SELECT id FROM Alumnos WHERE dni = ?" +
-                            "VALUES(?,?)";
+                    "SELECT id FROM Alumnos WHERE dni = ?";
 
             try (PreparedStatement psAlum = connect.prepareStatement(sentenciaBuscarAlum)) {
                 psAlum.setString(1, dni);
-                id = psAlum.executeQuery().getInt("id");
+                try (ResultSet rs = psAlum.executeQuery()) {
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    } else {
+                        // Handle the case when no rows are returned
+                        throw new RuntimeException("No result found for the given DNI");
+                    }
+                }
             }
 
             try (PreparedStatement psNotas = connect.prepareStatement(sentenciaInsertarNota)) {

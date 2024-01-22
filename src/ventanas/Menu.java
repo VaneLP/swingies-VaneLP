@@ -45,6 +45,7 @@ public class Menu extends JFrame {
     private JCheckBox alfaAlum, aproAlum, suspensoAlum,
             alfebeticamenteProfe, tutores,
             alfabeticamenteCuso;
+    private JButton añadirAsignaturaButton;
 
     private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
@@ -692,6 +693,12 @@ public class Menu extends JFrame {
             }
         });
 
+        añadirAsignaturaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarAsigProfesor();
+            }
+        });
     }//Fin del constructor
 
 //-------------------------------------------------------------------------------------------------------------
@@ -899,7 +906,7 @@ public class Menu extends JFrame {
                 //creamos una nueva lista para los profesores no encontrados
                 List<String> listaProfeNoEncontrado = new ArrayList<>();
 
-                //si cuando buscamos a un alumno por su DNI es nulo, es decir no existe el profesor
+                //si cuando buscamos a un profesor por su DNI es nulo, es decir no existe el profesor
                 if (controladorProfesores.buscar(linea[0]) == null) {
                     //lo guardamos en nuestra nueva lista
                     listaProfeNoEncontrado.add(linea[0]);
@@ -1234,6 +1241,29 @@ public class Menu extends JFrame {
             modeloTablaProfe.insertRow(indice, arrayMostrarTutores);
 
             indice++;
+        }
+    }
+
+    private void mostrarAsigProfesor() {
+        String asignatura = JOptionPane.showInputDialog("Introduce la asignatura al profesor");
+
+        int filaSeleccionadaAlumNota = tablaProfe.getSelectedRow();
+
+        if (filaSeleccionadaAlumNota == -1) {
+            JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+        } else {
+            String dni = String.valueOf(tablaProfe.getValueAt(filaSeleccionadaAlumNota, 1));
+
+            // recorremos la listaAlumnos
+            for (int i = 0; i != controladorProfesores.listar().size(); i++) {
+                // si el DNI del alumno es igual al dni que nos pasan
+                if (dni.equalsIgnoreCase(controladorProfesores.listar().get(i).getDNI())) {
+                    controladorProfesores.agregarAsigProfe(controladorProfesores.listar().get(i).getDNI(), asignatura);
+                    // salimos
+                    break;
+                }
+            }
+            mostrarProfesores();
         }
     }
 

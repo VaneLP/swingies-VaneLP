@@ -102,7 +102,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                             "WHERE profe.dni = ?";
 
             String leerTablaAsig =
-                    "SELECT asginatura " +
+                    "SELECT asignatura " +
                             "FROM Asignaturas " +
                             "WHERE Profesor_id = ?";
 
@@ -135,6 +135,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                     p.setListaAsignaturas(asignaturas);
 
                     listaProfe.add(p);
+                    return p;
                 }
 
                 System.out.println("Tablas profe read 1");
@@ -269,6 +270,45 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
             } catch (CursoInvalidoException e) {
                 throw new RuntimeException(e);
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertAsig(String dni, String asig) {
+        int id;
+
+        try (Connection connect = DriverManager.getConnection(url, user, pass)) {
+            String sentenciaInsertarNota =
+                    "INSERT INTO Asignaturas(profesor_id, Asignatura) " +
+                            "VALUES(?,?)";
+
+            String sentenciaBuscarAlum =
+                    "SELECT id FROM Profesores WHERE dni = ?";
+
+            try (PreparedStatement psProfe = connect.prepareStatement(sentenciaBuscarAlum)) {
+                psProfe.setString(1, dni);
+                try (ResultSet rs = psProfe.executeQuery()) {
+                    if (rs.next()) {
+                        id = rs.getInt("id");
+                    } else {
+                        // Handle the case when no rows are returned
+                        throw new RuntimeException("No result found for the given DNI");
+                    }
+                }
+
+            }
+
+            try (PreparedStatement psAsignaturas = connect.prepareStatement(sentenciaInsertarNota)) {
+                psAsignaturas.setInt(1, id);
+                psAsignaturas.setString(2, asig);
+
+                psAsignaturas.execute();
+            }
+
+            System.out.println("Insercion asignatura ");
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

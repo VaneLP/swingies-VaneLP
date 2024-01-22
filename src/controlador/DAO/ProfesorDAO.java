@@ -12,6 +12,7 @@ public interface ProfesorDAO {
     List<Profesor> listaProfeDAO();
     List<Profesor> listaProfeTutorDAO();
     List<Profesor> ordenarProfeAlfDAO();
+    void insertAsig(String dni, String asig);
 
     List<Profesor> coincidenciaExactaNombre(String name);
     List<Profesor> contienePalabraClaveNombre(String name);
