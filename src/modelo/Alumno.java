@@ -1,10 +1,20 @@
 package modelo;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 
 //clase Alumno que hereda de Persona
+//JPA
+
 public class Alumno {
+    //JPA
+
+
     // ACCESO - BDD
     //atributos de la clase persona
     private String nombre;
@@ -57,6 +67,10 @@ public class Alumno {
         }
         else
             throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
+    }
+
+    public Alumno() {
+
     }
 
     // getters y setters
