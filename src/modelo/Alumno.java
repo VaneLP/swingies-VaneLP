@@ -11,19 +11,12 @@ import java.util.List;
 //clase Alumno que hereda de Persona
 //JPA
 @Entity
-public class Alumno {
+public class Alumno extends Persona{
     //JPA
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     //------------
-    // ACCESO - BDD
-    //atributos de la clase persona
-    private String nombre;
-    private String DNI;
-    private int tlf;
-    private int edad;
-
     private  int id;
     private static int contador = 1;
 
@@ -40,15 +33,9 @@ public class Alumno {
      * la clase Alumno
      */
     public Alumno(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+        super(nombre, DNI, tlf, edad);
         this.id = contador;
         contador++;
-
-        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
 
         if(curso!=null) {
             this.curso = curso;
@@ -58,15 +45,10 @@ public class Alumno {
             throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
     }
     public Alumno(int id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
-            this.id = id;
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
+       super(nombre, DNI, tlf, edad);
 
         if(curso!=null) {
+            this.id = id;
             this.curso = curso;
             this.listaNotas = new ArrayList<Double>();
         }
@@ -91,38 +73,6 @@ public class Alumno {
     public void setListaNotas(List<Double> listaNotas) {
         if(listaNotas!=null)
             this.listaNotas = listaNotas;
-    }
-
-    //nombre
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    //dni
-    public String getDNI() {
-        return DNI;
-    }
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
-    }
-
-    //tlfn
-    public int getTlf() {
-        return tlf;
-    }
-    public void setTlf(int tlf) {
-        this.tlf = tlf;
-    }
-
-    //edad
-    public int getEdad() {
-        return edad;
-    }
-    public void setEdad(int edad) {
-        this.edad = edad;
     }
 
     //id

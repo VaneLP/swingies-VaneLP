@@ -8,17 +8,10 @@ import java.util.List;
 //JPA
 @Entity
 //clase Profesor que hereda de clases.Persona
-public class Profesor {
+public class Profesor extends Persona{
     //JPA
 
     //-----------
-    // ACCESO - BDD
-    //atributos de la clase persona
-    private String nombre;
-    private String DNI;
-    private int tlf;
-    private int edad;
-
     private int id;
     private static int contador = 1;
 
@@ -35,12 +28,7 @@ public class Profesor {
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
     public Profesor(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
+        super(nombre, DNI, tlf, edad);
 
         if (curso != null) {
             this.curso = curso;
@@ -50,15 +38,10 @@ public class Profesor {
     }
 
     public Profesor(int id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
-            this.id = id;
-            this.nombre = nombre;
-            this.DNI = DNI;
-            this.tlf = Integer.parseInt(tlf);
-            this.edad = Integer.parseInt(edad);
-        }
+        super(nombre, DNI, tlf, edad);
 
         if (curso != null) {
+            this.id= id;
             this.curso = curso;
             this.listaAsignaturas = new ArrayList<String>();
         } else
@@ -81,38 +64,6 @@ public class Profesor {
     }
     public void setListaAsignaturas(List<String> listaAsignaturas) {
         this.listaAsignaturas = listaAsignaturas;
-    }
-
-    //nombre
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    //dni
-    public String getDNI() {
-        return DNI;
-    }
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
-    }
-
-    //tfln
-    public int getTlf() {
-        return tlf;
-    }
-    public void setTlf(int tlf) {
-        this.tlf = tlf;
-    }
-
-    //edad
-    public int getEdad() {
-        return edad;
-    }
-    public void setEdad(int edad) {
-        this.edad = edad;
     }
 
     //id
