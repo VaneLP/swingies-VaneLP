@@ -10,11 +10,13 @@ import java.util.List;
 
 //clase Alumno que hereda de Persona
 //JPA
-
+@Entity
 public class Alumno {
     //JPA
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 
-
+    //------------
     // ACCESO - BDD
     //atributos de la clase persona
     private String nombre;
@@ -28,6 +30,9 @@ public class Alumno {
     // atributos de la clase clases.Alumno
     private Curso curso;
     private List<Double> listaNotas;
+
+    //JPA
+    public Alumno() {}
 
     /*
      * constructor al cual le pasamos un super con los atributos de la clase Persona
@@ -67,10 +72,6 @@ public class Alumno {
         }
         else
             throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
-    }
-
-    public Alumno() {
-
     }
 
     // getters y setters

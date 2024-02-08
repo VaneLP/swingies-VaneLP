@@ -1,11 +1,21 @@
 package modelo;
 
+import jakarta.persistence.Entity;
+
+//JPA
+@Entity
 public class Curso {
+    //JPA
+    
+    //----------
     // atributos de la clase Curso
     private final int id;
     private static int contador = 1;
     private String nombre;
     public static final Curso cursoNulo= new Curso(-1,"Ninguno");
+
+    //JPA
+    public Curso() {}
 
     /*
      * constructor al que le pasamos unicamente el nombre, porque no queremos que el

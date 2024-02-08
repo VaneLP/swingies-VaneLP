@@ -1,10 +1,17 @@
 package modelo;
 
+import jakarta.persistence.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 
+//JPA
+@Entity
 //clase Profesor que hereda de clases.Persona
 public class Profesor {
+    //JPA
+
+    //-----------
     // ACCESO - BDD
     //atributos de la clase persona
     private String nombre;
@@ -18,6 +25,9 @@ public class Profesor {
     // atributos de la clase Profesor
     private Curso curso;
     private List<String> listaAsignaturas;
+
+    //JPA
+    public Profesor() {}
 
     /*
      * constructor al cual le pasamos un super con los atributos de la clase Persona
