@@ -1,22 +1,25 @@
 package modelo;
 
-import jakarta.persistence.Entity;
-
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.*;
 
 //JPA
 @Entity
+@Table(name = "Profesor")
 //clase Profesor que hereda de clases.Persona
 public class Profesor extends Persona{
     //JPA
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
 
-    //-----------
-    private int id;
-    private static int contador = 1;
-
-    // atributos de la clase Profesor
+    @ManyToOne(fetch = FetchType.LAZY)
     private Curso curso;
+
+    @ElementCollection
+    @CollectionTable(name = "profesor_asignaturas")
+    @Column(name = "Asignaturas")
     private List<String> listaAsignaturas;
 
     //JPA
@@ -67,9 +70,9 @@ public class Profesor extends Persona{
     }
 
     //id
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
 
     // ---- METODOS ----
 

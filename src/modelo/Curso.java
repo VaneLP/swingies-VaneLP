@@ -1,17 +1,23 @@
 package modelo;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 //JPA
 @Entity
+@Table(name = "Cursos")
 public class Curso {
     //JPA
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private long id;
+
     //----------
     // atributos de la clase Curso
-    private final int id;
-    private static int contador = 1;
+//    private static int contador = 1;
+
+    @Column(nullable = false)
     private String nombre;
+
     public static final Curso cursoNulo= new Curso(-1,"Ninguno");
 
     //JPA
@@ -26,10 +32,10 @@ public class Curso {
     public Curso(String nombre) {
         this.nombre = nombre;
 
-        // asignamos al codigo el contador
-        this.id = contador;
-        // hacemos que el contador aumente para que el siguiente codigo sea diferente
-        contador++;
+//        // asignamos al codigo el contador
+//        this.id = contador;
+//        // hacemos que el contador aumente para que el siguiente codigo sea diferente
+//        contador++;
     }
 
     // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
@@ -41,9 +47,9 @@ public class Curso {
 
     // getters y setters
     // codigo
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
 
     // nombre
     public String getNombre() {

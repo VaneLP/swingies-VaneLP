@@ -1,10 +1,6 @@
 package modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +11,17 @@ public class Alumno extends Persona{
     //JPA
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     //------------
-    private  int id;
-    private static int contador = 1;
+//    private static int contador = 1;
 
-    // atributos de la clase clases.Alumno
+    @ManyToOne(fetch = FetchType.LAZY)
     private Curso curso;
+
+    @ElementCollection
+    @CollectionTable(name = "alumno_notas")
+    @Column(name = "Notas")
     private List<Double> listaNotas;
 
     //JPA
@@ -34,8 +34,8 @@ public class Alumno extends Persona{
      */
     public Alumno(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
         super(nombre, DNI, tlf, edad);
-        this.id = contador;
-        contador++;
+//        this.id = contador;
+//        contador++;
 
         if(curso!=null) {
             this.curso = curso;
@@ -76,9 +76,9 @@ public class Alumno extends Persona{
     }
 
     //id
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
 
     // ---- METODOS ----
     /**

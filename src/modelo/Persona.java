@@ -1,23 +1,27 @@
 package modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 //JPA
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="rol_instituto")
 public abstract class Persona {
     //JPA
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long idP;
+    private long id;
 
-
-    // atributos de la clase Persona
+    @Column(nullable = false, name="Nombre")
     private String nombre;
+
+    @Column(nullable = false, unique = true)
     private String DNI;
+
+    @Column(nullable = true, name = "telefono")
     private int tlf;
+
+    @Column(nullable = false)
     private int edad;
 
     //JPA
