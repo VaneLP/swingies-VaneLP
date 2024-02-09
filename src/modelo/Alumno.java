@@ -9,9 +9,7 @@ import java.util.List;
 @Entity
 public class Alumno extends Persona{
     //JPA
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+
 
     //------------
 //    private static int contador = 1;
@@ -32,23 +30,11 @@ public class Alumno extends Persona{
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Alumno
      */
-    public Alumno(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        super(nombre, DNI, tlf, edad);
-//        this.id = contador;
-//        contador++;
+    public Alumno(long id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+       super(id, nombre, DNI, tlf, edad);
 
         if(curso!=null) {
-            this.curso = curso;
-            this.listaNotas = new ArrayList<Double>();
-        }
-        else
-            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
-    }
-    public Alumno(int id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-       super(nombre, DNI, tlf, edad);
-
-        if(curso!=null) {
-            this.id = id;
+            //this.id = id;
             this.curso = curso;
             this.listaNotas = new ArrayList<Double>();
         }

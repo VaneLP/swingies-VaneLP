@@ -28,12 +28,13 @@ public abstract class Persona {
     public Persona() {}
 
     // constructor al cual le pasamos el nombre, el DNI, el tlf y la edad
-    protected Persona(String nombre, String DNI, String tlf, String edad) {
+    protected Persona(long id, String nombre, String DNI, String tlf, String edad) {
         if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
             this.nombre = nombre;
             this.DNI = DNI;
             this.tlf = Integer.parseInt(tlf);
             this.edad = Integer.parseInt(edad);
+            this.id = id;
         }
     }
 

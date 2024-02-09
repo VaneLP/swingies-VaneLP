@@ -10,9 +10,7 @@ import jakarta.persistence.*;
 //clase Profesor que hereda de clases.Persona
 public class Profesor extends Persona{
     //JPA
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Curso curso;
@@ -30,21 +28,11 @@ public class Profesor extends Persona{
      * porque hemos heredado de ella y tambien le pasamos los atributos propios de
      * la clase Profesor, al cual SI le pasamos el curso porque seria un tutor
      */
-    public Profesor(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        super(nombre, DNI, tlf, edad);
+    public Profesor(long id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+        super(id, nombre, DNI, tlf, edad);
 
         if (curso != null) {
-            this.curso = curso;
-            this.listaAsignaturas = new ArrayList<String>();
-        } else
-            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
-    }
-
-    public Profesor(int id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
-        super(nombre, DNI, tlf, edad);
-
-        if (curso != null) {
-            this.id= id;
+            //this.id= id;
             this.curso = curso;
             this.listaAsignaturas = new ArrayList<String>();
         } else
