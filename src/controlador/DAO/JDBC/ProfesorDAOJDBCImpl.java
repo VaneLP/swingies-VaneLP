@@ -60,7 +60,7 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
                 if(profe.getCurso().getId() == -1)
                     psProfe.setNull(5, Types.NULL);
                 else
-                    psProfe.setInt(5,profe.getCurso().getId());
+                    psProfe.setLong(5,profe.getCurso().getId());
 
                 psProfe.execute();
             }

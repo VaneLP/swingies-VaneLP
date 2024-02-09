@@ -56,7 +56,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                 psAlumno.setString(2, alum.getDNI());
                 psAlumno.setInt(3, alum.getTlf());
                 psAlumno.setInt(4, alum.getEdad());
-                psAlumno.setInt(5, alum.getCurso().getId());
+                psAlumno.setLong(5, alum.getCurso().getId());
 
                 psAlumno.execute();
             }
@@ -293,7 +293,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
                     "VALUES(?,?)";
 
             try (PreparedStatement psNotas = connect.prepareStatement(sentenciaInsertarNota)) {
-                psNotas.setInt(1, a.getId());
+                psNotas.setLong(1, a.getId());
                 psNotas.setDouble(2, nota);
 
                 psNotas.execute();

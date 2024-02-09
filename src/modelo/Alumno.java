@@ -9,11 +9,6 @@ import java.util.List;
 @Entity
 public class Alumno extends Persona{
     //JPA
-
-
-    //------------
-//    private static int contador = 1;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Curso curso;
 

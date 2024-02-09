@@ -223,7 +223,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
             String mostrarTodoTablaCur = "SELECT * FROM Cursos " +
-                    "WHERE dni LIKE ?";
+                    "WHERE id LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
                 psCur.setString(1, idd+"%");
@@ -255,7 +255,7 @@ public class CursoDAOJDBCImpl implements CursoDAO {
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 
             String mostrarTodoTablaCur = "SELECT * FROM Cursos " +
-                    "WHERE dni LIKE ?";
+                    "WHERE id LIKE ?";
 
             try (PreparedStatement psCur = connect.prepareStatement(mostrarTodoTablaCur)) {
                 psCur.setString(1, "%"+idd);

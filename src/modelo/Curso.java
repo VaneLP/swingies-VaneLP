@@ -47,9 +47,9 @@ public class Curso {
 
     // getters y setters
     // codigo
-//    public int getId() {
-//        return id;
-//    }
+    public long getId() {
+        return id;
+    }
 
     // nombre
     public String getNombre() {

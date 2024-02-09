@@ -38,6 +38,15 @@ public abstract class Persona {
         }
     }
 
+    public Persona(String nombre, String DNI, String tlf, String edad) {
+        if (DNI.matches("[0-9]{8}[A-Za-z]") && tlf.matches("\\d{9}") && edad.matches("\\d{2}")) {
+            this.nombre = nombre;
+            this.DNI = DNI;
+            this.tlf = Integer.parseInt(tlf);
+            this.edad = Integer.parseInt(edad);
+        }
+    }
+
     // getters y setters
     // nombre
     public String getNombre() {
@@ -56,6 +65,14 @@ public abstract class Persona {
     public void setDNI(String dni) {
         if(DNI.matches("[0-9]{8}[A-Za-z]"))
             this.DNI = dni;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     // tlf
