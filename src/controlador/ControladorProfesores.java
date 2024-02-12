@@ -1,21 +1,24 @@
 package controlador;
 
 import controlador.DAO.JDBC.ProfesorDAOJDBCImpl;
+import controlador.DAO.JPA.ProfesorDAOJPAImpl;
 import controlador.DAO.ProfesorDAO;
+import modelo.Curso;
+import modelo.CursoInvalidoException;
 import modelo.Profesor;
-import java.util.ArrayList;
-import java.util.Comparator;
+
 import java.util.List;
 
 //Clase ListaProfesores implementa la ILista para obtener sus metodos
 public class ControladorProfesores implements ILista<Profesor> {
-	private ProfesorDAO profeDao= new ProfesorDAOJDBCImpl();
+	//private ProfesorDAO profeDao= new ProfesorDAOJDBCImpl();
+	private ProfesorDAO profeJpa = new ProfesorDAOJPAImpl();
 
 	// ---- METODOS ----
 
 	@Override
 	public void crearTablas() {
-		profeDao.crearTablasProfe();
+		profeJpa.crearTablasProfe();
 	}
 
 	/**
@@ -27,9 +30,14 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 */
 	@Override
 	public void agregar(Profesor p) {
-		//BDD
-		profeDao.insert(p);
+
 	}
+
+	public void agregar(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+		//BDD
+		profeJpa.insert(new Profesor(nombre,DNI,tlf,edad,curso));
+
+    }
 
 	/**
 	 * Metodo buscar de la interfaz ILista
@@ -40,7 +48,7 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 */
 	@Override
 	public Profesor buscar(String dni) {
-		return profeDao.readUno(dni);
+		return profeJpa.readUno(dni);
 	}
 
 	/**
@@ -52,7 +60,7 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 */
 	@Override
 	public void eliminar(String dni) {
-		profeDao.delete(dni);
+		profeJpa.delete(dni);
 	}
 
 	/**
@@ -62,16 +70,16 @@ public class ControladorProfesores implements ILista<Profesor> {
 	 */
 	@Override
 	public List<Profesor> listar() {
-		return profeDao.listaProfeDAO();
+		return profeJpa.listaProfeDAO();
 	}
 
 	// listarTutores
 	public List<Profesor> listarTutores() {
-		return profeDao.listaProfeTutorDAO();
+		return profeJpa.listaProfeTutorDAO();
 	}
 
 	public List<Profesor> ordenarAlfabeticamente(){
-		return profeDao.ordenarProfeAlfDAO();
+		return profeJpa.ordenarProfeAlfDAO();
 	}
 
 	public void agregarAsigProfe(String dni, String asig) {
@@ -84,35 +92,35 @@ public class ControladorProfesores implements ILista<Profesor> {
 //				profe.agregarAsignatura(asig);
 //		}
 
-		profeDao.insertAsig(dni, asig);
+		profeJpa.insertAsig(dni, asig);
 	}
 
 	public List<Profesor> coincidenciaExactaNombre(String name){
-		return profeDao.coincidenciaExactaNombre(name);
+		return profeJpa.coincidenciaExactaNombre(name);
 	}
 	public List<Profesor> contienePalabraClaveNombre(String name){
-		return profeDao.contienePalabraClaveNombre(name);
+		return profeJpa.contienePalabraClaveNombre(name);
 	}
 	public List<Profesor> empiezaPorNombre(String name){
-		return profeDao.empiezaPorNombre(name);
+		return profeJpa.empiezaPorNombre(name);
 	}
 	public List<Profesor> terminaEnNombre(String name){
-		return profeDao.terminaEnNombre(name);
+		return profeJpa.terminaEnNombre(name);
 	}
 	public List<Profesor> coincidenciaExactaDni(String dni){
-		return profeDao.coincidenciaExactaDni(dni);
+		return profeJpa.coincidenciaExactaDni(dni);
 	}
 	public List<Profesor> contienePalabraClaveDni(String dni){
-		return profeDao.contienePalabraClaveDni(dni);
+		return profeJpa.contienePalabraClaveDni(dni);
 	}
 	public List<Profesor> empiezaPorDni(String dni){
-		return profeDao.empiezaPorDni(dni);
+		return profeJpa.empiezaPorDni(dni);
 	}
 	public List<Profesor> terminaEnDni(String dni){
-		return profeDao.terminaEnDni(dni);
+		return profeJpa.terminaEnDni(dni);
 	}
 	public List<Profesor> agruparAsignraturaProf(String asignatura){
-		return profeDao.agruparAsignraturaProf(asignatura);
+		return profeJpa.agruparAsignraturaProf(asignatura);
 	}
 
 }

@@ -2,31 +2,40 @@ package controlador;
 
 import controlador.DAO.CursoDAO;
 import controlador.DAO.JDBC.CursoDAOJDBCImpl;
+import controlador.DAO.JPA.CursoDAOJPAImpl;
 import modelo.Curso;
-import java.util.ArrayList;
+
 import java.util.List;
 
 // Clase ListaCurso implementa la ILista para obtener sus metodos
 public class ControladorCursos implements ILista<Curso> {
-    private CursoDAO curDao = new CursoDAOJDBCImpl();
+    //private CursoDAO curDao = new CursoDAOJDBCImpl();
+    private CursoDAO curJpa = new CursoDAOJPAImpl();
 
     // ---- METODOS ----
 
     @Override
     public void crearTablas() {
-        curDao.crearTablasCur();
+        curJpa.crearTablasCur();
+    }
+
+    @Override
+    public void agregar(Curso object) {
+
     }
 
     /**
      * Metodo agregar de la interfaz ILista
-     *
-     * @param c le pasamos un curso
-     * @return nos duvuelve si se ha añadido o no
      */
-    @Override
-    public void agregar(Curso c) {
+    public void agregar(String nombre) {
         //BBDD
-        curDao.insert(c);
+        curJpa.insert(new Curso(nombre));
+    }
+
+
+    public void agregarCsv(long id, String nombre) {
+        //BBDD
+        curJpa.insert(new Curso(id, nombre));
     }
 
     /**
@@ -37,7 +46,7 @@ public class ControladorCursos implements ILista<Curso> {
     @Override
     public Curso buscar(String id) {
         //BBDD
-        return curDao.readUno(Integer.valueOf(id));
+        return curJpa.readUno(Integer.valueOf(id));
     }
 
     /**
@@ -49,7 +58,7 @@ public class ControladorCursos implements ILista<Curso> {
     @Override
     public void eliminar(String codigo) {
         //BBDD
-        curDao.delete(Integer.valueOf(codigo));
+        curJpa.delete(Integer.valueOf(codigo));
     }
 
     /**
@@ -60,36 +69,37 @@ public class ControladorCursos implements ILista<Curso> {
     @Override
     public List<Curso> listar() {
         //BBDD
-        return curDao.listaCurDAO();
+        return curJpa.listaCurDAO();
     }
 
     public List<Curso> ordenarALfabeticamente() {
         //BBDD
-        return curDao.ordenarCurAlfDAO();
+        return curJpa.ordenarCurAlfDAO();
     }
 
     public List<Curso> coincidenciaExactaId(int idd){
-        return curDao.coincidenciaExactaId(idd);
+        return curJpa.coincidenciaExactaId(idd);
     }
     public List<Curso> contienePalabraClaveId(int idd){
-        return curDao.contienePalabraClaveId(idd);
+        return curJpa.contienePalabraClaveId(idd);
     }
     public List<Curso> empiezaPorId(int idd){
-        return curDao.empiezaPorId(idd);
+        return curJpa.empiezaPorId(idd);
     }
     public List<Curso> terminaEnId(int idd){
-        return curDao.terminaEnId(idd);
+        return curJpa.terminaEnId(idd);
     }
     public List<Curso> coincidenciaExactaNombre(String name){
-        return curDao.coincidenciaExactaNombre(name);
+        return curJpa.coincidenciaExactaNombre(name);
     }
     public List<Curso> contienePalabraClaveNombre(String name){
-        return curDao.contienePalabraClaveNombre(name);
+        return curJpa.contienePalabraClaveNombre(name);
     }
     public List<Curso> empiezaPorNombre(String name){
-        return curDao.empiezaPorNombre(name);
+        return curJpa.empiezaPorNombre(name);
     }
     public List<Curso> terminaEnNombre(String name){
-        return curDao.terminaEnNombre(name);
+        return curJpa.terminaEnNombre(name);
     }
+
 }

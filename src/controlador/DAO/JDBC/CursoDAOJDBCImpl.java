@@ -51,6 +51,11 @@ public class CursoDAOJDBCImpl implements CursoDAO {
     }
 
     @Override
+    public void update(Curso cur) {
+
+    }
+
+    @Override
     public void delete(Integer idCur) {
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
 

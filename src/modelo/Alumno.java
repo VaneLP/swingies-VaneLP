@@ -9,7 +9,9 @@ import java.util.List;
 @Entity
 public class Alumno extends Persona{
     //JPA
-    @ManyToOne(fetch = FetchType.LAZY)
+    //Many to one hace referencia al que muchos ALUMNO pueden tener un CURSO
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
     private Curso curso;
 
     @ElementCollection
@@ -27,6 +29,18 @@ public class Alumno extends Persona{
      */
     public Alumno(long id, String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
        super(id, nombre, DNI, tlf, edad);
+
+        if(curso!=null) {
+            //this.id = id;
+            this.curso = curso;
+            this.listaNotas = new ArrayList<Double>();
+        }
+        else
+            throw new CursoInvalidoException("ERROR: El curso puede que sea nulo");
+    }
+
+    public Alumno( String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
+        super(nombre, DNI, tlf, edad);
 
         if(curso!=null) {
             //this.id = id;

@@ -72,6 +72,11 @@ public class ProfesorDAOJDBCImpl implements ProfesorDAO {
     }
 
     @Override
+    public void update(Profesor profe) {
+
+    }
+
+    @Override
     public void delete(String dni) {
         try (Connection connect = DriverManager.getConnection(url, user, pass)){
             String borrarTablaProfe = "DELETE FROM Profesores WHERE DNI = ?";

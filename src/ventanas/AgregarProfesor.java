@@ -92,8 +92,8 @@ public class AgregarProfesor extends JDialog {
         } else if(!textNombre.getText().matches("[A-Za-z]+")){
             JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el nombre sea incorrecto. Intentalo de nuevo.");
         }else {
-            listaProfe.agregar(new Profesor(textNombre.getText(), textDni.getText(), textTlf.getText(),
-                    textEdad.getText(), (Curso) cursoElegir.getSelectedItem()));
+            listaProfe.agregar(textNombre.getText(), textDni.getText(), textTlf.getText(),
+                    textEdad.getText(), (Curso) cursoElegir.getSelectedItem());
 
             dispose();
         }

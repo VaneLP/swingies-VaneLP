@@ -1,6 +1,7 @@
 package modelo;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 //JPA
 @Entity
@@ -10,6 +11,12 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
+
+    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alumno> listaAlumnos;
+    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Profesor> listaProfesor;
+
 
     //----------
     // atributos de la clase Curso
@@ -40,7 +47,7 @@ public class Curso {
 
     // ---- CARGA MASIVA (ACCESOS - PRACTICA 3) ----
     //constructor para poder pasarle el codigo y el nombre cuando leemos un fichero
-    public Curso(int codigo, String nombre) {
+    public Curso(long codigo, String nombre) {
         this.id = codigo;
         this.nombre = nombre;
     }

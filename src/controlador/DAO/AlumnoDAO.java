@@ -9,6 +9,7 @@ import java.util.List;
 public interface AlumnoDAO {
     void crearTablasAlum();
     void insert(Alumno alum);
+    void update(Alumno alum);
     void delete(String dni);
     Alumno readUno(String idAlum);
     List<Alumno> listaAlumDAO();

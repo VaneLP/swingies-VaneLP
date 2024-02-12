@@ -10,51 +10,76 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlumnoDAOJPAImpl implements AlumnoDAO {
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
 
-    public AlumnoDAOJPAImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public AlumnoDAOJPAImpl() {
+        entityManager = ControladorJPA.getEntityManager();
     }
 
     @Override
     public void crearTablasAlum() {
-        // No es necesario en JPA, ya que las tablas se definen mediante anotaciones en las entidades.
+        // No es necesario en JPA, ya que las tablas son gestionadas automaticamente
     }
 
     @Override
     public void insert(Alumno alumno) {
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
+            //empieza la trnsaccion
+            entityManager.getTransaction().begin();
             entityManager.persist(alumno);
-            transaction.commit();
-            System.out.println("Inserción Alumno exitosa");
+            //termina la transaccion
+            entityManager.getTransaction().commit();
+
+            System.out.println("Inserción Alumno");
         } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
             }
             throw new RuntimeException("Error al insertar Alumno", e);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public void update(Alumno alum) {
+        try {
+            //empieza la trnsaccion
+            entityManager.getTransaction().begin();
+            entityManager.merge(alum);
+            //termina la transaccion
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error al actualizar Alumno" + e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public void delete(String dni) {
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
+            entityManager.getTransaction().begin();
             Alumno alumno = entityManager.find(Alumno.class, dni);
+
             if (alumno != null) {
                 entityManager.remove(alumno);
             }
-            transaction.commit();
-            System.out.println("Eliminación Alumno exitosa");
+
+            entityManager.getTransaction().commit();
+
+            System.out.println("Alumno borrado");
         } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
             }
             throw new RuntimeException("Error al eliminar Alumno", e);
+        } finally {
+            entityManager.close();
         }
     }
 
@@ -63,6 +88,7 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         return entityManager.find(Alumno.class, dniAlum);
     }
 
+    //HQL
     @Override
     public List<Alumno> listaAlumDAO() {
         String jpql = "SELECT a FROM Alumno a LEFT JOIN FETCH a.curso";

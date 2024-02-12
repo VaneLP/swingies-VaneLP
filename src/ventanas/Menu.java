@@ -796,7 +796,7 @@ public class Menu extends JFrame {
 
                 if (linea[0].matches("\\d") && !repe) {
                     //los agregamos los cursos a la lista
-                    controladorCursos.agregar(new Curso(Integer.parseInt(linea[0]), linea[1]));
+                    controladorCursos.agregarCsv(Integer.parseInt(linea[0]), linea[1]);
                 }
                 else if (repe) {
                     JOptionPane.showMessageDialog(null, "Error al importar, curso "+cursoRepe+" repetido.");
@@ -1277,7 +1277,7 @@ public class Menu extends JFrame {
         nombreCur = JOptionPane.showInputDialog("Introduce el nombre del curso");
 
         if (nombreCur != null && nombreCur.matches("[A-Za-z]+"))
-            controladorCursos.agregar(new Curso(nombreCur));
+            controladorCursos.agregar(nombreCur);
         else
             JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
     }

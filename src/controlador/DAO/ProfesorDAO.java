@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProfesorDAO {
     void crearTablasProfe();
     void insert(Profesor profe);
+    void update(Profesor profe);
     void delete(String dni);
     Profesor readUno(String idAlum);
     List<Profesor> listaProfeDAO();

@@ -69,6 +69,11 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
+    public void update(Alumno alum) {
+
+    }
+
+    @Override
     public void delete(String dni) {
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {
             String borrarTablaAlum = "DELETE FROM Alumnos WHERE DNI = ?";

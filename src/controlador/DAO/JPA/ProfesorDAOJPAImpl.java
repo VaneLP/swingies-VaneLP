@@ -9,31 +9,32 @@ import modelo.Profesor;
 import java.util.List;
 
 public class ProfesorDAOJPAImpl implements ProfesorDAO {
+    private EntityManager entityManager;
 
-    private final EntityManager entityManager;
 
-    public ProfesorDAOJPAImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public ProfesorDAOJPAImpl() {
+        entityManager = ControladorJPA.getEntityManager();
     }
 
     @Override
     public void crearTablasProfe() {
-        // No es necesario en JPA, ya que las tablas se definen mediante anotaciones en las entidades.
+        // No es necesario en JPA, ya que las tablas son gestionadas automaticamente
 
     }
 
     @Override
     public void insert(Profesor profe) {
-        EntityTransaction transaction = entityManager.getTransaction();
-
         try {
-            transaction.begin();
+            //empieza la trnsaccion
+            entityManager.getTransaction().begin();
             entityManager.persist(profe);
-            transaction.commit();
-            System.out.println("Inserción Profesor exitosa");
+            //termina la transaccion
+            entityManager.getTransaction().commit();
+
+            System.out.println("Inserción Profesor");
         } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
             }
             throw new RuntimeException("Error al insertar Profesor", e);
         } finally {
@@ -42,20 +43,40 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
     }
 
     @Override
-    public void delete(String dni) {
-        EntityTransaction transaction = entityManager.getTransaction();
-
+    public void update(Profesor profe) {
         try {
-            transaction.begin();
+            //empieza la trnsaccion
+            entityManager.getTransaction().begin();
+            entityManager.merge(profe);
+            //termina la transaccion
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            throw new RuntimeException("Error al actualizar Profesor", e);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public void delete(String dni) {
+        try {
+            entityManager.getTransaction().begin();
             Profesor profe = entityManager.find(Profesor.class, dni);
+
             if (profe != null) {
                 entityManager.remove(profe);
             }
-            transaction.commit();
+
+            entityManager.getTransaction().commit();
+
             System.out.println("Eliminación Profesor exitosa");
         } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
             }
             throw new RuntimeException("Error al eliminar Profesor", e);
         } finally {
@@ -68,6 +89,7 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
         return entityManager.find(Profesor.class, dniProfe);
     }
 
+    //HQL
     @Override
     public List<Profesor> listaProfeDAO() {
         String jpql = "SELECT p FROM Profesor p";

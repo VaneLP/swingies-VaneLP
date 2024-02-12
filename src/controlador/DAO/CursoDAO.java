@@ -7,6 +7,7 @@ import java.util.List;
 public interface CursoDAO {
     void crearTablasCur();
     void insert(Curso cur);
+    void update(Curso cur);
     void delete(Integer idCur);
     Curso readUno(Integer idCur);
     List<Curso> listaCurDAO();

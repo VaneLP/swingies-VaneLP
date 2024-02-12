@@ -69,8 +69,8 @@ public class AgregarAlumno extends JDialog {
                         JOptionPane.showMessageDialog(null, "Ups... algo salió mal, puede que el nombre sea incorrecto. Intentalo de nuevo.");
                     }
                     else {
-                        listaAlum.agregar(new Alumno(textNombre.getText(), textDni.getText(), textTlf.getText(),
-                                textEdad.getText(), (Curso) cursoElegir.getSelectedItem()));
+                        listaAlum.agregar(textNombre.getText(), textDni.getText(), textTlf.getText(),
+                                textEdad.getText(), (Curso) cursoElegir.getSelectedItem());
                         dispose();
                     }
 
