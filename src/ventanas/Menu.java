@@ -50,8 +50,8 @@ public class Menu extends JFrame {
     private DefaultTableModel modeloTablaAlum, modeloTablaProfe, modeloTablaCur;
 
     //Atributos controlador
-    private ControladorAlumnos controladorAlumnos = new ControladorAlumnos();
     private ControladorCursos controladorCursos = new ControladorCursos();
+    private ControladorAlumnos controladorAlumnos = new ControladorAlumnos();
     private ControladorProfesores controladorProfesores = new ControladorProfesores();
 
     //atributos
@@ -1348,7 +1348,6 @@ public class Menu extends JFrame {
      * Metodo mostrar todos los cursos
      */
     private void mostrarCursos() {
-
         indice = 0;
         modeloTablaCur.setNumRows(0);
 

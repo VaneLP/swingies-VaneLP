@@ -4,17 +4,14 @@ import controlador.DAO.ProfesorDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import modelo.Curso;
 import modelo.Profesor;
 
 import java.util.List;
 
 public class ProfesorDAOJPAImpl implements ProfesorDAO {
     private EntityManager entityManager;
-
-
-    public ProfesorDAOJPAImpl() {
-        entityManager = ControladorJPA.getEntityManager();
-    }
 
     @Override
     public void crearTablasProfe() {
@@ -24,6 +21,8 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
     @Override
     public void insert(Profesor profe) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
             //empieza la trnsaccion
             entityManager.getTransaction().begin();
@@ -44,6 +43,8 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
     @Override
     public void update(Profesor profe) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
             //empieza la trnsaccion
             entityManager.getTransaction().begin();
@@ -63,6 +64,8 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
     @Override
     public void delete(String dni) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
             entityManager.getTransaction().begin();
             Profesor profe = entityManager.find(Profesor.class, dni);
@@ -86,166 +89,314 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
     @Override
     public Profesor readUno(String dniProfe) {
-        return entityManager.find(Profesor.class, dniProfe);
+        entityManager = ControladorJPA.getEntityManager();
+
+        try {
+
+            return entityManager.find(Profesor.class, dniProfe);
+
+        } catch (
+                Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     //HQL
     @Override
     public List<Profesor> listaProfeDAO() {
-        String jpql = "SELECT p FROM Profesor p";
+        entityManager = ControladorJPA.getEntityManager();
 
-        Query query = entityManager.createQuery(jpql, Profesor.class);
-        List<Profesor> listaProfe = query.getResultList();
+        try {
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p", Profesor.class);
 
-        System.out.println("Tablas Profesor listadas");
-        return listaProfe;
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public List<Profesor> listaProfeTutorDAO() {
-        String jpql = "SELECT p FROM Profesor p WHERE p.tutor = true";
+        entityManager = ControladorJPA.getEntityManager();
 
-        Query query = entityManager.createQuery(jpql, Profesor.class);
-        List<Profesor> listaProfe = query.getResultList();
+        try {
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "LEFT JOIN FETCH p.curso c", Profesor.class);
 
-        System.out.println("Tablas Profesor filtradas por tutor");
-        return listaProfe;
+            List<Profesor> listaProfe = query.getResultList();
+
+            for (Profesor profesor : listaProfe) {
+                if (profesor.getCurso().getNombre() != null) {
+                    entityManager.detach(profesor.getCurso()); // Evitar la duplicación de objetos Curso
+                }
+            }
+
+            return listaProfe;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public List<Profesor> ordenarProfeAlfDAO() {
-        String jpql = "SELECT p FROM Profesor p ORDER BY p.nombre ASC";
+        entityManager = ControladorJPA.getEntityManager();
 
-        Query query = entityManager.createQuery(jpql, Profesor.class);
-        List<Profesor> listaProfe = query.getResultList();
+        try {
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "ORDER BY p.nombre ASC", Profesor.class);
 
-        System.out.println("Tablas Profesor ordenadas alfa");
-        return listaProfe;
+            return query.getResultList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public void insertAsig(String dni, String asig) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
             EntityTransaction transaction = entityManager.getTransaction();
             transaction.begin();
 
             // Buscar Profesor por DNI
-            Profesor profe = entityManager.createQuery("SELECT p FROM Profesor p WHERE p.DNI = :dni", Profesor.class)
-                    .setParameter("dni", dni)
-                    .getSingleResult();
+            Profesor profe = entityManager.find(Profesor.class, dni);
+            if (profe != null) {
+                // Agregar asignatura al Profesor
+                profe.agregarAsignatura(asig);
+                entityManager.merge(profe);
+            }
 
-            // Agregar asignatura al Profesor
-            profe.getListaAsignaturas().add(asig);
-
-            entityManager.merge(profe);
             transaction.commit();
 
-            System.out.println("Inserción asignatura exitosa");
+            System.out.println("Inserción asignatura");
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> coincidenciaExactaNombre(String name) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.nombre = :name";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("name", name)
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.nombre = :nombre", Profesor.class);
+
+            query.setParameter("nombre", name);
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> contienePalabraClaveNombre(String name) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.nombre LIKE :name";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("name", "%" + name + "%")
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.nombre " +
+                                    "LIKE :nombre", Profesor.class);
+
+            query.setParameter("nombre", "%" + name + "%");
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> empiezaPorNombre(String name) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.nombre LIKE :name";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("name", name + "%")
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.nombre " +
+                                    "LIKE :nombre", Profesor.class);
+
+            query.setParameter("nombre", name + "%");
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> terminaEnNombre(String name) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.nombre LIKE :name";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("name", "%" + name)
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.nombre " +
+                                    "LIKE :nombre", Profesor.class);
+
+            query.setParameter("nombre", "%" + name);
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> coincidenciaExactaDni(String dni) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.DNI = :dni";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("dni", dni)
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.DNI = :DNI", Profesor.class);
+
+            query.setParameter("DNI", dni);
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> contienePalabraClaveDni(String dni) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.DNI LIKE :dni";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("dni", "%" + dni + "%")
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.DNI " +
+                                    "LIKE :DNI", Profesor.class);
+
+            query.setParameter("DNI", "%" + dni + "%");
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> empiezaPorDni(String dni) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.DNI LIKE :dni";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("dni", dni + "%")
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.DNI " +
+                                    "LIKE :DNI", Profesor.class);
+
+            query.setParameter("DNI", dni + "%");
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> terminaEnDni(String dni) {
+        entityManager = ControladorJPA.getEntityManager();
+
         try {
-            String jpql = "SELECT p FROM Profesor p WHERE p.DNI LIKE :dni";
-            return entityManager.createQuery(jpql, Profesor.class)
-                    .setParameter("dni", "%" + dni)
-                    .getResultList();
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "WHERE p.DNI " +
+                                    "LIKE :DNI", Profesor.class);
+
+            query.setParameter("DNI", "%" + dni);
+
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
     }
 
     @Override
     public List<Profesor> agruparAsignraturaProf(String asignatura) {
-        // Implementa la lógica para obtener la lista de profesores agrupados por asignatura
-        // Puedes usar una consulta JPQL o Criteria API según tus necesidades
-        return null;
+        entityManager = ControladorJPA.getEntityManager();
+
+        try {
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "LEFT JOIN FETCH p.curso c " +
+                                    "WHERE :asignatura MEMBER OF p.listaAsignaturas", Profesor.class);
+
+            query.setParameter("asignatura", asignatura);
+
+            List<Profesor> listaProfe = query.getResultList();
+
+            for (Profesor profesor : listaProfe) {
+                if (profesor.getCurso() != null && profesor.getCurso().getNombre() == null) {
+                    profesor.setCurso(Curso.cursoNulo);
+                }
+            }
+
+            return listaProfe;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
+        }
     }
+
+
 }

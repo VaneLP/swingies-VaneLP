@@ -5,14 +5,11 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public class ControladorJPA {
-    private static EntityManager entityManager;
-    public ControladorJPA() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-        entityManager = entityManagerFactory.createEntityManager();
-    }
+    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
 
-    //getter
     public static EntityManager getEntityManager() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
         return entityManager;
     }
 
