@@ -2,14 +2,12 @@ package controlador.DAO.JPA;
 
 import controlador.DAO.AlumnoDAO;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import modelo.Alumno;
-import modelo.Curso;
-
+import org.hibernate.Hibernate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AlumnoDAOJPAImpl implements AlumnoDAO {
     private EntityManager entityManager;
@@ -68,10 +66,19 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
 
         try {
             entityManager.getTransaction().begin();
-            Alumno alumno = entityManager.find(Alumno.class, dni);
 
-            if (alumno != null) {
-                entityManager.remove(alumno);
+            TypedQuery<Alumno> query =
+                    entityManager.createQuery(
+                            "SELECT a " +
+                                    "FROM Alumno a " +
+                                    "LEFT JOIN FETCH a.curso " +
+                                    "WHERE a.DNI = :DNI", Alumno.class);
+
+            query.setParameter("DNI", dni);
+
+            for (Alumno a : query.getResultList()) {
+                if(a.getDNI().equalsIgnoreCase(dni))
+                    entityManager.remove(a);
             }
 
             entityManager.getTransaction().commit();
@@ -114,6 +121,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "FROM Alumno a " +
                                     "LEFT JOIN FETCH a.curso", Alumno.class);
 
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -134,6 +145,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "LEFT JOIN FETCH a.curso " +
                                     "ORDER BY a.nombre ASC", Alumno.class);
 
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -147,18 +162,25 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         entityManager = ControladorJPA.getEntityManager();
 
         try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
+            entityManager.getTransaction().begin();
 
-            // Buscar Alumno por DNI
-            Alumno alumno = entityManager.find(Alumno.class, dni);
-            if (alumno != null) {
-                // Agregar nota al Alumno
-                alumno.agregarNota(nota);
-                entityManager.merge(alumno);
+            TypedQuery<Alumno> query =
+                    entityManager.createQuery(
+                            "SELECT a " +
+                                    "FROM Alumno a " +
+                                    "LEFT JOIN FETCH a.curso " +
+                                    "WHERE a.DNI = :DNI", Alumno.class);
+
+            query.setParameter("DNI", dni);
+
+            for (Alumno a : query.getResultList()) {
+                if(a.getDNI().equalsIgnoreCase(dni)) {
+                    a.agregarNota(nota);
+                    entityManager.merge(a);
+                }
             }
 
-            transaction.commit();
+            entityManager.getTransaction().commit();
 
             System.out.println("Insercion notas ");
         } catch (Exception e) {
@@ -173,14 +195,20 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         entityManager = ControladorJPA.getEntityManager();
 
         try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
+            entityManager.getTransaction().begin();
 
-            // Agregar nota al Alumno
-            a.agregarNota(nota);
-            entityManager.merge(a);
+            TypedQuery<Alumno> query =
+                    entityManager.createQuery(
+                            "SELECT a " +
+                                    "FROM Alumno a " +
+                                    "LEFT JOIN FETCH a.curso ", Alumno.class);
 
-            transaction.commit();
+            for (Alumno alum : query.getResultList()) {
+                if(alum.getDNI().equalsIgnoreCase(a.getDNI())) {
+                    a.agregarNota(nota);
+                    entityManager.merge(a);
+                }
+            }
 
             System.out.println("Inserción de nota exitosa");
         } catch (Exception e) {
@@ -190,18 +218,37 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         }
     }
 
+    private double calcularPromedioNotas(Alumno alumno) {
+        List<Double> notas = alumno.getListaNotas();
+        if (notas.isEmpty()) {
+            return 0;
+        } else {
+            double suma = 0;
+            for (double nota : notas) {
+                suma += nota;
+            }
+            return suma / notas.size();
+        }
+    }
+
     @Override
     public List<Alumno> listaAlumAproDAO() {
         entityManager = ControladorJPA.getEntityManager();
+
         try {
             TypedQuery<Alumno> query =
                     entityManager.createQuery(
                             "SELECT a " +
                                     "FROM Alumno a " +
-                                    "LEFT JOIN FETCH a.curso " +
-                                    "WHERE AVG(a.listaNotas) >= 5", Alumno.class);
+                                    "LEFT JOIN FETCH a.curso", Alumno.class);
 
-            return query.getResultList();
+            List<Alumno> alumnos = query.getResultList();
+
+            List<Alumno> alumnosAprobados = alumnos.stream()
+                    .filter(a -> calcularPromedioNotas(a) >= 5)
+                    .collect(Collectors.toList());
+
+            return alumnosAprobados;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -218,10 +265,15 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                     entityManager.createQuery(
                             "SELECT a " +
                                     "FROM Alumno a " +
-                                    "LEFT JOIN FETCH a.curso " +
-                                    "WHERE AVG(a.listaNotas) < 5", Alumno.class);
+                                    "LEFT JOIN FETCH a.curso", Alumno.class);
 
-            return query.getResultList();
+            List<Alumno> alumnos = query.getResultList();
+
+            List<Alumno> alumnosSuspensos = alumnos.stream()
+                    .filter(a -> calcularPromedioNotas(a) <= 5)
+                    .collect(Collectors.toList());
+
+            return alumnosSuspensos;
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -242,6 +294,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "WHERE a.nombre = :nombre", Alumno.class);
 
             query.setParameter("nombre", name);
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {
@@ -266,6 +322,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
 
             query.setParameter("nombre", "%" + name + "%");
 
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -288,6 +348,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "LIKE :nombre", Alumno.class);
 
             query.setParameter("nombre", name + "%");
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {
@@ -312,6 +376,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
 
             query.setParameter("nombre", "%" + name);
 
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -333,6 +401,11 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "WHERE a.DNI = :DNI", Alumno.class);
 
             query.setParameter("DNI", dnii);
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -355,6 +428,11 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "LIKE :DNI", Alumno.class);
 
             query.setParameter("DNI", "%" + dnii + "%");
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -377,6 +455,11 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "LIKE :DNI", Alumno.class);
 
             query.setParameter("DNI", dnii + "%");
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -399,6 +482,11 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "LIKE :DNI", Alumno.class);
 
             query.setParameter("DNI", "%" + dnii);
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -423,7 +511,12 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
             List<Alumno> result = new ArrayList<>();
 
             for (Alumno a : alumnos) {
-                double sumaNotas = a.getListaNotas().stream().mapToDouble(Double::doubleValue).sum();
+                double sumaNotas =
+                        a.getListaNotas()
+                                .stream()
+                                .mapToDouble(Double::doubleValue)
+                                .sum();
+
                 double media = sumaNotas / a.getListaNotas().size();
 
                 if (media == mediia) {
@@ -454,6 +547,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
 
             query.setParameter("nombreTutor", nombreTutor);
 
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -475,6 +572,10 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                     "WHERE c.nombre IN :listaCur", Alumno.class);
 
             query.setParameter("listaCur", listaCur);
+
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 //JPA
 @Entity
+@Table(name = "Personas")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="rol_instituto")
 public abstract class Persona {

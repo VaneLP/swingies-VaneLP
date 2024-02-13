@@ -54,7 +54,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value="ProfePrueba"/>
+        </properties>
       </component>
       <component id="974fa" class="javax.swing.JTextField" binding="textDni">
         <constraints>
@@ -62,7 +64,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value="12345678b"/>
+        </properties>
       </component>
       <component id="e07e7" class="javax.swing.JTextField" binding="textTlf">
         <constraints>
@@ -70,7 +74,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value="123456789"/>
+        </properties>
       </component>
       <component id="36d06" class="javax.swing.JTextField" binding="textEdad">
         <constraints>
@@ -78,7 +84,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <text value="40"/>
+        </properties>
       </component>
       <component id="306e1" class="javax.swing.JComboBox" binding="cursoElegir">
         <constraints>

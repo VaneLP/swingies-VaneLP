@@ -3,13 +3,13 @@ package controlador.DAO.JPA;
 import controlador.DAO.ProfesorDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import modelo.Curso;
 import modelo.Profesor;
-
+import org.hibernate.Hibernate;
 import java.util.List;
 
+//todo checkbox tutores roto
 public class ProfesorDAOJPAImpl implements ProfesorDAO {
     private EntityManager entityManager;
 
@@ -26,6 +26,13 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
         try {
             //empieza la trnsaccion
             entityManager.getTransaction().begin();
+            //CURSO SI ES NULL QUE SEA NULL DE VERDAD
+            System.out.println("Es nulo:"+profe.getCurso());
+
+            if(profe.getCurso().getNombre().equals("Ninguno")){
+                profe.setCurso(null);
+            }
+
             entityManager.persist(profe);
             //termina la transaccion
             entityManager.getTransaction().commit();
@@ -68,15 +75,24 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
         try {
             entityManager.getTransaction().begin();
-            Profesor profe = entityManager.find(Profesor.class, dni);
 
-            if (profe != null) {
-                entityManager.remove(profe);
+            TypedQuery<Profesor> query =
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "LEFT JOIN FETCH p.curso " +
+                                    "WHERE p.DNI = :DNI", Profesor.class);
+
+            query.setParameter("DNI", dni);
+
+            for (Profesor p : query.getResultList()) {
+                if(p.getDNI().equalsIgnoreCase(dni))
+                    entityManager.remove(p);
             }
 
             entityManager.getTransaction().commit();
 
-            System.out.println("Eliminación Profesor exitosa");
+            System.out.println("Eliminación Profesor");
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
@@ -114,6 +130,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                             "SELECT p " +
                                     "FROM Profesor p", Profesor.class);
 
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -132,6 +152,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                             "SELECT p " +
                                     "FROM Profesor p " +
                                     "LEFT JOIN FETCH p.curso c", Profesor.class);
+
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
 
             List<Profesor> listaProfe = query.getResultList();
 
@@ -160,6 +184,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                                     "FROM Profesor p " +
                                     "ORDER BY p.nombre ASC", Profesor.class);
 
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -173,18 +201,25 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
         entityManager = ControladorJPA.getEntityManager();
 
         try {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
+            entityManager.getTransaction().begin();
 
-            // Buscar Profesor por DNI
-            Profesor profe = entityManager.find(Profesor.class, dni);
-            if (profe != null) {
-                // Agregar asignatura al Profesor
-                profe.agregarAsignatura(asig);
-                entityManager.merge(profe);
+            TypedQuery<Profesor> query=
+                    entityManager.createQuery(
+                            "SELECT p " +
+                                    "FROM Profesor p " +
+                                    "LEFT JOIN FETCH p.curso " +
+                                    "WHERE p.DNI = :DNI",Profesor.class);
+
+            query.setParameter("DNI", dni);
+
+            for (Profesor p : query.getResultList()) {
+                if(p.getDNI().equalsIgnoreCase(dni)){
+                    p.agregarAsignatura(asig);
+                    entityManager.merge(p);
+                }
             }
 
-            transaction.commit();
+            entityManager.getTransaction().commit();
 
             System.out.println("Inserción asignatura");
         } catch (Exception e) {
@@ -206,6 +241,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                                     "WHERE p.nombre = :nombre", Profesor.class);
 
             query.setParameter("nombre", name);
+
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {
@@ -229,6 +268,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
             query.setParameter("nombre", "%" + name + "%");
 
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -250,6 +293,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                                     "LIKE :nombre", Profesor.class);
 
             query.setParameter("nombre", name + "%");
+
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {
@@ -273,6 +320,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
             query.setParameter("nombre", "%" + name);
 
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -293,6 +344,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                                     "WHERE p.DNI = :DNI", Profesor.class);
 
             query.setParameter("DNI", dni);
+
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {
@@ -316,6 +371,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
             query.setParameter("DNI", "%" + dni + "%");
 
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -338,6 +397,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
             query.setParameter("DNI", dni + "%");
 
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
+
             return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -359,6 +422,10 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                                     "LIKE :DNI", Profesor.class);
 
             query.setParameter("DNI", "%" + dni);
+
+            for (Profesor profe : query.getResultList()) {
+                Hibernate.initialize(profe.getListaAsignaturas());
+            }
 
             return query.getResultList();
         } catch (Exception e) {

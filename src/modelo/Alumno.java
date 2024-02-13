@@ -11,7 +11,7 @@ public class Alumno extends Persona{
     //JPA
     //Many to one hace referencia al que muchos ALUMNO pueden tener un CURSO
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false)
+    //@JoinColumn(nullable = false)
     private Curso curso;
 
     @ElementCollection

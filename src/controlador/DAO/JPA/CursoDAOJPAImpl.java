@@ -64,6 +64,7 @@ public class CursoDAOJPAImpl implements CursoDAO {
 
         try {
             entityManager.getTransaction().begin();
+
             Curso curso = entityManager.find(Curso.class, idCur);
 
             if (curso != null) {
