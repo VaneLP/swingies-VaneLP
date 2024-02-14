@@ -2,9 +2,13 @@ package controlador.DAO.JPA;
 
 import controlador.DAO.AlumnoDAO;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import modelo.Alumno;
 import org.hibernate.Hibernate;
+
+import javax.swing.*;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +33,16 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
             entityManager.getTransaction().commit();
 
             System.out.println("Inserción Alumno");
+        }  catch (PersistenceException e) {
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
+                throw new RuntimeException("Error de violación de restricción de integridad en la base de datos", e);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
+                throw new RuntimeException("Error de persistencia al obtener la lista de Alumno", e);
+            }
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
@@ -38,6 +52,7 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
             entityManager.close();
         }
     }
+
 
     @Override
     public void update(Alumno alum) {
@@ -218,37 +233,27 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         }
     }
 
-    private double calcularPromedioNotas(Alumno alumno) {
-        List<Double> notas = alumno.getListaNotas();
-        if (notas.isEmpty()) {
-            return 0;
-        } else {
-            double suma = 0;
-            for (double nota : notas) {
-                suma += nota;
-            }
-            return suma / notas.size();
-        }
-    }
-
     @Override
     public List<Alumno> listaAlumAproDAO() {
         entityManager = ControladorJPA.getEntityManager();
 
         try {
-            TypedQuery<Alumno> query =
-                    entityManager.createQuery(
-                            "SELECT a " +
-                                    "FROM Alumno a " +
-                                    "LEFT JOIN FETCH a.curso", Alumno.class);
+            TypedQuery<Alumno> query = entityManager.createQuery(
+                    "SELECT a " +
+                            "FROM Alumno a " +
+                            "LEFT JOIN FETCH a.curso " +
+                            "WHERE a IN " +
+                                        "(SELECT a " +
+                                        "FROM Alumno a " +
+                                        "JOIN a.listaNotas nota " +
+                                        "GROUP BY a " +
+                                        "HAVING AVG(nota) >= 5)", Alumno.class);
 
-            List<Alumno> alumnos = query.getResultList();
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
 
-            List<Alumno> alumnosAprobados = alumnos.stream()
-                    .filter(a -> calcularPromedioNotas(a) >= 5)
-                    .collect(Collectors.toList());
-
-            return alumnosAprobados;
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -261,19 +266,22 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         entityManager = ControladorJPA.getEntityManager();
 
         try {
-            TypedQuery<Alumno> query =
-                    entityManager.createQuery(
-                            "SELECT a " +
-                                    "FROM Alumno a " +
-                                    "LEFT JOIN FETCH a.curso", Alumno.class);
+            TypedQuery<Alumno> query = entityManager.createQuery(
+                    "SELECT a " +
+                            "FROM Alumno a " +
+                            "LEFT JOIN FETCH a.curso " +
+                            "WHERE a IN " +
+                                        "(SELECT a " +
+                                        "FROM Alumno a " +
+                                        "JOIN a.listaNotas nota " +
+                                        "GROUP BY a " +
+                                        "HAVING AVG(nota) <= 5)", Alumno.class);
 
-            List<Alumno> alumnos = query.getResultList();
+            for (Alumno alumno : query.getResultList()) {
+                Hibernate.initialize(alumno.getListaNotas());
+            }
 
-            List<Alumno> alumnosSuspensos = alumnos.stream()
-                    .filter(a -> calcularPromedioNotas(a) <= 5)
-                    .collect(Collectors.toList());
-
-            return alumnosSuspensos;
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {

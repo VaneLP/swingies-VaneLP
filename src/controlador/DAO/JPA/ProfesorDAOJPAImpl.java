@@ -2,11 +2,14 @@ package controlador.DAO.JPA;
 
 import controlador.DAO.ProfesorDAO;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 import modelo.Curso;
 import modelo.Profesor;
 import org.hibernate.Hibernate;
+
+import javax.swing.*;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 //todo checkbox tutores roto
@@ -26,8 +29,6 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
         try {
             //empieza la trnsaccion
             entityManager.getTransaction().begin();
-            //CURSO SI ES NULL QUE SEA NULL DE VERDAD
-            System.out.println("Es nulo:"+profe.getCurso());
 
             if(profe.getCurso().getNombre().equals("Ninguno")){
                 profe.setCurso(null);
@@ -38,6 +39,16 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
             entityManager.getTransaction().commit();
 
             System.out.println("Inserción Profesor");
+        } catch (PersistenceException e) {
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException) {
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
+                throw new RuntimeException("Error de violación de restricción de integridad en la base de datos", e);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ups... algo salió mal, intentalo de nuevo.");
+
+                throw new RuntimeException("Error de persistencia al obtener la lista de Alumno", e);
+            }
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
@@ -151,21 +162,21 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                     entityManager.createQuery(
                             "SELECT p " +
                                     "FROM Profesor p " +
-                                    "LEFT JOIN FETCH p.curso c", Profesor.class);
+                                    "JOIN FETCH p.curso c", Profesor.class);
 
             for (Profesor profe : query.getResultList()) {
                 Hibernate.initialize(profe.getListaAsignaturas());
             }
 
-            List<Profesor> listaProfe = query.getResultList();
+//            List<Profesor> listaProfe = query.getResultList();
+//
+//            for (Profesor profesor : listaProfe) {
+//                if (profesor.getCurso() != null) {
+//                    entityManager.detach(profesor.getCurso());
+//                }
+//            }
 
-            for (Profesor profesor : listaProfe) {
-                if (profesor.getCurso().getNombre() != null) {
-                    entityManager.detach(profesor.getCurso()); // Evitar la duplicación de objetos Curso
-                }
-            }
-
-            return listaProfe;
+            return query.getResultList();
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
