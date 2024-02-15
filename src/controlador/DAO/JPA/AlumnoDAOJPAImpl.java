@@ -275,7 +275,7 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
                                         "FROM Alumno a " +
                                         "JOIN a.listaNotas nota " +
                                         "GROUP BY a " +
-                                        "HAVING AVG(nota) <= 5)", Alumno.class);
+                                        "HAVING AVG(nota) < 5)", Alumno.class);
 
             for (Alumno alumno : query.getResultList()) {
                 Hibernate.initialize(alumno.getListaNotas());
