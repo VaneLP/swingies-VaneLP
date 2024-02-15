@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 public class Profesor extends Persona{
     //JPA
     //Many to one hace referencia al que muchos PROFESOR pueden tener un CURSO
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     private Curso curso;
 

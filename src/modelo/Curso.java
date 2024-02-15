@@ -14,8 +14,8 @@ public class Curso {
 
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alumno> listaAlumnos;
-    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Profesor> listaProfesor;
+    @OneToOne(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profesor listaProfesor;
 
 
     //----------
