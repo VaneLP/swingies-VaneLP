@@ -24,14 +24,19 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
 
     @Override
     public void insert(Profesor profe) {
+        List<Profesor> lista = listaProfeDAO();
         entityManager = ControladorJPA.getEntityManager();
 
         try {
             //empieza la trnsaccion
             entityManager.getTransaction().begin();
 
-            if(profe.getCurso().getNombre().equals("Ninguno")){
-                profe.setCurso(null);
+            for (Profesor p: lista) {
+                if (p.getCurso() != null &&
+                (p.getCurso().getNombre().equalsIgnoreCase(profe.getCurso().getNombre()) || profe.getCurso().getNombre().equals("Ninguno"))
+                ) {
+                    profe.setCurso(null);
+                }
             }
 
             entityManager.persist(profe);
