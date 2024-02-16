@@ -140,7 +140,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	public List<Alumno> terminaEnDni(String dni){
 		return alumJpa.terminaEnDni(dni);
 	}
-	public List<Alumno> notaMediaAlum(int mediia){
+	public List<Alumno> notaMediaAlum(Double mediia){
 		return alumJpa.notaMediaAlum(mediia);
 	}
 	public List<Alumno> profesorTutorAlum(String nombreTutor){

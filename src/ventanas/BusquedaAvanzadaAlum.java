@@ -207,7 +207,8 @@ public class BusquedaAvanzadaAlum extends JFrame {
                         modeloTablaAlum.setNumRows(0);
                         String[] array;
 
-                        for (Alumno alumno : controladorAlumnos.notaMediaAlum(Integer.parseInt(textField1.getText()))) {
+
+                        for (Alumno alumno : controladorAlumnos.notaMediaAlum(Double.parseDouble(textField1.getText()))) {
                             array = new String[]{alumno.getNombre(), alumno.getDNI(), String.valueOf(alumno.getTlf()),
                                     String.valueOf(alumno.getEdad()), alumno.getCurso().getNombre(), alumno.getListaNotas().toString()};
 

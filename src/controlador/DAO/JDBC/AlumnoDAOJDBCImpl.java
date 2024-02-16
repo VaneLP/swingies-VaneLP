@@ -934,7 +934,7 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> notaMediaAlum(int mediia) {
+    public List<Alumno> notaMediaAlum(Double mediia) {
         List<Alumno> listaAlum = new ArrayList<>();
 
         try (Connection connect = DriverManager.getConnection(url, user, pass)) {

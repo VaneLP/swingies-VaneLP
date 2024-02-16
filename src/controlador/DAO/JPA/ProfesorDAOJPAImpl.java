@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-//todo checkbox tutores roto
+
 public class ProfesorDAOJPAImpl implements ProfesorDAO {
     private EntityManager entityManager;
 
@@ -471,7 +471,9 @@ public class ProfesorDAOJPAImpl implements ProfesorDAO {
                 if (profesor.getCurso() != null && profesor.getCurso().getNombre() == null) {
                     profesor.setCurso(Curso.cursoNulo);
                 }
+                Hibernate.initialize(profesor.getListaAsignaturas());
             }
+
 
             return listaProfe;
         } catch (Exception e) {

@@ -504,7 +504,7 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
     }
 
     @Override
-    public List<Alumno> notaMediaAlum(int mediia) {
+    public List<Alumno> notaMediaAlum(Double mediia) {
         entityManager = ControladorJPA.getEntityManager();
 
         try {
