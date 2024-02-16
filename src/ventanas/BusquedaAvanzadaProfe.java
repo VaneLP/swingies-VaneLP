@@ -204,7 +204,7 @@ public class BusquedaAvanzadaProfe extends JFrame {
                         modeloTablaProfe.setNumRows(0);
                         String[] array;
 
-                        
+
                         for (Profesor profe : controladorProfesores.agruparAsignraturaProf(textField1.getText())) {
                             array = new String[]{profe.getNombre(), profe.getDNI(), String.valueOf(profe.getTlf()),
                                     String.valueOf(profe.getEdad()), profe.getCurso().getNombre(), profe.getListaAsignaturas().toString()};
