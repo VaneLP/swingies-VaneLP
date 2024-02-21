@@ -1,11 +1,10 @@
 package controlador;
 
+import controlador.DAO.API.AlumnoDAOAPIImpl;
 import controlador.DAO.AlumnoDAO;
-import controlador.DAO.JPA.AlumnoDAOJPAImpl;
 import modelo.Alumno;
 import modelo.Curso;
 import modelo.CursoInvalidoException;
-import modelo.Profesor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,11 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	//JDBC
 	//private AlumnoDAO alumDao= new AlumnoDAOJDBCImpl();
 
-	//JPA
-	private AlumnoDAO alumJpa = new AlumnoDAOJPAImpl();
+	//JPP
+	// private AlumnoDAO alumJpa = new AlumnoDAOJPAImpl();
+
+	//API
+	private AlumnoDAO alumApi = new AlumnoDAOAPIImpl();
 
 	private double allNotas = 0, media;
 	private int cont = 0;
@@ -27,7 +29,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 
 	@Override
 	public void crearTablas() {
-		alumJpa.crearTablasAlum();
+		alumApi.crearTablasAlum();
 	}
 
 	/**
@@ -44,7 +46,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 
 	public void agregar(String nombre, String DNI, String tlf, String edad, Curso curso) throws CursoInvalidoException {
 		//BDD
-		alumJpa.insert(new Alumno(nombre,DNI,tlf,edad,curso));
+		alumApi.insert(new Alumno(nombre,DNI,tlf,edad,curso));
 
 	}
 	/**
@@ -55,7 +57,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	@Override
 	public Alumno buscar(String dni) {
 		//BBDD
-		return alumJpa.readUno(dni);
+		return alumApi.readUno(dni);
 	}
 
 	/**
@@ -66,7 +68,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	@Override
 	public void eliminar(String dni) {
 		//BBDD
-		alumJpa.delete(dni);
+		alumApi.delete(dni);
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	@Override
 	public List<Alumno> listar() {
 		//BBDD
-		return alumJpa.listaAlumDAO();
+		return alumApi.listaAlumDAO();
 	}
 
 	/**
@@ -84,17 +86,17 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * Nos devuelve la lista ordenada alfabeticamente
 	 */
 	public List<Alumno> ordenarAlfabeticamente() {
-		return alumJpa.ordenarAlumAlfDAO();
+		return alumApi.ordenarAlumAlfDAO();
 	}
 
 	/**
 	 * Metodo agregarNotaAlumno
 	 */
 	public void agregarNotaAlumno(Alumno a, double nota) {
-		alumJpa.insertNota(a,nota);
+		alumApi.insertNota(a,nota);
 	}
 	public void agregarNotaAlumno(String dni, double nota) {
-		alumJpa.insertNota(dni,nota);
+		alumApi.insertNota(dni,nota);
 	}
 
 
@@ -104,7 +106,7 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos aprobados
 	 */
 	public List<Alumno> listarAprobados() {
-		return alumJpa.listaAlumAproDAO();
+		return alumApi.listaAlumAproDAO();
 	}
 
 	/**
@@ -113,41 +115,41 @@ public class ControladorAlumnos implements ILista<Alumno> {
 	 * @return devuelve una nueva lista con los alumnos suspensos
 	 */
 	public List<Alumno> listarSuspensos() {
-		return alumJpa.listaAlumSusDAO();
+		return alumApi.listaAlumSusDAO();
 	}
 	public List<Alumno> coincidenciaExactaNombre(String name){
-		return alumJpa.coincidenciaExactaNombre(name);
+		return alumApi.coincidenciaExactaNombre(name);
 	}
 	public List<Alumno> contienePalabraClaveNombre(String name){
-		return alumJpa.contienePalabraClaveNombre(name);
+		return alumApi.contienePalabraClaveNombre(name);
 	}
 	public List<Alumno> empiezaPorNombre(String name){
-		return alumJpa.empiezaPorNombre(name);
+		return alumApi.empiezaPorNombre(name);
 	}
 	public List<Alumno> terminaEnNombre(String name){
-		return alumJpa.terminaEnNombre(name);
+		return alumApi.terminaEnNombre(name);
 	}
 
 	public List<Alumno> coincidenciaExactaDni(String dni){
-		return alumJpa.coincidenciaExactaDni(dni);
+		return alumApi.coincidenciaExactaDni(dni);
 	}
 	public List<Alumno> contienePalabraClaveDni(String dni){
-		return alumJpa.contienePalabraClaveDni(dni);
+		return alumApi.contienePalabraClaveDni(dni);
 	}
 	public List<Alumno> empiezaPorDni(String dni){
-		return alumJpa.empiezaPorDni(dni);
+		return alumApi.empiezaPorDni(dni);
 	}
 	public List<Alumno> terminaEnDni(String dni){
-		return alumJpa.terminaEnDni(dni);
+		return alumApi.terminaEnDni(dni);
 	}
 	public List<Alumno> notaMediaAlum(Double mediia){
-		return alumJpa.notaMediaAlum(mediia);
+		return alumApi.notaMediaAlum(mediia);
 	}
 	public List<Alumno> profesorTutorAlum(String nombreTutor){
-		return alumJpa.profesorTutorAlum(nombreTutor);
+		return alumApi.profesorTutorAlum(nombreTutor);
 	}
 
 	public List<Alumno> buscarCursoAlum(List<String> listaCur){
-		return alumJpa.buscarCursoAlum(listaCur);
+		return alumApi.buscarCursoAlum(listaCur);
 	}
 }

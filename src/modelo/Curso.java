@@ -12,10 +12,10 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
 
-    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Alumno> listaAlumnos;
-    @OneToOne(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Profesor listaProfesor;
+    //@OneToMany(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<Alumno> listaAlumnos;
+    //@OneToOne(mappedBy = "curso", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    //private Profesor listaProfesor;
 
 
     //----------
@@ -65,6 +65,10 @@ public class Curso {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+//    public List<Alumno> getListaAlumnos() {
+//        return listaAlumnos;
+//    }
 
     /**
      * Metodo toString
