@@ -56,6 +56,21 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
 
     @Override
     public Alumno readUno(String idAlum) {
+        String url = "http://localhost:9000/api/alumno/";
+        OkHttpClient cliente = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try(Response response = cliente.newCall(request).execute()){
+            if(response.isSuccessful()){
+                Gson gson = new Gson();
+                Alumno a = gson.fromJson(response.body().string(), new TypeToken<Alumno>() {}.getType());
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
         return null;
     }
 
