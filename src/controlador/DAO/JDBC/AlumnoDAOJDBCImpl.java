@@ -91,6 +91,11 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
     }
 
     @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
     public Alumno readUno(String dniAlum) {
         List<Alumno> listaAlum = new ArrayList<>();
 
@@ -147,6 +152,11 @@ public class AlumnoDAOJDBCImpl implements AlumnoDAO {
         } catch (SQLException e) {
             new RuntimeException(e);
         }
+        return null;
+    }
+
+    @Override
+    public Alumno readUno(Long id) {
         return null;
     }
 

@@ -110,6 +110,11 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
     }
 
     @Override
+    public void delete(Long id) {
+
+    }
+
+    @Override
     public Alumno readUno(String dniAlum) {
         entityManager = ControladorJPA.getEntityManager();
 
@@ -122,6 +127,11 @@ public class AlumnoDAOJPAImpl implements AlumnoDAO {
         } finally {
             entityManager.close();
         }
+    }
+
+    @Override
+    public Alumno readUno(Long id) {
+        return null;
     }
 
     //HQL

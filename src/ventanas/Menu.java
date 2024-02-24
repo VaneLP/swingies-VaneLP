@@ -980,7 +980,6 @@ public class Menu extends JFrame {
         // variables
         ind = 0;
         encontrado = false;
-
         int filaSeleccionadaAlum = tablaAlum.getSelectedRow();
 
         JPanel panel = new JPanel();
@@ -1003,6 +1002,11 @@ public class Menu extends JFrame {
                         // salimos
                         break;
                     }
+                }
+
+                for (Alumno alumno : controladorAlumnos.listar()) {
+                    if(alumno.getDNI().equalsIgnoreCase(dniBorrar))
+                        controladorAlumnos.eliminar(alumno.getId());
                 }
 
                 // si el booleano es verdadero

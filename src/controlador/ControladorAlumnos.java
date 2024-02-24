@@ -71,6 +71,11 @@ public class ControladorAlumnos implements ILista<Alumno> {
 		alumApi.delete(dni);
 	}
 
+	public void eliminar(Long id) {
+		//BBDD
+		alumApi.delete(id);
+	}
+
 	/**
 	 * Metodo listar de la interfaz ILista
 	 * @return nos duvuelve todos los alumnos que tenemos en la lista

@@ -2,28 +2,24 @@ package controlador.DAO.API;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import controlador.DAO.AlumnoDAO;
-import modelo.Alumno;
+import controlador.DAO.CursoDAO;
+import modelo.Curso;
 import okhttp3.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlumnoDAOAPIImpl implements AlumnoDAO {
-
-
+public class CursoDAOAPIImpl implements CursoDAO {
     @Override
-    public void crearTablasAlum() {
+    public void crearTablasCur() {
 
     }
 
     @Override
-    public void insert(Alumno alum) {
-        String url = "http://localhost:9000/api/agregarAlumno";
+    public void insert(Curso cur) {
+        String url = "http://localhost:9000/api/agregarCurso";
 
-        //Hibernate.initialize(alum.getCurso().getListaAlumnos());
-
-        RequestBody body = RequestBody.create(new Gson().toJson(alum), MediaType.parse("application/json"));
+        RequestBody body = RequestBody.create(new Gson().toJson(cur), MediaType.parse("application/json"));
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -43,10 +39,10 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
     }
 
     @Override
-    public void update(Alumno alum) {
-        String url = "http://localhost:9000/api/updateAlumno/";
+    public void update(Curso cur) {
+        String url = "http://localhost:9000/api/updateCurso/";
 
-        RequestBody body = RequestBody.create(new Gson().toJson(alum), MediaType.parse("application/json"));
+        RequestBody body = RequestBody.create(new Gson().toJson(cur), MediaType.parse("application/json"));
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -66,13 +62,8 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
     }
 
     @Override
-    public void delete(String dni) {
-
-    }
-
-    @Override
-    public void delete(Long id) {
-        String url = "http://localhost:9000/api/eliminarAlumno/"+id;
+    public void delete(Integer idCur) {
+        String url = "http://localhost:9000/api/eliminarCurso/"+idCur;
 
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
@@ -93,132 +84,92 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
     }
 
     @Override
-    public Alumno readUno(String dni) {
-        return null;
-    }
-
-    @Override
-    public Alumno readUno(Long id) {
-        String url = "http://localhost:9000/api/alumno/"+id;
+    public Curso readUno(Integer idCur) {
+        String url = "http://localhost:9000/api/curso/"+idCur;
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        Alumno a=null;
+        Curso c=null;
 
         try(Response response = cliente.newCall(request).execute()){
             if(response.isSuccessful()){
                 Gson gson = new Gson();
-                a = gson.fromJson(response.body().string(), new TypeToken<Alumno>() {}.getType());
+                c = gson.fromJson(response.body().string(), new TypeToken<Curso>() {}.getType());
             }
         }catch (IOException e){
             e.printStackTrace();
         }
 
-        return a;
+        return c;
     }
 
     @Override
-    public List<Alumno> listaAlumDAO() {
-        String url = "http://localhost:9000/api/alumnos";
+    public List<Curso> listaCurDAO() {
+        String url = "http://localhost:9000/api/cursos";
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
                 .build();
 
-        List<Alumno> listaAlum = new ArrayList<>();
+        List<Curso> listaCur = new ArrayList<>();
 
         try(Response response = cliente.newCall(request).execute()){
             if(response.isSuccessful()){
                 Gson gson= new Gson();
-                listaAlum = gson.fromJson(response.body().string(), new TypeToken<List<Alumno>>() {}.getType());
+                listaCur = gson.fromJson(response.body().string(), new TypeToken<List<Curso>>() {}.getType());
 
             }
         }catch (IOException e){
             e.printStackTrace();
         }
 
-        return listaAlum;
+        return listaCur;
     }
 
     @Override
-    public List<Alumno> ordenarAlumAlfDAO() {
+    public List<Curso> ordenarCurAlfDAO() {
         return null;
     }
 
     @Override
-    public void insertNota(String dni, double nota) {
-
-    }
-
-    @Override
-    public void insertNota(Alumno a, double nota) {
-
-    }
-
-    @Override
-    public List<Alumno> listaAlumAproDAO() {
+    public List<Curso> coincidenciaExactaId(int idd) {
         return null;
     }
 
     @Override
-    public List<Alumno> listaAlumSusDAO() {
+    public List<Curso> contienePalabraClaveId(int idd) {
         return null;
     }
 
     @Override
-    public List<Alumno> coincidenciaExactaNombre(String name) {
+    public List<Curso> empiezaPorId(int idd) {
         return null;
     }
 
     @Override
-    public List<Alumno> contienePalabraClaveNombre(String name) {
+    public List<Curso> terminaEnId(int idd) {
         return null;
     }
 
     @Override
-    public List<Alumno> empiezaPorNombre(String name) {
+    public List<Curso> coincidenciaExactaNombre(String name) {
         return null;
     }
 
     @Override
-    public List<Alumno> terminaEnNombre(String name) {
+    public List<Curso> contienePalabraClaveNombre(String name) {
         return null;
     }
 
     @Override
-    public List<Alumno> coincidenciaExactaDni(String dni) {
+    public List<Curso> empiezaPorNombre(String name) {
         return null;
     }
 
     @Override
-    public List<Alumno> contienePalabraClaveDni(String dni) {
-        return null;
-    }
-
-    @Override
-    public List<Alumno> empiezaPorDni(String dni) {
-        return null;
-    }
-
-    @Override
-    public List<Alumno> terminaEnDni(String dni) {
-        return null;
-    }
-
-    @Override
-    public List<Alumno> notaMediaAlum(Double mediia) {
-        return null;
-    }
-
-    @Override
-    public List<Alumno> profesorTutorAlum(String nombreTutor) {
-        return null;
-    }
-
-    @Override
-    public List<Alumno> buscarCursoAlum(List<String> listaCur) {
+    public List<Curso> terminaEnNombre(String name) {
         return null;
     }
 }
