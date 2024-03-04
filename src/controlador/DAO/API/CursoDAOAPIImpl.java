@@ -17,7 +17,7 @@ public class CursoDAOAPIImpl implements CursoDAO {
 
     @Override
     public void insert(Curso cur) {
-        String url = "https://quieromititulo.com:9000/api/curso";
+        String url = "http://quieromititulo.com:9000/api/curso";
 
         RequestBody body = RequestBody.create(new Gson().toJson(cur), MediaType.parse("application/json"));
         OkHttpClient cliente = new OkHttpClient();
@@ -40,7 +40,7 @@ public class CursoDAOAPIImpl implements CursoDAO {
 
     @Override
     public void update(Curso cur) {
-        String url = "https://quieromititulo.com:9000/api/curso/";
+        String url = "http://quieromititulo.com:9000/api/curso/";
 
         RequestBody body = RequestBody.create(new Gson().toJson(cur), MediaType.parse("application/json"));
         OkHttpClient cliente = new OkHttpClient();
@@ -63,7 +63,7 @@ public class CursoDAOAPIImpl implements CursoDAO {
 
     @Override
     public void delete(Integer idCur) {
-        String url = "https://quieromititulo.com:9000/api/curso/"+idCur;
+        String url = "http://quieromititulo.com:9000/api/curso/"+idCur;
 
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
@@ -85,7 +85,7 @@ public class CursoDAOAPIImpl implements CursoDAO {
 
     @Override
     public Curso readUno(Integer idCur) {
-        String url = "https://quieromititulo.com:9000/api/curso/"+idCur;
+        String url = "http://quieromititulo.com:9000/api/curso/"+idCur;
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -107,7 +107,7 @@ public class CursoDAOAPIImpl implements CursoDAO {
 
     @Override
     public List<Curso> listaCurDAO() {
-        String url = "https://quieromititulo.com:9000/api/cursos";
+        String url = "http://quieromititulo.com:9000/api/cursos";
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
