@@ -19,7 +19,7 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
 
     @Override
     public void insert(Alumno alum) {
-        String url = "quieromititulo.com:9000/api/alumno";
+        String url = "https://quieromititulo.com:9000/api/alumno";
 
         //Hibernate.initialize(alum.getCurso().getListaAlumnos());
 
@@ -44,7 +44,7 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
 
     @Override
     public void update(Alumno alum) {
-        String url = "quieromititulo.com:9000/api/alumno/";
+        String url = "https://quieromititulo.com:9000/api/alumno/";
 
         RequestBody body = RequestBody.create(new Gson().toJson(alum), MediaType.parse("application/json"));
         OkHttpClient cliente = new OkHttpClient();
@@ -72,7 +72,7 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
 
     @Override
     public void delete(Long id) {
-        String url = "quieromititulo.com:9000/api/alumno/"+id;
+        String url = "https://quieromititulo.com:9000/api/alumno/"+id;
 
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
@@ -99,7 +99,7 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
 
     @Override
     public Alumno readUno(Long id) {
-        String url = "quieromititulo.com:9000/api/alumno/"+id;
+        String url = "https://quieromititulo.com:9000/api/alumno/"+id;
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -121,7 +121,7 @@ public class AlumnoDAOAPIImpl implements AlumnoDAO {
 
     @Override
     public List<Alumno> listaAlumDAO() {
-        String url = "quieromititulo.com:9000/api/alumnos";
+        String url = "https://quieromititulo.com:9000/api/alumnos";
         OkHttpClient cliente = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
