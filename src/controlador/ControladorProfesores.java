@@ -3,6 +3,7 @@ package controlador;
 import controlador.DAO.JDBC.ProfesorDAOJDBCImpl;
 import controlador.DAO.JPA.ProfesorDAOJPAImpl;
 import controlador.DAO.ProfesorDAO;
+import controlador.DAO.ProfesorDAOTemp;
 import modelo.Curso;
 import modelo.CursoInvalidoException;
 import modelo.Profesor;
@@ -12,7 +13,7 @@ import java.util.List;
 //Clase ListaProfesores implementa la ILista para obtener sus metodos
 public class ControladorProfesores implements ILista<Profesor> {
 	//private ProfesorDAO profeDao= new ProfesorDAOJDBCImpl();
-	private ProfesorDAO profeJpa = new ProfesorDAOJPAImpl();
+	private ProfesorDAO profeJpa = new ProfesorDAOTemp();
 
 	// ---- METODOS ----
 
